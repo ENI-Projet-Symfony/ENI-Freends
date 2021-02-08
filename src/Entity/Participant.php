@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ParticipantRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -58,6 +60,28 @@ class Participant implements UserInterface
      * @ORM\Column(type="boolean")
      */
     private $actif;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur")
+     */
+    private $sortiesOrganisees;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Sortie::class, inversedBy="participants")
+     */
+    private $sortiesParticpees;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="participants")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $campus;
+
+    public function __construct()
+    {
+        $this->sortiesOrganisees = new ArrayCollection();
+        $this->sortiesParticpees = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -196,6 +220,72 @@ class Participant implements UserInterface
     public function setActif(bool $actif): self
     {
         $this->actif = $actif;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sortie[]
+     */
+    public function getSortiesOrganisees(): Collection
+    {
+        return $this->sortiesOrganisees;
+    }
+
+    public function addSortiesOrganisees(Sortie $sortiesOrganisees): self
+    {
+        if (!$this->sortiesOrganisees->contains($sortiesOrganisees)) {
+            $this->sortiesOrganisees[] = $sortiesOrganisees;
+            $sortiesOrganisees->setOrganisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSortiesOrganisees(Sortie $sortiesOrganisees): self
+    {
+        if ($this->sortiesOrganisees->removeElement($sortiesOrganisees)) {
+            // set the owning side to null (unless already changed)
+            if ($sortiesOrganisees->getOrganisateur() === $this) {
+                $sortiesOrganisees->setOrganisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sortie[]
+     */
+    public function getSortiesParticpees(): Collection
+    {
+        return $this->sortiesParticpees;
+    }
+
+    public function addSortiesParticpee(Sortie $sortiesParticpee): self
+    {
+        if (!$this->sortiesParticpees->contains($sortiesParticpee)) {
+            $this->sortiesParticpees[] = $sortiesParticpee;
+        }
+
+        return $this;
+    }
+
+    public function removeSortiesParticpee(Sortie $sortiesParticpee): self
+    {
+        $this->sortiesParticpees->removeElement($sortiesParticpee);
+
+        return $this;
+    }
+
+    public function getCampus(): ?Campus
+    {
+        return $this->campus;
+    }
+
+    public function setCampus(?Campus $campus): self
+    {
+        $this->campus = $campus;
 
         return $this;
     }
