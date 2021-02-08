@@ -50,8 +50,6 @@
 # Embedded web-server pid file
 /.web-server-pid
 
-
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -67,3 +65,10 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+
+### phpstorm ###
+
+
+
+/.idea
