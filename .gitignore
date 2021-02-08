@@ -1,56 +1,71 @@
 # Cache and logs (Symfony2)
-/app/cache/*
-/app/logs/*
-!app/cache/.gitkeep
-!app/logs/.gitkeep
+/site/app/cache/*
+/site/app/logs/*
+!site/app/cache/.gitkeep
+!site/app/logs/.gitkeep
 
 # Email spool folder
-/app/spool/*
+/site/app/spool/*
 
 # Cache, session files and logs (Symfony3)
-/var/cache/*
-/var/logs/*
-/var/sessions/*
-!var/cache/.gitkeep
-!var/logs/.gitkeep
-!var/sessions/.gitkeep
+/site/var/cache/*
+/site/var/logs/*
+/site/var/sessions/*
+!sitevar/cache/.gitkeep
+!sitevar/logs/.gitkeep
+!sitevar/sessions/.gitkeep
 
 # Logs (Symfony4)
 /var/log/*
-!var/log/.gitkeep
+!sitevar/log/.gitkeep
 
 # Parameters
-/app/config/parameters.yml
-/app/config/parameters.ini
+/site/app/config/parameters.yml
+/site/app/config/parameters.ini
 
 # Managed by Composer
-/app/bootstrap.php.cache
-/var/bootstrap.php.cache
-/bin/*
-!bin/console
-!bin/symfony_requirements
-/vendor/
+/site/app/bootstrap.php.cache
+/site/var/bootstrap.php.cache
+/site/bin/*
+!sitebin/console
+!sitebin/symfony_requirements
+/site/vendor/
 
 # Assets and user uploads
-/web/bundles/
-/web/uploads/
+/site/web/bundles/
+/site/web/uploads/
 
 # PHPUnit
-/app/phpunit.xml
-/phpunit.xml
+/site/app/phpunit.xml
+/site/phpunit.xml
 
 # Build data
-/build/
+/site/build/
 
 # Composer PHAR
-/composer.phar
+/site/composer.phar
 
 # Backup entities generated with doctrine:generate:entities command
 **/Entity/*~
 
 # Embedded web-server pid file
-/.web-server-pid
+/site/.web-server-pid
 
-/.idea
+/*/.idea
+*.idea
 
+###> symfony/framework-bundle ###
 /site/.env.local
+/site/.env.local.php
+/site/.env.*.local
+/site/config/secrets/prod/prod.decrypt.private.php
+/site/public/bundles/
+/site/var/
+/site/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/phpunit-bridge ###
+/site/.phpunit
+/site/.phpunit.result.cache
+/site/phpunit.xml
+###< symfony/phpunit-bridge ###
