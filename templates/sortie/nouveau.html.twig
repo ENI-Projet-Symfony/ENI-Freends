@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau{% endblock %}
+
+{% block body %}
+
+        {{ form_start(formulaire) }}
+
+        {{ form_row(formulaire) }}
+
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <button type="button" class="btn btn-success">Publier la sortie</button>
+        <button type="button" class="btn btn-secondary">Annuler</button>
+        {{ form_end(formulaire) }}
+{% endblock %}
