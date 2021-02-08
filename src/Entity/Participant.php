@@ -232,22 +232,22 @@ class Participant implements UserInterface
         return $this->sortiesOrganisees;
     }
 
-    public function addSortiesOrganisees(Sortie $sortiesOrganisees): self
+    public function addSortieOrganisee(Sortie $sortieOrganisee): self
     {
-        if (!$this->sortiesOrganisees->contains($sortiesOrganisees)) {
-            $this->sortiesOrganisees[] = $sortiesOrganisees;
-            $sortiesOrganisees->setOrganisateur($this);
+        if (!$this->sortiesOrganisees->contains($sortieOrganisee)) {
+            $this->sortiesOrganisees[] = $sortieOrganisee;
+            $sortieOrganisee->setOrganisateur($this);
         }
 
         return $this;
     }
 
-    public function removeSortiesOrganisees(Sortie $sortiesOrganisees): self
+    public function removeSortieOrganisee(Sortie $sortiesOrganisee): self
     {
-        if ($this->sortiesOrganisees->removeElement($sortiesOrganisees)) {
+        if ($this->sortiesOrganisees->removeElement($sortiesOrganisee)) {
             // set the owning side to null (unless already changed)
-            if ($sortiesOrganisees->getOrganisateur() === $this) {
-                $sortiesOrganisees->setOrganisateur(null);
+            if ($sortiesOrganisee->getOrganisateur() === $this) {
+                $sortiesOrganisee->setOrganisateur(null);
             }
         }
 
@@ -262,7 +262,7 @@ class Participant implements UserInterface
         return $this->sortiesParticpees;
     }
 
-    public function addSortiesParticpee(Sortie $sortiesParticpee): self
+    public function addSortieParticpee(Sortie $sortiesParticpee): self
     {
         if (!$this->sortiesParticpees->contains($sortiesParticpee)) {
             $this->sortiesParticpees[] = $sortiesParticpee;
@@ -271,7 +271,7 @@ class Participant implements UserInterface
         return $this;
     }
 
-    public function removeSortiesParticpee(Sortie $sortiesParticpee): self
+    public function removeSortieParticpee(Sortie $sortiesParticpee): self
     {
         $this->sortiesParticpees->removeElement($sortiesParticpee);
 
