@@ -4,21 +4,34 @@ namespace App\DataFixtures;
 
 use App\Entity\Campus;
 use App\Entity\Etat;
+use App\Entity\Lieu;
 use App\Entity\Participant;
+use App\Entity\Ville;
+use App\Repository\VilleRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class AppFixtures extends Fixture
 {
     protected $entityManager;
     protected $encoder;
+    protected $serializer;
+    protected $httpClient;
+    protected $villeRepository;
 
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordEncoderInterface $encoder)
+    public function __construct(EntityManagerInterface $entityManager, UserPasswordEncoderInterface $encoder,
+                                SerializerInterface $serializer, HttpClientInterface $httpClient,
+                                VilleRepository $villeRepository)
     {
         $this->entityManager = $entityManager;
         $this->encoder = $encoder;
+        $this->serializer =$serializer;
+        $this->httpClient = $httpClient;
+        $this->villeRepository = $villeRepository;
     }
 
     public function load(ObjectManager $manager)
@@ -28,6 +41,8 @@ class AppFixtures extends Fixture
         $connection->executeQuery("TRUNCATE TABLE etat");
         $connection->executeQuery("TRUNCATE TABLE campus");
         $connection->executeQuery("TRUNCATE TABLE participant");
+        $connection->executeQuery("TRUNCATE TABLE ville");
+        $connection->executeQuery("TRUNCATE TABLE lieu");
         $connection->executeQuery("SET FOREIGN_KEY_CHECKS = 1");
 
         //Mise en BDD des états possible d'une sortie
@@ -111,6 +126,44 @@ class AppFixtures extends Fixture
             ->setActif(true)
             ->setCampus($campus3);
         $manager->persist($participantSuperAdmin);
+
+        $manager->flush();
+
+        //Mise en BDD des Ville de france
+        $departements = $this->httpClient->request(
+            'GET',
+            "https://geo.api.gouv.fr/departements?fields=nom,code,codeRegion"
+        )->toArray();
+
+
+        foreach ($departements as $departement){
+            $ville = new Ville();
+            $ville->setNom($departement["nom"])
+                ->setCodePostal($departement["code"])
+            ;
+            $manager->persist($ville);
+        }
+        $manager->flush();
+
+        //Mise en Bdd des lieu(Cinéma de france)
+        $cinemas = $this->httpClient->request(
+            'GET',
+            "https://data.iledefrance.fr/api/records/1.0/search/?dataset=les_salles_de_cinemas_en_ile-de-france&q=&facet=dep&facet=tranche_d_entrees&facet=ae&facet=multiplexe"
+        )->toArray();
+
+
+        foreach ($cinemas["records"] as $cinema){
+            $cine = new Lieu();
+            $cine->setNom($cinema["fields"]["nom"])
+                ->setLatitude($cinema["fields"]["geo"][0])
+                ->setLongitude($cinema["fields"]["geo"][1])
+                ->setRue($cinema["fields"]["adresse"])
+                ->setVille(
+                    $this->villeRepository->findOneBy(['id'=>rand(1,4)])
+                );
+            ;
+            $manager->persist($cine);
+        }
 
         $manager->flush();
     }
