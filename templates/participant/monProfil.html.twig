@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} | Mon profil  {% endblock %}
+
+{% block body %}
+    {% if app.user %}
+    <h1 class="text-center">{{ participant.pseudo | capitalize }}</h1>
+    <div class="row">
+        <div class="col-2">
+            MA PHOTO
+        </div>
+        <div class="col-10">
+            <div class="row ml-auto">
+                <div class="col-6 text-center">Prenom : </div>
+                <div class="col-6 text-center">{{ participant.prenom }}</div>
+                <div class="col-6 text-center">Nom : </div>
+                <div class="col-6 text-center">{{ participant.nom }}</div>
+                {% if participant.telephone %}
+                    <div class="col-6 text-center">Téléphone : </div>
+                    <div class="col-6 text-center">{{ participant.telephone }}</div>
+                {% endif %}
+                <div class="col-6 text-center">Email : </div>
+                <div class="col-6 text-center">{{ participant.mail }}</div>
+                <div class="col-6 text-center">Campus : </div>
+                <div class="col-6 text-center">{{ participant.campus.nom }}</div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-12 text-center">
+            <a href="{{ path('participant_modification_profil') }}">
+                <button type="button" class="mt-4 btn btn-outline-dark"> Modifier mon profil</button>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+
+

@@ -11,38 +11,58 @@
 
     </head>
     <body>
-
+    <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container">
-                <a class="navbar-brand" href="{{ path('main_home')}}">Sortie.com</a>
+                <a class="navbar-brand" href="{{ path('main_home') }}">Sortie.com</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul class="navbar-nav">
+                    {% if (app.user) %}
+                    <ul class="navbar-nav me-auto">
+
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('sorties_list')}}">Sorties</a>
+                            <a class="nav-link active" aria-current="page" href="{{ path('main_home') }}">Accueil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Link 2</a>
+                            <a class="nav-link" href="#">Villes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Link 3</a>
+                            <a class="nav-link" href="#">Campus</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown link
+                                Sorties
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <li><a class="dropdown-item" href="#">Submenu 1</a></li>
-                                <li><a class="dropdown-item" href="#">Submenu 2</a></li>
-                                <li><a class="dropdown-item" href="#">Submenu 3</a></li>
+                                <li><a class="dropdown-item" href="{{ path('sortie_add') }}">Créer</a></li>
                             </ul>
                         </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('participant_mon_profil') }}">Mon profil</a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
+                        </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
         </nav>
+        {% block header %}{% endblock %}
+    </header>
+    {% for label, messages in app.flashes %}
+        <div class="container">
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
 
         <div class="container mt-5 mb-5">
             {% block body %}{% endblock %}
