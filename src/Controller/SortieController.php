@@ -31,12 +31,12 @@ class SortieController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()){
-
+            dump($request->get("submit_type"));
             if($request->get("submit_type")==="1"){
                 $sortie->setEtat($etatRepository->findOneBy([
                     'id' => "2"
                 ]));
-            }else if (0) {
+            }else if ($request->get("submit_type")==="0") {
                 $sortie->setEtat($etatRepository->findOneBy([
                     'id' => "1"
                 ]));
@@ -53,16 +53,16 @@ class SortieController extends AbstractController
             $entityManager->flush();
             $this->addFlash("success","");
         }
-        dump($form->getData());
+
         return $this->render('sortie/nouveau.html.twig', [
             "formulaire" => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/sortie/get/lieu", name="sortie_get_lieu")
+     * @Route("/sortie/get/lieu/info", name="sortie_get_lieu_info")
      */
-    public function getLieu(Request $request,SerializerInterface $serializer,LieuRepository $lieuRepository) : Response
+    public function getLieuInfo(Request $request,SerializerInterface $serializer,LieuRepository $lieuRepository) : Response
     {
 
         if($request->get('id')) {
@@ -78,7 +78,36 @@ class SortieController extends AbstractController
                 "cp" => $lieu->getVille()->getCodePostal(),
             ];
         }else {
-            $lieu = "ok";
+            $lieu = [
+                "longitude" => "Inconnu",
+                "latitude" => "Inconnu",
+                "rue" => "Inconnu",
+                "cp" => "Inconnu",
+            ];
+        }
+
+        $json = $serializer->serialize($lieu, 'json',['groups' => "lieu"]);
+
+        return new JsonResponse($json, 200, [], true);
+    }
+
+    /**
+     * @Route("/sortie/get/lieu", name="sortie_get_lieu")
+     */
+    public function getLieu(Request $request,SerializerInterface $serializer,LieuRepository $lieuRepository) : Response
+    {
+
+        if($request->get('id')) {
+
+            $allLieu = $lieuRepository->findBy([
+                'ville' => $request->get("id")
+            ]);
+
+            return $this->render('sortie/selectLieu.html.twig', [
+                "AllLieu" => $allLieu
+            ]);
+        }else {
+            $lieu = [];
         }
 
         $json = $serializer->serialize($lieu, 'json',['groups' => "lieu"]);
