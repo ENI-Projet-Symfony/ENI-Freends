@@ -4,13 +4,13 @@
 
 {% block body %}
     {% if app.user %}
-    <h1 class="text-center">{{ participant.pseudo }}</h1>
+    <h1 class="text-center">{{ participant.pseudo | capitalize }}</h1>
     <div class="row">
-        <div class="col-4">
+        <div class="col-2">
             MA PHOTO
         </div>
-        <div class="col-8">
-            <div class="row">
+        <div class="col-10">
+            <div class="row ml-auto">
                 <div class="col-6 text-center">Prenom : </div>
                 <div class="col-6 text-center">{{ participant.prenom }}</div>
                 <div class="col-6 text-center">Nom : </div>

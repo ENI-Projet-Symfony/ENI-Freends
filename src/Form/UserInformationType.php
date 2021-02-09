@@ -26,16 +26,16 @@ class UserInformationType extends AbstractType
             ->add('nom')
             ->add('telephone')
             ->add('mail', EmailType::class)
-            ->add('mot_de_passe', RepeatedType::class,
+            ->add('password', RepeatedType::class,
             [
                 'mapped' => false,
                 'type' => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',
-                'first_options'  => ['label' => 'Password'],
+                'first_options'  => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Repeat Password'],
                 'constraints' => [
                     new Length([
-                        'min' => 6,
+                        'min' => 4,
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
