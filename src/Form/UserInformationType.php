@@ -46,18 +46,6 @@ class UserInformationType extends AbstractType
                 'class' => Campus::class,
                 'choice_label' => 'nom'
             ])
-            ->add('submit', SubmitType::class, [
-                "label" => 'Enregistrer',
-                'attr'=> [
-                    'class' => 'mt-2 btn btn-outline-dark'
-                ]
-            ])
-            ->add('annuler', SubmitType::class, [
-                "label" => 'Annuler',
-                'attr'=> [
-                    'class' => 'mt-2 btn btn-outline-dark'
-                ]
-            ])
         ;
     }
 
