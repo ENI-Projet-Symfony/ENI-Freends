@@ -10,9 +10,27 @@
 
         {{ form_row(formulaire) }}
 
-        <button type="submit" class="btn btn-primary" name="submit_type" value="0">Enregistrer</button>
-        <button type="submit" class="btn btn-success" name="submit_type" value="1">Publier la sortie</button>
-        <a href="{{ path('main_home') }}"><button type="button" class="btn btn-secondary">Annuler</button></a>
+        <ul class="Flow">
+            <li><button type="submit" class="btn btn-primary" name="submit_type" value="0">Enregistrer</button></li>
+            <li><button type="submit" class="btn btn-success" name="submit_type" value="1">Publier la sortie</button></li>
+            <li><a href="{{ path('main_home') }}"><button type="button" class="btn btn-secondary">Annuler</button></a></li>
+        </ul>
+    {#  A Suprimer quand le style sera en place  #}
+    <style>
+        .Flow {
+            margin-top: 30px;
+            text-align: center;
+            list-style: none;
+
+        }
+        .Flow li {
+            display: inline;
+        }
+        .Flow li>button {
+            font-size: large;
+        }
+
+    </style>
         {{ form_end(formulaire) }}
 
 {% endblock %}
