@@ -2,7 +2,12 @@
 
 namespace App\Form;
 
+use App\Entity\Campus;
+use App\Entity\Lieu;
 use App\Entity\Sortie;
+use App\Entity\Ville;
+use App\Repository\CampusRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -35,27 +40,54 @@ class SortieType extends AbstractType
             ->add('nbInscriptionsMax',NumberType::class,[
                 'label' => "Nombre de places"
             ])
-            ->add('duree',TimeType::class,[
+            ->add('duree',NumberType::class,[
                 'label' => "Durée"
             ])
             ->add('infosSortie',TextareaType::class,[
                 'label' => "Description et infos"
             ])
-            ->add('campus',ChoiceType::class,[
-                'label' => "Campus"
+            ->add('campus',EntityType::class,[
+                'label' => "Campus",
+                'class' => Campus::class,
+                'choice_label' => 'nom',
+                'choice_value' => 'id'
             ])
-            ->add('ville',ChoiceType::class,[
-                'label' => "Ville"
+            ->add('ville',EntityType::class,[
+                'mapped' => false,
+                'label' => "Ville",
+                'class' => Ville::class,
+                'choice_label' => 'nom',
+                'choice_value' => 'id'
+
             ])
-            ->add('lieu',ChoiceType::class,[
-                'label' => "Lieu"
+            ->add('lieu',EntityType::class,[
+                'label' => "Lieu",
+                'class' => Lieu::class,
+                'choice_label' => 'nom',
+                'choice_value' => 'id'
+
             ])
-            ->add('cp',ChoiceType::class,[
-                'label' => "Code Postale"
-            ])->add('latitude',ChoiceType::class,[
-                'label' => "Latitude"
-            ])->add('longitude',ChoiceType::class,[
-                'label' => "Longitude"
+            ->add('rue',TextType::class,[
+                'mapped' => false,
+                'label' => "Rue",
+                'disabled' => true,
+
+            ])
+            ->add('cp',TextType::class,[
+                'mapped' => false,
+                'label' => "Code Postale",
+                'disabled' => true,
+
+            ])
+            ->add('latitude',TextType::class,[
+                'mapped' => false,
+                'label' => "Latitude",
+                'disabled' => true,
+
+            ])->add('longitude',TextType::class,[
+                'mapped' => false,
+                'label' => "Longitude",
+                'disabled' => true,
             ])
         ;
     }
