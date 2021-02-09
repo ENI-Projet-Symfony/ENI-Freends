@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class ParticipantController extends AbstractController
 {
@@ -29,7 +30,7 @@ class ParticipantController extends AbstractController
     /**
      * @Route("/participant/modificationprofil", name="participant_modification_profil")
      */
-    public function modificationProfil(EntityManagerInterface $entityManager, Request $request): Response
+    public function modificationProfil(EntityManagerInterface $entityManager, Request $request,UserPasswordEncoderInterface $encoder): Response
     {
         //Recupere l'utilisateur connecter
         $participant = $this->getUser();
@@ -38,8 +39,11 @@ class ParticipantController extends AbstractController
 
         $userform->handleRequest($request);
 
+        dump($participant);
+
         if($userform->isSubmitted() && $userform->isValid())
         {
+            $participant->setPassword($encoder->encodePassword($participant, $userform->get('password')->getData()));
 
             $entityManager->persist($participant);
             $entityManager->flush();
