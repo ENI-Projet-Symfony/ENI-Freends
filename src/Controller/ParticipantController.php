@@ -2,7 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Participant;
+use App\Form\UserInformationType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -11,10 +15,23 @@ class ParticipantController extends AbstractController
     /**
      * @Route("/participant/monprofil", name="participant_modification_profil")
      */
-    public function modificationProfil(): Response
+    public function modificationProfil(EntityManagerInterface $entityManager, Request $request): Response
     {
+        //Recupere l'utilisateur connecter
+        $participant = $this->getUser();
+
+        $userform = $this->createForm(UserInformationType::class,$participant);
+
+        $userform->handleRequest($request);
+
+        if($userform->isSubmitted() && $userform->isValid())
+        {
+            $entityManager->persist($participant);
+            $entityManager->flush();
+        }
+
         return $this->render('participant/modificationProfil.html.twig', [
-            'controller_name' => 'ParticipantController',
+            'user_form' => $userform->createView(),
         ]);
     }
 }
