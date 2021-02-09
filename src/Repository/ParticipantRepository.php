@@ -23,6 +23,25 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
     }
 
     /**
+     * Permet l'authentification par mail ou pseudo
+     * @param string $pseudoOrMail
+     * @return int|mixed|string|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findByPseudoOrMail(string $pseudoOrMail)
+    {
+        $dql = "SELECT p FROM App\Entity\Participant p
+                WHERE p.mail = :pseudoOrMail 
+                OR p.pseudo = :pseudoOrMail";
+
+        $query = $this->getEntityManager()->createQuery($dql);
+        $query->setParameter(':pseudoOrMail', $pseudoOrMail);
+
+        return $query->getOneOrNullResult();
+    }
+
+
+    /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
     public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
