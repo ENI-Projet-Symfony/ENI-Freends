@@ -1,0 +1,5 @@
+<select id="sortie_lieu" name="sortie[lieu]" class="form-control">
+    {% for lieu in AllLieu %}
+    <option value={{ lieu.id }}>{{ lieu.nom }}</option>
+    {% endfor %}
+</select>
