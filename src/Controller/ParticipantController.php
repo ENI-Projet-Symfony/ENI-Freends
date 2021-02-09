@@ -12,8 +12,22 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ParticipantController extends AbstractController
 {
+
     /**
-     * @Route("/participant/monprofil", name="participant_modification_profil")
+     * @Route("/participant/monnprofil", name="participant_mon_profil")
+     */
+    public function monProfil(): Response
+    {
+        //Recupere l'utilisateur connecter
+        $participant = $this->getUser();
+
+        return $this->render('participant/monProfil.html.twig', [
+            'participant' => $participant,
+        ]);
+    }
+
+    /**
+     * @Route("/participant/modificationprofil", name="participant_modification_profil")
      */
     public function modificationProfil(EntityManagerInterface $entityManager, Request $request): Response
     {
@@ -26,6 +40,7 @@ class ParticipantController extends AbstractController
 
         if($userform->isSubmitted() && $userform->isValid())
         {
+
             $entityManager->persist($participant);
             $entityManager->flush();
         }
