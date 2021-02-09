@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Participants;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +19,61 @@ class SortieRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Sortie::class);
+    }
+
+    // filterSorties($campus, $keyword, $dateDebut, $dateFin, $sortiesOrganisees, $sortiesInscrit, $sortiesNonInscrit, $sortiesPassees
+    public function filtrerSorties(
+        $campus = null,
+        $nom = null,
+        $participantId = null,
+        \DateTime $dateDebut = null,
+        \DateTime $dateFin = null,
+        bool $sortiesOrganisees = false,
+        bool $sortiesInscrit = false,
+        bool $sortiesNonInscrit = false,
+        bool $sortiesPassees = false)
+    {
+        $qb = $this->createQueryBuilder('s');
+
+        if ($campus != null){
+            $qb ->andWhere('s.campus = :val_campus')
+                ->setParameter('val_campus', $campus->getId());
+        }
+        if ($nom != null){
+            $qb ->andWhere('s.nom LIKE :val_nom')
+                ->setParameter('val_nom', '%' . $nom . '%');
+        }
+        if ($dateDebut != null) {
+            $output = new \DateTime($dateDebut->format('Y-M-d'). "00:00:00");
+            $qb ->andWhere('s.dateHeureDebut >= :val_dateDebut')
+                ->setParameter('val_dateDebut', $output);
+            dump($output);
+        }
+        if ($dateFin != null) {
+            $output2 = new \DateTime($dateFin->format('Y-m-d')." 00:00:00");
+            $qb ->andWhere('s.dateHeureDebut <= :val_dateFin')
+                ->setParameter('val_dateFin', $output2);
+        }
+        if ($sortiesOrganisees){
+            $qb ->andWhere('s.organisateur = :val_organisateur')
+                ->setParameter('val_organisateur', $participantId);
+        }
+        if ($sortiesInscrit){
+            $qb ->andWhere(':val_inscrit MEMBER OF s.participants')
+                ->setParameter('val_inscrit', $participantId);
+        }
+        if ($sortiesNonInscrit){
+            $qb ->andWhere(':val_nonInscrit NOT MEMBER OF s.participants')
+                ->setParameter('val_nonInscrit', $participantId);
+        }
+        if ($sortiesPassees){
+            $qb ->andWhere('s.dateHeureDebut <= :now')
+                ->setParameter('now', date('Y-m-d H:i:s') );
+        }
+
+        $qb = $qb->getQuery();
+        dump($qb);
+        return $qb->execute();
     }
 
     // /**
