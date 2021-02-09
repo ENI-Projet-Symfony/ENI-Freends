@@ -8,15 +8,17 @@ use App\Entity\Participant;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
-    protected $entityManager; //stocke notre entitymanager ici !
+    protected $entityManager;
+    protected $encoder;
 
-    public function __construct(string $name = null, EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, UserPasswordEncoderInterface $encoder)
     {
-
         $this->entityManager = $entityManager;
+        $this->encoder = $encoder;
     }
 
     public function load(ObjectManager $manager)
@@ -80,7 +82,7 @@ class AppFixtures extends Fixture
             ->setPrenom("UserPrenom")
             ->setTelephone("0123456789")
             ->setMail("user@user.com")
-            ->setPassword("user")
+            ->setPassword($this->encoder->encodePassword($participantUser,"user"))
             ->setRoles(["ROLE_USER"])
             ->setActif(true)
             ->setCampus($campus1);
@@ -92,7 +94,7 @@ class AppFixtures extends Fixture
             ->setPrenom("AdminPrenom")
             ->setTelephone("0223456789")
             ->setMail("admin@admin.com")
-            ->setPassword("admin")
+            ->setPassword($this->encoder->encodePassword($participantAdmin,"admin"))
             ->setRoles(["ROLE_ADMIN"])
             ->setActif(true)
             ->setCampus($campus2);
@@ -104,7 +106,7 @@ class AppFixtures extends Fixture
             ->setPrenom("SuperAdminPrenom")
             ->setTelephone("0323456789")
             ->setMail("superadmin@superadmin.com")
-            ->setPassword("superadmin")
+            ->setPassword($this->encoder->encodePassword($participantSuperAdmin,"superadmin"))
             ->setRoles(["ROLE_SUPER_ADMIN"])
             ->setActif(true)
             ->setCampus($campus3);
