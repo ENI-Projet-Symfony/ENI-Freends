@@ -83,7 +83,7 @@
                     </td>
                     <td>{{ sortie.organisateur.pseudo }}</td>
                     <td>
-                        <a href="{{ path('sortie_detail', {id: sortie.id}) }}" class="card-link">Détails</a> -
+                        <a href="{{ path('sorties_detail', {id: sortie.id}) }}" class="card-link">Détails</a> -
                         {% set inscrit = false %}
                         {% for participant in sortie.participants %}
                             {% if participant.id == app.user.id %}
@@ -91,9 +91,9 @@
                             {% endif %}
                         {% endfor %}
                         {% if inscrit %}
-                            <a href="{{ path('sortie_desinscription', {id: sortie.id}) }}" class="card-link">Se désister</a>
+                            <a href="{{ path('sorties_desinscription', {id: sortie.id}) }}" class="card-link">Se désister</a>
                         {% else %}
-                            <a href="{{ path('sortie_inscription', {id: sortie.id}) }}" class="card-link">S'inscrire</a>
+                            <a href="{{ path('sorties_inscription', {id: sortie.id}) }}" class="card-link">S'inscrire</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -106,7 +106,7 @@
         </table>
 
 
-        <a class="btn btn-outline-warning" href="{{ path('sortie_add') }}">Créer une sortie</a>
+        <a class="btn btn-outline-warning" href="{{ path('sorties_add') }}">Créer une sortie</a>
 
 
     </section>

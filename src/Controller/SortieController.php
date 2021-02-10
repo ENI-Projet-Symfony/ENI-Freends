@@ -163,7 +163,7 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/sorties/{id}/insciption", name="sortie_inscription", methods={"GET"})
+     * @Route("/sorties/{id}/insciption", name="sorties_inscription", methods={"GET"})
      */
     public function inscription(int $id, EntityManagerInterface $entityManager,
                                 SortieRepository $sortieRepository,
@@ -196,7 +196,7 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/sorties/{id}/desinsciption", name="sortie_desinscription", methods={"GET"})
+     * @Route("/sorties/{id}/desinsciption", name="sorties_desinscription", methods={"GET"})
      */
     public function desinscription(int $id, EntityManagerInterface $entityManager,
                                    SortieRepository $sortieRepository,
