@@ -10,6 +10,7 @@ use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -226,6 +227,27 @@ class SortieController extends AbstractController
 
         // Redirige sur la page de list de Sorties
         return $this->redirectToRoute('sorties_list');
+    }
+
+    /**
+     * @Route("/sorties/{id}/publication", name="sorties_publish", methods={"GET"})
+     */
+    public function publishSortie(int $id, EntityManagerInterface $entityManager,
+                                   SortieRepository $sortieRepository,
+                                   EtatRepository $etatRepository): Response
+    {
+
+        $sortie = $sortieRepository->findOneBy(['id'=>$id]);
+
+        $sortie->setEtat($etatRepository->findOneBy(["id"=>2]));
+
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+
+        $this->addFlash("sucess","Sortie à bien été publiée");
+
+        return $this->redirectToRoute('sorties_list');
+
     }
 
 }
