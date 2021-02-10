@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ApiController extends AbstractController
 {
     /**
-     * @Route("/api/sortie/get/lieu/info", name="sortie_get_lieu_info")
+     * @Route("/api/sorties/get/lieu/info", name="sorties_get_lieu_info")
      */
     public function getLieuInfo(Request $request,SerializerInterface $serializer,LieuRepository $lieuRepository) : Response
     {
@@ -45,7 +45,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/sortie/get/lieu", name="sortie_get_lieu")
+     * @Route("/api/sorties/get/lieu", name="sorties_get_lieu")
      */
     public function getLieu(Request $request,SerializerInterface $serializer,LieuRepository $lieuRepository) : Response
     {
@@ -56,7 +56,7 @@ class ApiController extends AbstractController
                 'ville' => $request->get("id")
             ]);
 
-            return $this->render('sortie/selectLieu.html.twig', [
+            return $this->render('sorties/selectLieu.html.twig', [
                 "AllLieu" => $allLieu
             ]);
         }else {
