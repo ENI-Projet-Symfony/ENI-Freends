@@ -13,5 +13,5 @@
 {% endif %}
 
 {% if sortie.etat.id == 2 or sortie.etat.id == 3 %}
-    <a href="#" class="card-link">Annuler</a>
+    <a id="ok" href="#Annulation{{ sortie.id }}" data-toggle="modal" data-target="#Annulation{{ sortie.id }}" class="card-link">Annuler</a>
 {% endif %}
