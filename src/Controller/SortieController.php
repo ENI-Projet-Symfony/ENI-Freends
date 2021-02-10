@@ -135,7 +135,6 @@ class SortieController extends AbstractController
         } else {
             $sorties = $sortieRepository->filtrerSortieParEtat([7]);
         }
-        dump($sorties);
 
         return $this->render('sorties/list.html.twig', [
             'controller_name' => 'SortieController',
