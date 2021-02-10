@@ -103,7 +103,7 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/sorties/{id}", name="sortie_detail", methods={"GET"})
+     * @Route("/sorties/details/{id}", name="sortie_detail", methods={"GET"})
      */
     public function details(int $id, SortieRepository $sortieRepository): Response
     {
