@@ -46,7 +46,7 @@ class AppFixtures extends Fixture
         $connection->executeQuery("TRUNCATE TABLE participant");
         $connection->executeQuery("SET FOREIGN_KEY_CHECKS = 1");
 
-        //Mise en BDD des états possible d'une sortie
+        //Mise en BDD des états possible d'une sorties
         $etat1 = new Etat();
         $etat1->setLibelle("Créée");
         $manager->persist($etat1);
