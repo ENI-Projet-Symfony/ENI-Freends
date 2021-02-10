@@ -8,6 +8,7 @@ use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
+use App\Util\GestionDesEtats;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -106,13 +107,14 @@ class SortieController extends AbstractController
     /**
      * @Route("/sorties", name="sorties_list", methods={"GET"})
      */
-    public function index(SortieRepository $sortieRepository, Request $request): Response
+    public function index(SortieRepository $sortieRepository, Request $request, GestionDesEtats $gestionDesEtats): Response
     {
         //crée une instance du formulaire de recherche (il n'est pas associé à une entité)
         $filterForm = $this->createForm(SortieFiltreFormType::class);
         //récupère les données soumises dans la requête
         $filterForm->handleRequest($request);
-        // $data = $filterForm->getData();
+
+        $gestionDesEtats->verificationEtats();
 
         //les données du form sont là (s'il a été soumis)
         if($filterForm->isSubmitted()) {
@@ -121,7 +123,6 @@ class SortieController extends AbstractController
 
             $dateDebut = $filterForm['dateHeureDebut']->getData();
             $dateFin = $filterForm['dateHeureFin']->getData();
-            dump($dateDebut);
 
             $sortiesOrganisees = $filterForm['sortiesOrganisees']->getData();
             $sortiesInscrit = $filterForm['sortiesInscrit']->getData();
@@ -132,8 +133,9 @@ class SortieController extends AbstractController
 
             $sorties = $sortieRepository->filtrerSorties($campus, $nom, $participantId, $dateDebut, $dateFin, $sortiesOrganisees, $sortiesInscrit, $sortiesNonInscrit, $sortiesPassees);
         } else {
-            $sorties = $sortieRepository->filtrerSortieParEtat([1,7]);
+            $sorties = $sortieRepository->filtrerSortieParEtat([7]);
         }
+        dump($sorties);
 
         return $this->render('sorties/list.html.twig', [
             'controller_name' => 'SortieController',
@@ -145,8 +147,9 @@ class SortieController extends AbstractController
     /**
      * @Route("/sorties/{id}", name="sorties_detail", methods={"GET"})
      */
-    public function details(int $id, SortieRepository $sortieRepository): Response
+    public function details(int $id, SortieRepository $sortieRepository, GestionDesEtats $gestionDesEtats): Response
     {
+        $gestionDesEtats->verificationEtats();
         //aller chercher dans la BDD la sortie dont l'id est dans l'URL
         $sortie = $sortieRepository->find($id);
 
