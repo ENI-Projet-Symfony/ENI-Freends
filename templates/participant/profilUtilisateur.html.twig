@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} | Mon profil  {% endblock %}
+{% block title %}{{ parent() }} | Profil utilisateur  {% endblock %}
 
 {% block body %}
     {% if app.user %}
@@ -27,6 +27,7 @@
         </div>
     </div>
     {% endif %}
+    {% if id_participant == app.user.id %}
     <div class="row">
         <div class="col-12 text-center">
             <a href="{{ path('participant_modification_profil') }}">
@@ -34,6 +35,7 @@
             </a>
         </div>
     </div>
+    {% endif %}
 {% endblock %}
 
 
