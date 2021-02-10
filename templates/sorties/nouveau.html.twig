@@ -4,34 +4,47 @@
 
 {% block body %}
 
-        {% form_theme formulaire 'bootstrap_4_layout.html.twig' %}
+    {% form_theme formulaire 'bootstrap_4_layout.html.twig' %}
 
-        {{ form_start(formulaire) }}
+    {{ form_start(formulaire) }}
 
-        {{ form_row(formulaire) }}
+        {{ form_row(formulaire.nom) }}
+        {{ form_row(formulaire.dateHeureDebut) }}
+        {{ form_row(formulaire.dateLimiteInscription) }}
+        {{ form_row(formulaire.nbInscriptionsMax) }}
+        {{ form_row(formulaire.duree) }}
+        {{ form_row(formulaire.infosSortie) }}
+        {{ form_row(formulaire.campus) }}
+        {{ form_row(formulaire.ville) }}
+        {{ form_row(formulaire.lieu) }}
+        {{ form_row(formulaire.rue) }}
+        {{ form_row(formulaire.cp) }}
+        {{ form_row(formulaire.latitude) }}
+        {{ form_row(formulaire.longitude) }}
+
 
         <ul class="Flow">
-            <li><button type="submit" class="btn btn-primary" name="submit_type" value="0">Enregistrer</button></li>
-            <li><button type="submit" class="btn btn-success" name="submit_type" value="1">Publier la sortie</button></li>
+            <li><button type="submit" class="btn btn-primary" name="submit_type" value="Créer">Enregistrer</button></li>
+            <li><button type="submit" class="btn btn-success" name="submit_type" value="Publier">Publier la sortie</button></li>
             <li><a href="{{ path('main_home') }}"><button type="button" class="btn btn-secondary">Annuler</button></a></li>
         </ul>
-    {#  A Suprimer quand le style sera en place  #}
-    <style>
-        .Flow {
-            margin-top: 30px;
-            text-align: center;
-            list-style: none;
+        {#  A Suprimer quand le style sera en place  #}
+        <style>
+            .Flow {
+                margin-top: 30px;
+                text-align: center;
+                list-style: none;
 
-        }
-        .Flow li {
-            display: inline;
-        }
-        .Flow li>button {
-            font-size: large;
-        }
+            }
+            .Flow li {
+                display: inline;
+            }
+            .Flow li>button {
+                font-size: large;
+            }
 
-    </style>
-        {{ form_end(formulaire) }}
+        </style>
+    {{ form_end(formulaire) }}
 
 {% endblock %}
 
@@ -47,7 +60,7 @@
                    var lieu_Id = lieu.val();
                         $.ajax({
                                 type: 'GET',
-                                url:    '/api/sortie/get/lieu/info',
+                                url: '{{ path('sorties_get_lieu_info') }}',
                                 data: {id: lieu_Id},
                                 success: function (data){
                                     if(data !== "") {
@@ -68,7 +81,7 @@
                    var ville_Id = ville.val();
                    $.ajax({
                        type: 'GET',
-                       url:    '/api/sortie/get/lieu',
+                       url: '{{ path('sorties_get_lieu') }}',
                        data: {id: ville_Id},
                        success: function (data){
                            if(data !== "") {
