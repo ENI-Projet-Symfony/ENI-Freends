@@ -30,8 +30,7 @@ class AppAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
     private $urlGenerator;
     private $csrfTokenManager;
     private $passwordEncoder;
-    private $session;
-    private $flashbag;
+
 
     public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -97,7 +96,6 @@ class AppAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
-
         return new RedirectResponse($this->urlGenerator->generate('main_home'));
         throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
