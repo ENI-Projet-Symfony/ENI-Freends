@@ -38,11 +38,12 @@ class AppFixtures extends Fixture
     {
         $connection = $this->entityManager->getConnection();
         $connection->executeQuery("SET FOREIGN_KEY_CHECKS = 0");
+        $connection->executeQuery("TRUNCATE TABLE sortie");
+        $connection->executeQuery("TRUNCATE TABLE lieu");
+        $connection->executeQuery("TRUNCATE TABLE ville");
         $connection->executeQuery("TRUNCATE TABLE etat");
         $connection->executeQuery("TRUNCATE TABLE campus");
         $connection->executeQuery("TRUNCATE TABLE participant");
-        $connection->executeQuery("TRUNCATE TABLE ville");
-        $connection->executeQuery("TRUNCATE TABLE lieu");
         $connection->executeQuery("SET FOREIGN_KEY_CHECKS = 1");
 
         //Mise en BDD des états possible d'une sortie
