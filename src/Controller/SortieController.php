@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class SortieController extends AbstractController
 {
     /**
-     * @Route("/sortie/nouveau", name="sortie_add")
+     * @Route("/sorties/nouveau", name="sortie_add")
      */
     public function nouveaux(Request $request,EntityManagerInterface $entityManager,
                              ParticipantRepository $participantRepository,
@@ -56,7 +56,7 @@ class SortieController extends AbstractController
             $this->addFlash("success","");
         }
 
-        return $this->render('sortie/nouveau.html.twig', [
+        return $this->render('sorties/nouveau.html.twig', [
             "formulaire" => $form->createView()
         ]);
     }
@@ -87,15 +87,14 @@ class SortieController extends AbstractController
             $sortiesNonInscrit = $filterForm['sortiesNonInscrit']->getData();
             $sortiesPassees = $filterForm['sortiesPassees']->getData();
 
-            // $participantId = $this->getUser()->getId();
-            $participantId = 1;
+            $participantId = $this->getUser()->getId();
 
             $sorties = $sortieRepository->filtrerSorties($campus, $nom, $participantId, $dateDebut, $dateFin, $sortiesOrganisees, $sortiesInscrit, $sortiesNonInscrit, $sortiesPassees);
         } else {
             $sorties = $sortieRepository->findAll();
         }
 
-        return $this->render('sortie/list.html.twig', [
+        return $this->render('sorties/list.html.twig', [
             'controller_name' => 'SortieController',
             "sorties" => $sorties,
             'searchForm' => $filterForm->createView()
@@ -116,11 +115,77 @@ class SortieController extends AbstractController
             throw $this->createNotFoundException('Cette sortie n\'existe pas');
         }
 
-        return $this->render('sortie/details.html.twig', [
+        return $this->render('sorties/details.html.twig', [
             'controller_name' => 'SortieController',
             "sortie_id" => $id,
             "sortie" => $sortie
         ]);
+    }
+
+    /**
+     * @Route("/sorties/{id}/insciption", name="sortie_inscription", methods={"GET"})
+     */
+    public function inscription(int $id, EntityManagerInterface $entityManager,
+                                SortieRepository $sortieRepository,
+                                ParticipantRepository $participantRepository): Response
+    {
+        // Récupère l'Id du participant et la sortie à laquelle on s'inscrit
+        $participant = $this->getUser()->getId();
+        $sortie = $sortieRepository->find($id);
+
+        // Si cette sortie n'existe pas en BDD
+        if (!$sortie){
+            //alors on déclenche une 404
+            throw $this->createNotFoundException('Cette sortie n\'existe pas');
+        }
+
+        // Ajoute le participant à la sortie
+        $sortie->addParticipant($participantRepository->findOneBy([
+            'id' => $participant
+        ]));
+
+        // Enjoute l'ID du participat et l'ID de sortie dans la table "participant_sortie" de la BDD
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+
+        // Ajoute un message de succès
+        $this->addFlash("success","Vous avez été inscit.e à cette sortie avec succès");
+
+        // Redirige sur la page de list de Sorties
+        return $this->redirectToRoute('sorties_list');
+    }
+
+    /**
+     * @Route("/sorties/{id}/desinsciption", name="sortie_desinscription", methods={"GET"})
+     */
+    public function desinscription(int $id, EntityManagerInterface $entityManager,
+                                   SortieRepository $sortieRepository,
+                                   ParticipantRepository $participantRepository): Response
+    {
+        // Récupère l'Id du participant et la sortie à laquelle on s'inscrit
+        $participant = $this->getUser()->getId();
+        $sortie = $sortieRepository->find($id);
+
+        // Si cette sortie n'existe pas en BDD
+        if (!$sortie){
+            //alors on déclenche une 404
+            throw $this->createNotFoundException('Cette sortie n\'existe pas');
+        }
+
+        // Ajoute le participant à la sortie
+        $sortie->removeParticipant($participantRepository->findOneBy([
+            'id' => $participant
+        ]));
+
+        // Enjoute l'ID du participat et l'ID de sortie dans la table "participant_sortie" de la BDD
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+
+        // Ajoute un message de succès
+        $this->addFlash("warning","Vous avez été désinscit.e de cette sortie avec succès");
+
+        // Redirige sur la page de list de Sorties
+        return $this->redirectToRoute('sorties_list');
     }
 
 }
