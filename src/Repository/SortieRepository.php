@@ -59,7 +59,6 @@ class SortieRepository extends ServiceEntityRepository
             $output = new \DateTime($dateDebut->format('Y-M-d'). "00:00:00");
             $qb ->andWhere('s.dateHeureDebut >= :val_dateDebut')
                 ->setParameter('val_dateDebut', $output);
-            dump($output);
         }
         if ($dateFin != null) {
             $output2 = new \DateTime($dateFin->format('Y-m-d')." 00:00:00");
