@@ -132,7 +132,7 @@ class SortieController extends AbstractController
 
             $sorties = $sortieRepository->filtrerSorties($campus, $nom, $participantId, $dateDebut, $dateFin, $sortiesOrganisees, $sortiesInscrit, $sortiesNonInscrit, $sortiesPassees);
         } else {
-            $sorties = $sortieRepository->findAll();
+            $sorties = $sortieRepository->filtrerSortieParEtat([1,7]);
         }
 
         return $this->render('sorties/list.html.twig', [
