@@ -6,6 +6,7 @@ use App\Repository\SortieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
@@ -82,6 +83,11 @@ class Sortie
      * @ORM\ManyToMany(targetEntity=Participant::class, mappedBy="sortiesParticpees")
      */
     private $participants;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $AnnulationMotifs;
 
     public function __construct()
     {
@@ -248,6 +254,18 @@ class Sortie
         if ($this->participants->removeElement($participant)) {
             $participant->removeSortieParticpee($this);
         }
+
+        return $this;
+    }
+
+    public function getAnnulationMotifs(): ?string
+    {
+        return $this->AnnulationMotifs;
+    }
+
+    public function setAnnulationMotifs(string $AnnulationMotifs): self
+    {
+        $this->AnnulationMotifs = $AnnulationMotifs;
 
         return $this;
     }

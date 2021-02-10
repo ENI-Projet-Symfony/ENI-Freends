@@ -1,0 +1,158 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/datepicker.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    <h1>Sorties</h1>
+
+    <section>
+        <h2>Filtrer les sorties</h2>
+        {{ form_start(searchForm, {attr: {'novalidate': 'novalidate'}}) }}
+        <form>
+            <div class="row">
+                <div class="col-6">
+                    {{ form_row(searchForm.campus) }}
+                    {{ form_row(searchForm.nom) }}
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(searchForm.dateHeureDebut) }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(searchForm.dateHeureFin) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 pt-4">
+                    {{ form_row(searchForm.sortiesOrganisees) }}
+                    {{ form_row(searchForm.sortiesInscrit) }}
+                    {{ form_row(searchForm.sortiesNonInscrit) }}
+                    {{ form_row(searchForm.sortiesPassees) }}
+                    {{ form_row(searchForm.submit) }}
+                </div>
+            </div>
+        </form>
+        {{ form_end(searchForm) }}
+    </section>
+
+    <section class="mt-5">
+        <h2>Liste des sorties</h2>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Nom de la sortie</th>
+                <th scope="col">Date de la sortie</th>
+                <th scope="col">Clôture</th>
+                <th scope="col">Inscrits / Places</th>
+                <th scope="col">État</th>
+                <th scope="col">Inscrit</th>
+                <th scope="col">Organisateur</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for sortie in sorties %}
+
+                {% set inscrit = false %}
+                {% for participant in sortie.participants %}
+                    {% if participant.id == app.user.id %}
+                        {% set inscrit = true %}
+                    {% endif %}
+                {% endfor %}
+
+                <tr>
+                    <td>{{ sortie.nom }}</td>
+                    <td>{{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</td>
+                    <td>{{ sortie.dateLimiteInscription|date('d/m/Y') }}</td>
+                    <td>
+                        {{ sortie.participants|length }}
+                        / {{ sortie.nbInscriptionsMax }}
+                    </td>
+                    <td>{{ sortie.etat.libelle }}</td>
+                    <td>
+                        {% set inscrit = false %}
+                        {% for participant in sortie.participants %}
+                            {% if participant.id == app.user.id %}
+                                {% set inscrit = true %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if inscrit %}
+                            <span class="text-success">OUI</span>
+                        {% else %}
+                            <span class="text-danger">NON</span>
+                        {% endif %}
+                    </td>
+                    <td><a href="{{ path('participant_profil',{id:sortie.organisateur.id}) }}">{{ sortie.organisateur.pseudo }}</a></td>
+                    <td>
+                        {% if app.user == sortie.organisateur %}
+                            {% include 'sorties/actionSortieOrganisateur.html.twig' %}
+                        {% else %}
+                            {% include  'sorties/actionSortieNonOrganisateur.html.twig' %}
+                        {% endif %}
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="Annulation{{ sortie.id }}" tabindex="-1" role="dialog" aria-labelledby="Annulation_Label{{ sortie.id }}" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="Annulation_Label{{ sortie.id }}">Voulez-vous annuler "{{ sortie.nom }}"</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form method="get" action="{{ path('sorties_annuler',{'id': sortie.id}) }}">
+                                        <div class="modal-body">
+                                            Êtes vous sure de vouloir <span class="text-danger">"ANNULER"</span> cette sortie ?<br>
+                                            "{{ sortie.nom }}"<br><br>
+                                            Nombre de paticipant : {{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}
+                                                <div class="form-group">
+                                                <label for="motif">Motif ?</label>
+                                                <textarea class="form-control" rows="6" id="motif" name="motif" required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                            <button type="submit" class="btn btn-danger">Annuler la sortie</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td>Aucune sortie</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+        <a class="btn btn-outline-warning" href="{{ path('sorties_add') }}">Créer une sortie</a>
+
+
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
+
+    <script>
+        jQuery(document).ready(function() {
+
+            $('.js-datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                todayHighlight: true,
+            });
+        });
+    </script>
+{% endblock %}

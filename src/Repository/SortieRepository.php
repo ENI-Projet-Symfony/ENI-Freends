@@ -21,6 +21,18 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
+    public function filtrerSortieParEtat($etatsArray)
+    {
+        $qb = $this->createQueryBuilder('s');
+        $expr = $qb->expr();
+
+        $qb->where($expr->notIn('s.etat', ':values'));
+        $qb->setParameter('values', $etatsArray);
+
+        $qb = $qb->getQuery();
+        return $qb->execute();
+    }
+
     // filterSorties($campus, $keyword, $dateDebut, $dateFin, $sortiesOrganisees, $sortiesInscrit, $sortiesNonInscrit, $sortiesPassees
     public function filtrerSorties(
         $campus = null,
@@ -72,9 +84,9 @@ class SortieRepository extends ServiceEntityRepository
         }
 
         $qb = $qb->getQuery();
-        dump($qb);
         return $qb->execute();
     }
+
 
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects

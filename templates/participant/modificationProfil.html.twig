@@ -13,7 +13,7 @@
             <button type="submit" class="mt-4 btn btn-outline-dark">Enregistrer</button>
         </div>
         <div class="col-6 text-center">
-            <a href="{{ path('participant_mon_profil') }}">
+            <a href="{{ path('participant_profil' , {id : app.user.id}) }}">
                 <button type="button" class="mt-4 btn btn-outline-dark">Annuler</button>
             </a>
         </div>

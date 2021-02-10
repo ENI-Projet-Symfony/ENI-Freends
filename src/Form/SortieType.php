@@ -6,16 +6,14 @@ use App\Entity\Campus;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\Ville;
-use App\Repository\CampusRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -32,16 +30,23 @@ class SortieType extends AbstractType
 
             ])
             ->add('dateHeureDebut',DateTimeType::class,[
-                'label' => "Date et heure de la sortie"
+                'label' => "Date et heure de la sorties",
+                'widget' => 'single_text',
+                'attr' => ['class' => 'js-datepicker'],
             ])
             ->add('dateLimiteInscription',DateType::class,[
-                'label' => "Date limite d'inscription"
+                'label' => "Date limite d'inscription",
+                'widget' => 'single_text',
+                'attr' => ['class' => 'js-datepicker'],
             ])
-            ->add('nbInscriptionsMax',NumberType::class,[
+            ->add('nbInscriptionsMax',IntegerType::class,[
                 'label' => "Nombre de places"
             ])
-            ->add('duree',NumberType::class,[
-                'label' => "Durée"
+            ->add('duree',IntegerType::class,[
+                'label' => "Durée",
+                'attr' => [
+                    'type' => 'number'
+                ]
             ])
             ->add('infosSortie',TextareaType::class,[
                 'label' => "Description et infos"
@@ -50,7 +55,8 @@ class SortieType extends AbstractType
                 'label' => "Campus",
                 'class' => Campus::class,
                 'choice_label' => 'nom',
-                'choice_value' => 'id'
+                'choice_value' => 'id',
+                'disabled' =>true
             ])
             ->add('ville',EntityType::class,[
                 'mapped' => false,
@@ -75,7 +81,7 @@ class SortieType extends AbstractType
             ])
             ->add('cp',TextType::class,[
                 'mapped' => false,
-                'label' => "Code Postale",
+                'label' => "Code Postal",
                 'disabled' => true,
 
             ])

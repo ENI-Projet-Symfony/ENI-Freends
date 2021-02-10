@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\Command;
 
 use App\Entity\Campus;
 use App\Entity\Etat;
@@ -8,22 +8,29 @@ use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\Ville;
 use App\Repository\VilleRepository;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class AppFixtures extends Fixture
+class BddLoadCommand extends Command
 {
+    protected static $defaultName = 'app:bdd:load';
+    protected static $defaultDescription = 'Add a short description for your command';
+
     protected $entityManager;
     protected $encoder;
     protected $serializer;
     protected $httpClient;
     protected $villeRepository;
 
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordEncoderInterface $encoder,
+    public function __construct(string $name = null,EntityManagerInterface $entityManager, UserPasswordEncoderInterface $encoder,
                                 SerializerInterface $serializer, HttpClientInterface $httpClient,
                                 VilleRepository $villeRepository)
     {
@@ -32,10 +39,20 @@ class AppFixtures extends Fixture
         $this->serializer =$serializer;
         $this->httpClient = $httpClient;
         $this->villeRepository = $villeRepository;
+
+        parent::__construct($name);
     }
 
-    public function load(ObjectManager $manager)
+    protected function configure()
     {
+        $this->setDescription(self::$defaultDescription);
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $io = new SymfonyStyle($input, $output);
+        $manager = $this->entityManager;
+
         $connection = $this->entityManager->getConnection();
         $connection->executeQuery("SET FOREIGN_KEY_CHECKS = 0");
         $connection->executeQuery("TRUNCATE TABLE sortie");
@@ -44,9 +61,10 @@ class AppFixtures extends Fixture
         $connection->executeQuery("TRUNCATE TABLE etat");
         $connection->executeQuery("TRUNCATE TABLE campus");
         $connection->executeQuery("TRUNCATE TABLE participant");
+        $connection->executeQuery("TRUNCATE TABLE participant_sortie");
         $connection->executeQuery("SET FOREIGN_KEY_CHECKS = 1");
 
-        //Mise en BDD des états possible d'une sortie
+        //Mise en BDD des états possible d'une sorties
         $etat1 = new Etat();
         $etat1->setLibelle("Créée");
         $manager->persist($etat1);
@@ -65,6 +83,9 @@ class AppFixtures extends Fixture
         $etat6 = new Etat();
         $etat6->setLibelle("Annulée");
         $manager->persist($etat6);
+        $etat7 = new Etat();
+        $etat7->setLibelle("Archivée");
+        $manager->persist($etat7);
 
         //Mise en BDD des différents campus
         $campus1 = new Campus();
@@ -167,5 +188,9 @@ class AppFixtures extends Fixture
         }
 
         $manager->flush();
+
+        $io->success('La base de donnée à été initialisée !');
+
+        return Command::SUCCESS;
     }
 }

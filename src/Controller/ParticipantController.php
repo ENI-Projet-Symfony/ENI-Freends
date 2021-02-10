@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Participant;
 use App\Form\UserInformationType;
+use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,14 +16,15 @@ class ParticipantController extends AbstractController
 {
 
     /**
-     * @Route("/participant/monnprofil", name="participant_mon_profil")
+     * @Route("/participant/profilUtilisateur/{id}", name="participant_profil")
      */
-    public function monProfil(): Response
+    public function profilUtilisateur($id, ParticipantRepository $participantRepository): Response
     {
         //Recupere l'utilisateur connecter
-        $participant = $this->getUser();
+        $participant = $participantRepository->find($id);
 
-        return $this->render('participant/monProfil.html.twig', [
+        return $this->render('participant/profilUtilisateur.html.twig', [
+            'id_participant' => $id,
             'participant' => $participant,
         ]);
     }
