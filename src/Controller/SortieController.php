@@ -137,7 +137,7 @@ class SortieController extends AbstractController
             $sorties = $sortieRepository->findAll();
         }
 
-        return $this->render('sortie/list.html.twig', [
+        return $this->render('sorties/list.html.twig', [
             'controller_name' => 'SortieController',
             "sorties" => $sorties,
             'searchForm' => $filterForm->createView()
@@ -145,7 +145,7 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/sorties/{id}", name="sortie_detail", methods={"GET"})
+     * @Route("/sorties/{id}", name="sorties_detail", methods={"GET"})
      */
     public function details(int $id, SortieRepository $sortieRepository): Response
     {
@@ -158,9 +158,9 @@ class SortieController extends AbstractController
             throw $this->createNotFoundException('Cette sortie n\'existe pas');
         }
 
-        return $this->render('sortie/details.html.twig', [
+        return $this->render('sorties/details.html.twig', [
             'controller_name' => 'SortieController',
-            "sortie_id" => $id,
+            "sorties_id" => $id,
             "sortie" => $sortie
         ]);
     }
