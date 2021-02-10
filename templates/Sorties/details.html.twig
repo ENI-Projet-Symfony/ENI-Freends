@@ -82,7 +82,7 @@
                         <tr>
                             <th scope="row">{{ participant.pseudo }}</th>
                             <td>{{ participant.nom }} {{ participant.prenom }}</td>
-                            <td><a class="nav-link" href="#">Afficher</a></td> {# {{ path('participant_profil' , {id : participant.id}) }} #}
+                            <td><a class="nav-link" href="{{ path('participant_profil' , {id : participant.id}) }}">Afficher</a></td>
                         </tr>
                         {% endfor %}
                         </tbody>
