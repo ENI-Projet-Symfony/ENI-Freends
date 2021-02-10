@@ -97,6 +97,35 @@
                             {% include  'sorties/actionSortieNonOrganisateur.html.twig' %}
                         {% endif %}
 
+                        <!-- Modal -->
+                        <div class="modal fade" id="Annulation{{ sortie.id }}" tabindex="-1" role="dialog" aria-labelledby="Annulation_Label{{ sortie.id }}" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="Annulation_Label{{ sortie.id }}">Voulez-vous annuler "{{ sortie.nom }}"</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form method="get" action="{{ path('sorties_annuler',{'id': sortie.id}) }}">
+                                        <div class="modal-body">
+                                            Êtes vous sure de vouloir <span class="text-danger">"ANNULER"</span> cette sortie ?<br>
+                                            "{{ sortie.nom }}"<br><br>
+                                            Nombre de paticipant : {{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}
+                                                <div class="form-group">
+                                                <label for="motif">Motif ?</label>
+                                                <textarea class="form-control" rows="6" id="motif" name="motif"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                            <button type="submit" class="btn btn-danger">Annuler la sortie</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
                     </td>
                 </tr>
             {% else %}
@@ -116,8 +145,10 @@
 
 {% block javascripts %}
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
+
     <script>
         jQuery(document).ready(function() {
+
             $('.js-datepicker').datepicker({
                 format: 'yyyy-mm-dd',
                 todayHighlight: true,
