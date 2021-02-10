@@ -65,6 +65,9 @@ class AppFixtures extends Fixture
         $etat6 = new Etat();
         $etat6->setLibelle("Annulée");
         $manager->persist($etat6);
+        $etat7 = new Etat();
+        $etat7->setLibelle("Archivé");
+        $manager->persist($etat7);
 
         //Mise en BDD des différents campus
         $campus1 = new Campus();
