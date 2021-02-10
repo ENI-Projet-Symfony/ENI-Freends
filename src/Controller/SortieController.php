@@ -257,10 +257,12 @@ class SortieController extends AbstractController
      * @Route("/sorties/annuler/{id}", name="sorties_annuler")
      */
     public function annulerSortie(int $id, EntityManagerInterface $entityManager,
-                                  EtatRepository $etatRepository,SortieRepository $sortieRepository)
+                                  EtatRepository $etatRepository,SortieRepository $sortieRepository,
+                                    Request $request)
     {
         $sortie = $sortieRepository->findOneBy(["id"=>$id]);
         $sortie->setEtat($etatRepository->findOneBy(['id' => 6]));
+        $sortie->setAnnulationMotifs($request->get("motif"));
         $entityManager->persist($sortie);
         $entityManager->flush();
 
