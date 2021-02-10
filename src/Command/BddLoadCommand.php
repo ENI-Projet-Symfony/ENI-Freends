@@ -189,7 +189,7 @@ class BddLoadCommand extends Command
 
         $manager->flush();
 
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $io->success('La base de donnée à été initialisée !');
 
         return Command::SUCCESS;
     }
