@@ -13,3 +13,58 @@ footer {
 .h100{
     min-height: calc(100vh - 112px);
 }
+.clear {
+    clear: both;
+}
+.Flow {
+    margin-top: 30px;
+    text-align: center;
+    list-style: none;
+
+}
+.Flow li {
+    display: inline;
+}
+.Flow li>button {
+    font-size: large;
+}
+
+.dragdropfile {
+    width: 100%;
+    height: calc(100% - 28px);
+    margin-top: -14px;
+    color: #87E3AD;
+    border-style: dashed;
+    border-color: #87E3AD;
+}
+.boxicon {
+    width: 100%;
+    height: 80px;
+    fill: #87E3AD;
+    display: block;
+    margin-bottom: 40px;
+}
+#filedrag
+{
+    display: none;
+    font-weight: bold;
+    text-align: center;
+    padding: 1em 0;
+    margin: 1em 0;
+    color: #555;
+    border: 2px dashed #555;
+    border-radius: 7px;
+    cursor: default;
+}
+
+#filedrag.hover
+{
+    color: #f00;
+    border-color: #f00;
+    border-style: solid;
+    box-shadow: inset 0 3px 4px #888;
+}
+textarea#sortie_infosSortie {
+    resize: none;
+    height: 103px;
+}
