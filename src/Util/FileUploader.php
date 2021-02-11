@@ -18,7 +18,7 @@ class FileUploader
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $uploadDirCsv = $this->uploadDirCsv;
 
-        $fileName = $originalFilename.'-'.uniqid().'.'.$file->guessExtension();
+        $fileName = $originalFilename.'-'.uniqid().'.'.$file->getClientOriginalExtension();
 
         try
         {
