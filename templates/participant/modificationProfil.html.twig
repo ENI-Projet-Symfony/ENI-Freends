@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} | Modifier profil {% endblock %}
+
+{% block body %}
+
+    {{ form_start(user_form, {attr: {'novalidate': 'novalidate'}}) }}
+
+    {{ form_widget(user_form) }}
+
+    <div class="row">
+        <div class="col-6 text-center">
+            <button type="submit" class="mt-4 btn btn-outline-dark">Enregistrer</button>
+        </div>
+        <div class="col-6 text-center">
+            <a href="{{ path('participant_profil' , {id : app.user.id}) }}">
+                <button type="button" class="mt-4 btn btn-outline-dark">Annuler</button>
+            </a>
+        </div>
+    </div>
+    {{ form_end(user_form) }}
+
+{% endblock %}

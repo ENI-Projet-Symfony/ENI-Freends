@@ -1,0 +1,21 @@
+{% if sortie.etat.id == 1 %}
+   <a href="{{ path('sorties_update', {id: sortie.id}) }}" class="card-link">Modifier</a>
+   <a href="{{ path('sorties_publish', {id: sortie.id}) }}" class="card-link">Publier</a>
+{% else %}
+   <a href="{{ path('sorties_detail', {id: sortie.id}) }}" class="card-link">Afficher</a>
+{% endif %}
+
+   {#A retirer si l'organisateur ne fait doit pas compter dans les participant#}
+{% if sortie.participants|length<sortie.nbInscriptionsMax %}
+
+    {% if  sortie.etat.id == 2 and inscrit %}
+        <a href="{{ path('sorties_desinscription', {id: sortie.id}) }}" class="card-link">Se désister</a>
+    {% elseif sortie.etat.id == 2 and inscrit == false %}
+        <a href="{{ path('sorties_inscription', {id: sortie.id}) }}" class="card-link">S'inscrire</a>
+    {% endif %}
+
+    {% if sortie.etat.id == 2 or sortie.etat.id == 3 %}
+        <a id="ok" href="#Annulation{{ sortie.id }}" data-toggle="modal" data-target="#Annulation{{ sortie.id }}" class="card-link">Annuler</a>
+    {% endif %}
+
+{% endif %}

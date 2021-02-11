@@ -1,0 +1,15 @@
+footer {
+    color: #f2f2f2;
+}
+.table-fixed{
+    max-height:200px;
+    overflow-y:scroll;
+}
+.table-fixed thead tr:nth-child(1) th{
+    position: sticky;
+    top: 0;
+}
+
+.h100{
+    min-height: calc(100vh - 112px);
+}

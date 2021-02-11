@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau{% endblock %}
+
+{% block body %}
+
+    {% form_theme formulaire 'bootstrap_4_layout.html.twig' %}
+
+    {{ form_start(formulaire) }}
+
+        {{ form_row(formulaire.nom) }}
+        {{ form_row(formulaire.dateHeureDebut) }}
+        {{ form_row(formulaire.dateLimiteInscription) }}
+        {{ form_row(formulaire.nbInscriptionsMax) }}
+        {{ form_row(formulaire.duree) }}
+        {{ form_row(formulaire.infosSortie) }}
+        {{ form_row(formulaire.campus) }}
+        {{ form_row(formulaire.ville) }}
+        {{ form_row(formulaire.lieu) }}
+        {{ form_row(formulaire.rue) }}
+        {{ form_row(formulaire.cp) }}
+        {{ form_row(formulaire.latitude) }}
+        {{ form_row(formulaire.longitude) }}
+
+
+        <ul class="Flow">
+            <li><button type="submit" class="btn btn-primary" name="submit_type" value="Créer">Enregistrer</button></li>
+            <li><button type="submit" class="btn btn-success" name="submit_type" value="Publier">Publier la sortie</button></li>
+            <li><a href="{{ path('main_home') }}"><button type="button" class="btn btn-secondary">Annuler</button></a></li>
+        </ul>
+        {#  A Suprimer quand le style sera en place  #}
+        <style>
+            .Flow {
+                margin-top: 30px;
+                text-align: center;
+                list-style: none;
+
+            }
+            .Flow li {
+                display: inline;
+            }
+            .Flow li>button {
+                font-size: large;
+            }
+
+        </style>
+    {{ form_end(formulaire) }}
+
+{% endblock %}
+
+{%  block javascripts %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+        <script>
+
+                var lieu = $("#sortie_lieu");
+                var ville = $("#sortie_ville");
+
+               function dynChangeLieuInfo (){
+
+                   var lieu_Id = lieu.val();
+                        $.ajax({
+                                type: 'GET',
+                                url: '{{ path('sorties_get_lieu_info') }}',
+                                data: {id: lieu_Id},
+                                success: function (data){
+                                    if(data !== "") {
+                                        console.log(data);
+                                        $("#sortie_latitude").val(data["latitude"]);
+                                        $("#sortie_longitude").val(data["longitude"]);
+                                        $("#sortie_cp").val(data["cp"]);
+                                        $("#sortie_rue").val(data["rue"]);
+                                    }else{
+                                        console.log("data est vide")
+                                    }
+                                }
+                        })
+                }
+
+               function dynChangeLieu () {
+
+                   var ville_Id = ville.val();
+                   $.ajax({
+                       type: 'GET',
+                       url: '{{ path('sorties_get_lieu') }}',
+                       data: {id: ville_Id},
+                       success: function (data){
+                           if(data !== "") {
+                               console.log(data);
+                               lieu.html(data);
+                           }else{
+                               console.log("data est vide")
+                           }
+                       }
+                   })
+               }
+
+                $(document).ready(function(){
+                        dynChangeLieuInfo();
+                        lieu.change(function(e){
+                                dynChangeLieuInfo();
+                        });
+                        ville.change(function(e){
+                            dynChangeLieu();
+                            dynChangeLieuInfo();
+                        });
+                });
+        </script>
+{% endblock %}
