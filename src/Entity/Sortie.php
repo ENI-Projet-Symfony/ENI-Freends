@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContext;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
@@ -26,6 +28,7 @@ class Sortie
     private $nom;
 
     /**
+     * @Assert\GreaterThan("now",message="La date de début de l'événement doit être antérieur à maintenant")
      * @ORM\Column(type="datetime")
      */
     private $dateHeureDebut;
@@ -268,5 +271,21 @@ class Sortie
         $this->AnnulationMotifs = $AnnulationMotifs;
 
         return $this;
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function DateValidation(ExecutionContextInterface $context)
+    {
+        if ($this->getDateLimiteInscription()>$this->getDateHeureDebut())
+        {
+            $context->buildViolation(
+                "La date limite d'inscription doit être postérieur à la date l'événement",
+            )
+                ->atPath("dateLimiteInscription")
+                ->addViolation()
+            ;
+        }
     }
 }
