@@ -17,6 +17,7 @@
         "gsylvestre/php-token-generator": "^0.1.0",
         "knplabs/knp-paginator-bundle": "^5.4",
         "league/csv": "^9.6",
+        "matomo/device-detector": "^4.1",
         "phpdocumentor/reflection-docblock": "^5.2",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/apache-pack": "^1.0",
@@ -50,6 +51,7 @@
         "symfony/web-link": "5.2.*",
         "symfony/web-profiler-bundle": "^5.2",
         "symfony/yaml": "5.2.*",
+        "tattali/mobile-detect-bundle": "^2.1",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/intl-extra": "^3.3",
         "twig/twig": "^2.12|^3.0"
