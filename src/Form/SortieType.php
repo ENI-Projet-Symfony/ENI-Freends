@@ -26,6 +26,7 @@ class SortieType extends AbstractType
         $builder
             ->add('picture', FileType::class, [
                 'mapped' => false,
+                'required' => false,
                 'attr' => [
                     'class' => "custom-file-input"
                 ],
