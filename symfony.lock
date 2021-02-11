@@ -123,6 +123,9 @@
     "laminas/laminas-zendframework-bridge": {
         "version": "1.1.1"
     },
+    "league/csv": {
+        "version": "9.6.2"
+    },
     "league/color-extractor": {
         "version": "0.3.2"
     },

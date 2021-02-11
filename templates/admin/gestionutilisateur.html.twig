@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Back Office | Gestion des utlisateur{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center">Ajout d'utilisateur via un fichier CSV</h1>
+
+    <div class="mb-2">Veuillez deposez votre fichier CSV</div>
+        <div class="row">
+            <div class="col-lg-8">
+                {{ form_start(form, { attr: { 'accept-charset' : 'utf-8' }}) }}
+                <div class="form-group">
+                    {{ form_label(form.upload_file) }}
+                    {{ form_widget(form.upload_file) }}
+                    {{ form_errors(form.upload_file) }}
+                </div>
+                <div class="form-group mt-4">
+                    {{ form_widget(form.send, {'label': "Upload this file", 'attr' : { 'class': 'btn btn-outline-dark' }}) }}
+                </div>
+                {{ form_rest(form) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+{% endblock %}
+
+
+

@@ -77,6 +77,11 @@ class Participant implements UserInterface
      */
     private $campus;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $nomFichierPhoto;
+
     public function __construct()
     {
         $this->sortiesOrganisees = new ArrayCollection();
@@ -286,6 +291,18 @@ class Participant implements UserInterface
     public function setCampus(?Campus $campus): self
     {
         $this->campus = $campus;
+
+        return $this;
+    }
+
+    public function getNomFichierPhoto(): ?string
+    {
+        return $this->nomFichierPhoto;
+    }
+
+    public function setNomFichierPhoto(?string $nomFichierPhoto): self
+    {
+        $this->nomFichierPhoto = $nomFichierPhoto;
 
         return $this;
     }

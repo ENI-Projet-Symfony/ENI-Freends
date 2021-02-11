@@ -6,7 +6,9 @@ use App\Entity\Participant;
 use App\Form\UserInformationType;
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPTokenGenerator\TokenGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,7 +34,7 @@ class ParticipantController extends AbstractController
     /**
      * @Route("/participant/modificationprofil", name="participant_modification_profil")
      */
-    public function modificationProfil(EntityManagerInterface $entityManager, Request $request,UserPasswordEncoderInterface $encoder): Response
+    public function modificationProfil(EntityManagerInterface $entityManager, Request $request,UserPasswordEncoderInterface $encoder, string $uploadDirImg): Response
     {
         //Recupere l'utilisateur connecter
         $participant = $this->getUser();
@@ -41,13 +43,20 @@ class ParticipantController extends AbstractController
 
         $userform->handleRequest($request);
 
-        dump($participant);
-
         if($userform->isSubmitted() && $userform->isValid())
         {
             if($userform->get('password')->getData())
             {
                 $participant->setPassword($encoder->encodePassword($participant, $userform->get('password')->getData()));
+            }
+            /** @var UploadedFile $photo */
+            $photo = $userform->get('photo')->getData();
+
+            if($photo){
+                $generator = new TokenGenerator();
+                $nomFichier = $generator->generate() . "." . $photo->guessExtension();
+                $photo->move($uploadDirImg,$nomFichier);
+                $participant->setNomFichierPhoto($nomFichier);
             }
 
             $this->addFlash('success','Les modfications de vôtre profil ont bien été effectuées');

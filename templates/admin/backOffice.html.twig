@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BackOffice{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Bienvenue sur la page d'administration du site !!</h1>
+    <h2 class="text-center">N'abuse pas de tes pouvoirs jeune padawan</h2>
+
+    <div class="row mt-4">
+        <div class="col-4">
+            <ul>
+                <li>
+                    <a href="{{ path('admin_gestion_utilisateur') }}">Gestion des utilisateurs</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

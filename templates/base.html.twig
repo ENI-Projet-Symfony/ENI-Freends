@@ -44,6 +44,11 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav ml-auto">
+                        {% if is_granted("ROLE_ADMIN") %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('admin_backoffice') }}">Back Office</a>
+                            </li>
+                        {% endif %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('participant_profil' , {id : app.user.id}) }}">Mon profil</a>
                         </li>

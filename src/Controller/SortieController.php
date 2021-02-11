@@ -235,7 +235,7 @@ class SortieController extends AbstractController
         // Ajoute un message de succès
         $this->addFlash("success","Vous avez été inscit.e à cette sortie avec succès");
 
-        // Redirige sur la page de list de Sorties
+        // Redirige sur la page de list de sorties
         return $this->redirectToRoute('sorties_list');
     }
 
@@ -268,7 +268,7 @@ class SortieController extends AbstractController
         // Ajoute un message de succès
         $this->addFlash("warning","Vous avez été désinscit.e de cette sortie avec succès");
 
-        // Redirige sur la page de list de Sorties
+        // Redirige sur la page de list de sorties
         return $this->redirectToRoute('sorties_list');
     }
 
