@@ -1,4 +1,7 @@
 {
+    "claviska/simpleimage": {
+        "version": "3.6.0"
+    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.1"
     },
@@ -122,6 +125,9 @@
     },
     "league/csv": {
         "version": "9.6.2"
+    },
+    "league/color-extractor": {
+        "version": "0.3.2"
     },
     "monolog/monolog": {
         "version": "2.2.0"

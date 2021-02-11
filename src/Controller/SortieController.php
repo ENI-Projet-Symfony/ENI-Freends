@@ -9,8 +9,10 @@ use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use App\Util\GestionDesEtats;
+use claviska\SimpleImage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +25,7 @@ class SortieController extends AbstractController
      */
     public function nouveaux(Request $request,EntityManagerInterface $entityManager,
                              ParticipantRepository $participantRepository,
-                             EtatRepository $etatRepository ): Response
+                             EtatRepository $etatRepository, string $uploadDirImg): Response
     {
         $sortie = new Sortie();
 
@@ -32,6 +34,39 @@ class SortieController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()){
+
+            // Récupérer l'image uploadée
+            /** @var UploadedFile $picture */
+            $picture = $form->get('picture')->getData();
+
+            if($picture)
+            {
+                // A installer depuis https://github.com/gsylvestre/php-token-generator
+                // composer require gsylvestre/php-token-generator
+                // Génère un nom de fichier aléatoire avec la bonne extension
+                $generator = new \PHPTokenGenerator\TokenGenerator();
+                $newFilename = 'sortie_' . $generator->generate(24) . '.' . $picture->guessExtension();
+                // Déplace le fichier uploadé dans public/img/
+                $picture->move($uploadDirImg, $newFilename);
+                // Hydrate la propriété avec le nom du fichier
+                $sortie->setUrlPhoto($newFilename);
+
+                try
+                {
+                    // A installer depuis https://github.com/claviska/SimpleImage/
+                    // composer require claviska/simpleimage
+                    // Redimensionne les images (et autres filtres)
+                    $image = new SimpleImage();
+                    $image->fromFile($uploadDirImg . $newFilename)
+                        ->bestFit(600, 600)
+                        ->toFile($uploadDirImg . "small/" . $newFilename);
+                }
+                catch (Exception $err)
+                {
+                    echo $err->getMessage();
+                }
+            }
+
             if($request->get("submit_type")==="Publier"){
                 $sortie->setEtat($etatRepository->findOneBy([
                     'id' => "2"
@@ -52,7 +87,7 @@ class SortieController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->render('sorties/nouveau.html.twig', [
+        return $this->render('sorties/editer_sortie.html.twig', [
             "formulaire" => $form->createView()
         ]);
     }
@@ -63,7 +98,7 @@ class SortieController extends AbstractController
     public function modifier(Request $request,EntityManagerInterface $entityManager,
                              ParticipantRepository $participantRepository,
                              EtatRepository $etatRepository,SortieRepository $sortieRepository,
-                             int $id ): Response
+                             int $id, string $uploadDirImg): Response
     {
         if ($id){
             $sortie = $sortieRepository->findOneBy(['id'=>$id]);
@@ -80,6 +115,38 @@ class SortieController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()){
+            // Récupérer l'image uploadée
+            /** @var UploadedFile $picture */
+            $picture = $form->get('picture')->getData();
+
+            if($picture)
+            {
+                // A installer depuis https://github.com/gsylvestre/php-token-generator
+                // composer require gsylvestre/php-token-generator
+                // Génère un nom de fichier aléatoire avec la bonne extension
+                $generator = new \PHPTokenGenerator\TokenGenerator();
+                $newFilename = 'sortie_' . $generator->generate(24) . '.' . $picture->guessExtension();
+                // Déplace le fichier uploadé dans public/img/
+                $picture->move($uploadDirImg, $newFilename);
+                // Hydrate la propriété avec le nom du fichier
+                $sortie->setUrlPhoto($newFilename);
+
+                try
+                {
+                    // A installer depuis https://github.com/claviska/SimpleImage/
+                    // composer require claviska/simpleimage
+                    // Redimensionne les images (et autres filtres)
+                    $image = new SimpleImage();
+                    $image->fromFile($uploadDirImg . $newFilename)
+                        ->bestFit(600, 600)
+                        ->toFile($uploadDirImg . "small/" . $newFilename);
+                }
+                catch (Exception $err)
+                {
+                    echo $err->getMessage();
+                }
+            }
+
             if($request->get("submit_type")==="Publier"){
                 $sortie->setEtat($etatRepository->findOneBy([
                     'id' => "2"
@@ -98,7 +165,7 @@ class SortieController extends AbstractController
             $this->addFlash("success","La sortie a été modifier");
         }
 
-        return $this->render('sorties/update.html.twig', [
+        return $this->render('sorties/editer_sortie.html.twig', [
             "formulaire" => $form->createView(),
             "sortie" => $sortie
         ]);
