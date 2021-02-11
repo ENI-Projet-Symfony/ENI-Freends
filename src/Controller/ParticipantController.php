@@ -41,8 +41,6 @@ class ParticipantController extends AbstractController
 
         $userform->handleRequest($request);
 
-        dump($participant);
-
         if($userform->isSubmitted() && $userform->isValid())
         {
             if($userform->get('password')->getData())
