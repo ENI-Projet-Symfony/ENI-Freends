@@ -52,7 +52,7 @@ class SortieController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->render('sorties/tesdt.html.twig', [
+        return $this->render('sorties/nouveau.html.twig', [
             "formulaire" => $form->createView()
         ]);
     }
