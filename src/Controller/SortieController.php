@@ -36,13 +36,13 @@ class SortieController extends AbstractController
                 $sortie->setEtat($etatRepository->findOneBy([
                     'id' => "2"
                 ]));
-                $this->addFlash("success","félicitation votre Sortie a bien été publier");
+                $this->addFlash("success","Félicitations, votre sortie a bien été publiée");
 
             }else if ($request->get("submit_type")==="Créer") {
                 $sortie->setEtat($etatRepository->findOneBy([
                     'id' => "1"
                 ]));
-                $this->addFlash("success","félicitation votre Sortie a bien été créé");
+                $this->addFlash("success","Félicitations, votre sortie a bien été créée");
             }
             $sortie->addParticipant($this->getUser());
 
@@ -68,11 +68,11 @@ class SortieController extends AbstractController
         if ($id){
             $sortie = $sortieRepository->findOneBy(['id'=>$id]);
         }else{
-            throw $this->createNotFoundException('Sortie Inconnue.');
+            throw $this->createNotFoundException('Sortie inexistante.');
         }
 
         if(!$sortie){
-            throw $this->createNotFoundException('Sortie Inconnue.');
+            throw $this->createNotFoundException('Sortie inexistante.');
         }
 
         $form = $this->createForm(SortieType::class,$sortie);
@@ -109,7 +109,7 @@ class SortieController extends AbstractController
      */
     public function index(SortieRepository $sortieRepository, Request $request, GestionDesEtats $gestionDesEtats): Response
     {
-        //crée une instance du formulaire de recherche (il n'est pas associé à une entité)
+        //Crée une instance du formulaire de recherche (il n'est pas associé à une entité)
         $filterForm = $this->createForm(SortieFiltreFormType::class);
         //récupère les données soumises dans la requête
         $filterForm->handleRequest($request);
@@ -121,8 +121,14 @@ class SortieController extends AbstractController
             $campus = $filterForm['campus']->getData();
             $nom = $filterForm['nom']->getData();
 
-            $dateDebut = $filterForm['dateHeureDebut']->getData();
-            $dateFin = $filterForm['dateHeureFin']->getData();
+            $dateDebut = null;
+            if ($filterForm['dateHeureDebut']->getData()) {
+                $dateDebut = $filterForm['dateHeureDebut']->getData();
+            }
+            $dateFin = null;
+            if ($filterForm['dateHeureFin']->getData()) {
+                $dateFin = $filterForm['dateHeureFin']->getData();
+            }
 
             $sortiesOrganisees = $filterForm['sortiesOrganisees']->getData();
             $sortiesInscrit = $filterForm['sortiesInscrit']->getData();
@@ -246,7 +252,7 @@ class SortieController extends AbstractController
         $entityManager->persist($sortie);
         $entityManager->flush();
 
-        $this->addFlash("sucess","Sortie à bien été publiée");
+        $this->addFlash("sucess","La sortie à bien été publiée");
 
         return $this->redirectToRoute('sorties_list');
 

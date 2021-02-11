@@ -36,7 +36,7 @@ class SortieFiltreFormType extends AbstractType
             ->add('dateHeureDebut', DateTimeType::class, [
                 'attr' => ['class' => 'js-datepicker'],
                 'html5' => false,
-                'empty_data' => null,
+                'required' => false,
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'label' => 'Entre'
@@ -45,33 +45,33 @@ class SortieFiltreFormType extends AbstractType
             ->add('dateHeureFin', DateTimeType::class, [
                 'attr' => ['class' => 'js-datepicker'],
                 'html5' => false,
-                'empty_data' => null,
                 'mapped' => false,
+                'required' => false,
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'label' => 'et'
             ])
             // Filtres
             ->add('sortiesOrganisees', CheckboxType::class, [
-                'label'    => 'sorties dont je suis l\'organisateur.trice',
+                'label'    => 'Sorties dont je suis l\'organisateur.trice',
                 'required' => false,
                 'empty_data' => null,
                 'mapped' => false
             ])
             ->add('sortiesInscrit', CheckboxType::class, [
-                'label'    => 'sorties auxquelles je suis inscrit.e',
+                'label'    => 'Sorties auxquelles je suis inscrit.e',
                 'required' => false,
                 'empty_data' => null,
                 'mapped' => false
             ])
             ->add('sortiesNonInscrit', CheckboxType::class, [
-                'label'    => 'sorties auxquelles je ne suis pas inscrit.e',
+                'label'    => 'Sorties auxquelles je ne suis pas inscrit.e',
                 'required' => false,
                 'empty_data' => null,
                 'mapped' => false
             ])
             ->add('sortiesPassees',CheckboxType::class,  [
-                'label'    => 'sorties passées',
+                'label'    => 'Sorties passées',
                 'required'      => false,
                 'empty_data' => null,
                 'mapped' => false
