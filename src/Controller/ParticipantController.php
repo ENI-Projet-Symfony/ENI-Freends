@@ -45,8 +45,12 @@ class ParticipantController extends AbstractController
 
         if($userform->isSubmitted() && $userform->isValid())
         {
-            $participant->setPassword($encoder->encodePassword($participant, $userform->get('password')->getData()));
+            if($userform->get('password')->getData())
+            {
+                $participant->setPassword($encoder->encodePassword($participant, $userform->get('password')->getData()));
+            }
 
+            $this->addFlash('success','Les modfications de vôtre profil ont bien été effectuées');
             $entityManager->persist($participant);
             $entityManager->flush();
         }
