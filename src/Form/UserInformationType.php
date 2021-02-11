@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
@@ -22,21 +23,25 @@ class UserInformationType extends AbstractType
     {
         $builder
             ->add('pseudo')
-            ->add('prenom')
+            ->add('prenom', TextType::class, [
+                'label' => 'Prénom'
+            ])
             ->add('nom')
-            ->add('telephone')
+            ->add('telephone', TextType::class, [
+                'label' => 'Téléphone'
+            ])
             ->add('mail', EmailType::class)
             ->add('password', RepeatedType::class,
             [
                 'mapped' => false,
                 'type' => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
+                'invalid_message' => 'Les mots de passe doivent être identiques.',
                 'first_options'  => ['label' => 'Mot de passe'],
-                'second_options' => ['label' => 'Repeat Password'],
+                'second_options' => ['label' => 'Répéter le mot de passe'],
                 'constraints' => [
                     new Length([
                         'min' => 4,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'minMessage' => 'Votre mot de passe doit faire au moins {{ limit }} caractères',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
