@@ -102,6 +102,9 @@
     "fzaninotto/faker": {
         "version": "v1.9.2"
     },
+    "gsylvestre/php-token-generator": {
+        "version": "v0.1"
+    },
     "knplabs/knp-components": {
         "version": "v3.0.0"
     },
