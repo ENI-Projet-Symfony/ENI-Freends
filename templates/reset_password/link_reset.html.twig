@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+
+{% block body %}
+    <div>
+        <a href="{{ path('app_reset_password', {token: resetToken.token}) }}">Appuyer sur ce lien pour changer votre mot de passe</a>
+    </div>
+{% endblock %}
+
+
+

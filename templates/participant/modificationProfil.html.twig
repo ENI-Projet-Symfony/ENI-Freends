@@ -7,7 +7,9 @@
     {{ form_start(user_form, {attr: {'novalidate': 'novalidate'}}) }}
 
     {{ form_widget(user_form) }}
-
+    {% if (app.user.nomFichierPhoto) %}
+        <img src="{{ asset('img/' ~ app.user.nomFichierPhoto) }}" alt="impossible de charger l'image">
+    {% endif %}
     <div class="row">
         <div class="col-6 text-center">
             <button type="submit" class="mt-4 btn btn-outline-dark">Enregistrer</button>

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Participant;
 use App\Form\UserInformationType;
 use App\Repository\ParticipantRepository;
+use claviska\SimpleImage;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPTokenGenerator\TokenGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -53,9 +54,22 @@ class ParticipantController extends AbstractController
             $photo = $userform->get('photo')->getData();
 
             if($photo){
+
                 $generator = new TokenGenerator();
                 $nomFichier = $generator->generate() . "." . $photo->guessExtension();
-                $photo->move($uploadDirImg,$nomFichier);
+                $photoFinale = new SimpleImage();
+                $photoFinale
+                    ->fromFile($photo)
+                    ->autoOrient()
+                    ->bestFit(200,200)
+                    ->toFile($uploadDirImg . $nomFichier);
+            if($participant->getNomFichierPhoto()) {
+                try {
+                    unlink($uploadDirImg . $participant->getNomFichierPhoto());
+                } catch (\ErrorException $ex) {
+                    // catch vide, au cas où un nom de fichier est présent en base mais l'image n'est pas sur le serveur
+                }
+            }
                 $participant->setNomFichierPhoto($nomFichier);
             }
 
