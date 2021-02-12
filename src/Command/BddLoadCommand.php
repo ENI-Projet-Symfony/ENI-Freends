@@ -151,21 +151,54 @@ class BddLoadCommand extends Command
 
         $manager->flush();
 
-        //Mise en BDD des Ville de france
-        $departements = $this->httpClient->request(
+        //Mise en BDD des Ville du Poitou Charente
+        $villes = $this->httpClient->request(
             'GET',
-            "https://geo.api.gouv.fr/departements?fields=nom,code,codeRegion"
+            "https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-referentiel-geographique&q=&rows=10000&facet=regrgp_nom&facet=reg_nom&facet=reg_nom_old&facet=aca_nom&facet=dep_nom&facet=com_code&facet=uucr_nom&refine.reg_nom=Nouvelle-Aquitaine&refine.reg_nom_old=Poitou-Charentes"
         )->toArray();
 
 
-        foreach ($departements as $departement){
-            $ville = new Ville();
-            $ville->setNom($departement["nom"])
-                ->setCodePostal($departement["code"])
+        for ($i = 0; $i < count($villes["records"]); $i += 1){
+            $villeAjouter = new Ville();
+            $villeAjouter->setNom($villes["records"][$i]["fields"]["com_nom"])
+                ->setCodePostal($villes["records"][$i]["fields"]["com_code"])
             ;
-            $manager->persist($ville);
+            $manager->persist($villeAjouter);
         }
         $manager->flush();
+
+        //Mise en BDD des Ville du Pays de la loire
+        $villes = $this->httpClient->request(
+            'GET',
+            "https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-referentiel-geographique&q=&rows=10000&facet=regrgp_nom&facet=reg_nom&facet=reg_nom_old&facet=aca_nom&facet=dep_nom&facet=com_code&facet=uucr_nom&refine.reg_nom=Pays+de+la+Loire"
+        )->toArray();
+
+
+        for ($i = 0; $i < count($villes["records"]); $i += 1){
+            $villeAjouter = new Ville();
+            $villeAjouter->setNom($villes["records"][$i]["fields"]["com_nom"])
+                ->setCodePostal($villes["records"][$i]["fields"]["com_code"])
+            ;
+            $manager->persist($villeAjouter);
+        }
+        $manager->flush();
+
+        //Mise en BDD des Ville de la Bretagne
+        $villes = $this->httpClient->request(
+            'GET',
+            "https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-referentiel-geographique&q=&rows=10000&facet=regrgp_nom&facet=reg_nom&facet=reg_nom_old&facet=aca_nom&facet=dep_nom&facet=com_code&facet=uucr_nom&refine.reg_nom=Bretagne"
+        )->toArray();
+
+
+        for ($i = 0; $i < count($villes["records"]); $i += 1){
+            $villeAjouter = new Ville();
+            $villeAjouter->setNom($villes["records"][$i]["fields"]["com_nom"])
+                ->setCodePostal($villes["records"][$i]["fields"]["com_code"])
+            ;
+            $manager->persist($villeAjouter);
+        }
+        $manager->flush();
+
 
         //Mise en Bdd des lieu(Cinéma de france)
         $cinemas = $this->httpClient->request(
@@ -181,7 +214,7 @@ class BddLoadCommand extends Command
                 ->setLongitude($cinema["fields"]["geo"][1])
                 ->setRue($cinema["fields"]["adresse"])
                 ->setVille(
-                    $this->villeRepository->findOneBy(['id'=>rand(1,4)])
+                    $this->villeRepository->findOneBy(['id'=>rand(1,4462)])
                 );
             ;
             $manager->persist($cine);
