@@ -129,6 +129,9 @@
     "league/csv": {
         "version": "9.6.2"
     },
+    "matomo/device-detector": {
+        "version": "4.1.0"
+    },
     "monolog/monolog": {
         "version": "2.2.0"
     },
