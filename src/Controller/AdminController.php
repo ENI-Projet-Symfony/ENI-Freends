@@ -10,6 +10,7 @@ use App\Repository\ParticipantRepository;
 use App\Util\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
+use mysql_xdevapi\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +32,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/gestion/utilisateur/", name="admin_gestion_utilisateur")
      */
-    public function ajouterUtilisateur(ParticipantRepository $participantRepository)
+    public function listeUtilisateur(ParticipantRepository $participantRepository)
     {
         $allParticipant = $participantRepository->findAll();
         return $this->render('admin/gestionutilisateur.html.twig', [
@@ -54,9 +55,9 @@ class AdminController extends AbstractController
 
 
     /**
-     * @Route("/admin/gestion/utilisateur/nouveau", name="admin_gestion_utilisateur_nouveau")
+     * @Route("/admin/gestion/utilisateur/ajouter", name="admin_gestion_utilisateur_ajouter")
      */
-    public function listUtilisateur
+    public function ajouterUtilisateur
     (Request $request,FileUploader $fileUploader, String $uploadDirCsv,
      EntityManagerInterface $entityManager,
      CampusRepository $campusRepository,UserPasswordEncoderInterface $encoder): Response
@@ -82,40 +83,45 @@ class AdminController extends AbstractController
                     $results = $reader->getRecords();
 
                     $year = date('Y');
-                    dump($year);
 
-                    foreach ($results as $row) {
-                        dump($row);
-                        $campus = $campusRepository->find(['id'=> $row['Campus']]);
+                    try {
+                        foreach ($results as $row) {
 
-                        $participant = (new Participant());
+                            $campus = $campusRepository->find(['id'=> $row['Campus']]);
 
-                        $participant
-                            ->setPseudo($row['Pseudo'])
-                            ->setRoles(['ROLE_USER'])
-                            ->setNom($row['Nom'])
-                            ->setPrenom($row['Prenom'])
-                            ->setPassword($this->encoder->encodePassword($participant,$row['Prenom'] . $row['Nom'] . $year))
-                            ->setMail($row['Prenom'] . $row['Nom'] . $year .'@campus-eni.fr')
-                            ->setTelephone($row['Telephone'])
-                            ->setActif(true)
-                            ->setCampus($campus);
+                            $participant = (new Participant());
 
-                        $entityManager->persist($participant);
+                            $participant
+                                ->setPseudo($row['Pseudo'])
+                                ->setRoles(['ROLE_USER'])
+                                ->setNom($row['Nom'])
+                                ->setPrenom($row['Prenom'])
+                                ->setPassword($this->encoder->encodePassword($participant,$row['Prenom'] . $row['Nom'] . $year))
+                                ->setMail($row['Prenom'] . $row['Nom'] . $year .'@campus-eni.fr')
+                                ->setTelephone($row['Telephone'])
+                                ->setActif(true)
+                                ->setCampus($campus);
+
+                            $entityManager->persist($participant);
+                        }
+                        $entityManager->flush();
+
+                        unlink($full_path);
+
+                        $this->addFlash('succes','Vos données on été ajoutées en base');
                     }
-                    $entityManager->flush();
-
-                    unlink($full_path);
-
-                    $this->addFlash('succes','Vos données on été ajoutées en base');
-
+                    catch (\Exception $errorException)
+                    {
+                        unlink($full_path);
+                        $this->addFlash('warning','Echec du téléchargement du fichier');
+                    }
                 }
                 else {
                     $this->addFlash('warning','Echec du téléchargement du fichier');
                 }
             }
         }
-        return $this->render('admin/gestionutilisateur.html.twig', [
+        return $this->render('admin/ajoututilisateur.html.twig', [
             'form' => $form->createView(),
         ]);
     }
