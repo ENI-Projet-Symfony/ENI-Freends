@@ -7,6 +7,7 @@ use App\Form\FileUploadType;
 use App\Repository\CampusRepository;
 use App\Repository\LieuRepository;
 use App\Repository\ParticipantRepository;
+use App\Repository\SortieRepository;
 use App\Util\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
@@ -50,7 +51,6 @@ class AdminController extends AbstractController
         return $this->render('admin/infoUtilisateur.html.twig', [
             'Participant' => $participant
         ]);
-
     }
 
 
@@ -136,7 +136,6 @@ class AdminController extends AbstractController
         return $this->render('admin/gestionlieux.html.twig', [
             'lieux' => $allLieux
         ]);
-
     }
 
     /**
@@ -148,6 +147,89 @@ class AdminController extends AbstractController
         return $this->render('admin/infoLieu.html.twig', [
             'lieu' => $lieu
         ]);
+    }
 
+    /**
+     * @Route("/admin/gestion/utilisateur/{id}/activer", name="admin_activer_utilisateur", methods={"GET"})
+     */
+    public function activerUtilisateur(int $id, ParticipantRepository $participantRepository, EntityManagerInterface $entityManager)
+    {
+        // Récupère l'Id du participant et la sortie à laquelle on s'inscrit
+        $participant = $participantRepository->findOneBy(['id'=>$id]);
+        $participant->setActif(true);
+
+        $entityManager->persist($participant);
+        $entityManager->flush();
+
+        // Ajoute un message de succès
+        $this->addFlash("success","Utilisateur activé avec succès");
+
+        // Redirige sur la page de list de sorties
+        return $this->redirectToRoute('admin_gestion_utilisateur');
+    }
+
+    /**
+     * @Route("/admin/gestion/utilisateur/{id}/desactiver", name="admin_desactiver_utilisateur", methods={"GET"})
+     */
+    public function desactiverUtilisateur(int $id, ParticipantRepository $participantRepository, EntityManagerInterface $entityManager)
+    {
+        // Récupère l'Id du participant et la sortie à laquelle on s'inscrit
+        $participant = $participantRepository->findOneBy(['id'=>$id]);
+        $participant->setActif(false);
+        $entityManager->persist($participant);
+        $entityManager->flush();
+
+        // Ajoute un message de succès
+        $this->addFlash("success","Utilisateur désactivé avec succès");
+
+        // Redirige sur la page de list de sorties
+        return $this->redirectToRoute('admin_gestion_utilisateur');
+    }
+
+    /**
+     * @Route("/admin/gestion/utilisateur/{id}/suppression", name="admin_suppression_utilisateur", methods={"GET"})
+     */
+    public function suppressionUtilisateur(int $id, EntityManagerInterface $entityManager,
+                                   SortieRepository $sortieRepository,
+                                   ParticipantRepository $participantRepository): Response
+    {
+        // Récupère l'Id du participant et la sortie à laquelle on s'inscrit
+        $participant = $participantRepository->find($id);
+
+        // Si cette sortie n'existe pas en BDD
+        if (!$participant){
+            //alors on déclenche une 404
+            throw $this->createNotFoundException('Cet utilisateur n\'existe pas');
+        }
+
+        // Définir l'administrateur qui supprime un utilisateur en tant qu'organisteur des sorties existantes de cet utilisateur
+        // Récupère l'ID de l'administrateur
+        $adminId = $this->getUser();
+
+        // Récupère toutes les sorties organisées par l'utilisateur
+        $sorties = $sortieRepository->findBy([
+           'organisateur' => $id
+        ]);
+        // Défini l'administrateur en tant qu'organisateur de ces sorties
+        foreach ($sorties as $sortie)
+        {
+            $sortie->setOrganisateur($adminId);
+            $entityManager->persist($sortie);
+        }
+        $entityManager->flush();
+
+        // Supprime l'utilisateur de la BDD
+        $qbuser = $participantRepository->createQueryBuilder('p');
+        $qbuser->delete();
+        $qbuser->where('p.id = :val_id');
+        $qbuser->setParameter('val_id', $id);
+        $query = $qbuser->getQuery();
+        $result = $query->getResult();
+
+        // Ajoute un message de succès
+        $this->addFlash("success","Utilisateur supprimé avec succès");
+
+        // Redirige sur la page de list de sorties
+        return $this->redirectToRoute('admin_gestion_utilisateur');
     }
 }
