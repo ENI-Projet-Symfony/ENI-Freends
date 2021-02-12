@@ -10,12 +10,12 @@
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="page-header">
-                            <h3 class="mb-2">Liste des utilisateurs </h3>
+                            <h3 class="mb-2">Ajout d'utilisateurs </h3>
                             <div class="page-breadcrumb">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Gestion</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Utilisateur</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Ajout d'utilisateur</li>
                                     </ol>
                                 </nav>
                             </div>
@@ -28,7 +28,39 @@
                 <!-- ============================================================== -->
                 <!-- content -->
                 <!-- ============================================================== -->
+                {% for label, messages in app.flashes %}
+                    <div class="container">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ label }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
                 <div class="row">
+                    <h1 class="text-center col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">Ajout d'utilisateur via un fichier CSV</h1>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="mb-2">Veuillez deposez votre fichier CSV</div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    {{ form_start(form, { attr: { 'accept-charset' : 'utf-8' }}) }}
+                                    <div class="form-group">
+                                        {{ form_label(form.upload_file) }}
+                                        {{ form_widget(form.upload_file) }}
+                                        {{ form_errors(form.upload_file) }}
+                                    </div>
+                                    <div class="float-none mt-xl-0 mt-4">
+                                        <button class="btn-outline-dark" type="submit">Upload du fichier</button>
+                                    </div>
+                                    {{ form_rest(form) }}
+                                    {{ form_end(form) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+{#                <div class="row">
                     <!-- ============================================================== -->
                     <!-- search bar  -->
                     <!-- ============================================================== -->
@@ -41,11 +73,11 @@
                                 </form>
                             </div>
                         </div>
-                    </div>
+                    </div>#}
                     <!-- ============================================================== -->
                     <!-- end search bar  -->
                     <!-- ============================================================== -->
-                    <div class="col-xl-9 col-lg-8 col-md-8 col-sm-12 col-12">
+{#                    <div class="col-xl-9 col-lg-8 col-md-8 col-sm-12 col-12">
                         <!-- ============================================================== -->
                         <!-- card influencer one -->
                         <!-- ============================================================== -->
@@ -88,39 +120,21 @@
                                 </div>
                             </div>
                             <div class="border-top user-social-box">
-{#                                <div class="user-social-media d-xl-inline-block "><span class="mr-2 twitter-color"> <i class="fab fa-twitter-square"></i></span><span>13,291</span></div>#}
-{#                                <div class="user-social-media d-xl-inline-block"><span class="mr-2  pinterest-color"> <i class="fab fa-pinterest-square"></i></span><span>84,019</span></div>#}
-{#                                <div class="user-social-media d-xl-inline-block"><span class="mr-2 instagram-color"> <i class="fab fa-instagram"></i></span><span>12,300</span></div>#}
-{#                                <div class="user-social-media d-xl-inline-block"><span class="mr-2  facebook-color"> <i class="fab fa-facebook-square "></i></span><span>92,920</span></div>#}
-{#                                <div class="user-social-media d-xl-inline-block"><span class="mr-2 medium-color"> <i class="fab fa-medium"></i></span><span>291</span></div>#}
-{#                                <div class="user-social-media d-xl-inline-block"><span class="mr-2 youtube-color"> <i class="fab fa-youtube"></i></span><span>1291</span></div>#}
+#}{#                                <div class="user-social-media d-xl-inline-block "><span class="mr-2 twitter-color"> <i class="fab fa-twitter-square"></i></span><span>13,291</span></div>#}{#
+#}{#                                <div class="user-social-media d-xl-inline-block"><span class="mr-2  pinterest-color"> <i class="fab fa-pinterest-square"></i></span><span>84,019</span></div>#}{#
+#}{#                                <div class="user-social-media d-xl-inline-block"><span class="mr-2 instagram-color"> <i class="fab fa-instagram"></i></span><span>12,300</span></div>#}{#
+#}{#                                <div class="user-social-media d-xl-inline-block"><span class="mr-2  facebook-color"> <i class="fab fa-facebook-square "></i></span><span>92,920</span></div>#}{#
+#}{#                                <div class="user-social-media d-xl-inline-block"><span class="mr-2 medium-color"> <i class="fab fa-medium"></i></span><span>291</span></div>#}{#
+#}{#                                <div class="user-social-media d-xl-inline-block"><span class="mr-2 youtube-color"> <i class="fab fa-youtube"></i></span><span>1291</span></div>#}{#
                             </div>
                         </div>
-                        {% endfor %}
+                        {% endfor %}#}
                     </div>
 
                 </div>
             </div>
         </div>
 
-{#    <h1 class="text-center">Ajout d'utilisateur via un fichier CSV</h1>#}
-
-{#    <div class="mb-2">Veuillez deposez votre fichier CSV</div>#}
-{#        <div class="row">#}
-{#            <div class="col-lg-8">#}
-{#                {{ form_start(form, { attr: { 'accept-charset' : 'utf-8' }}) }}#}
-{#                <div class="form-group">#}
-{#                    {{ form_label(form.upload_file) }}#}
-{#                    {{ form_widget(form.upload_file) }}#}
-{#                    {{ form_errors(form.upload_file) }}#}
-{#                </div>#}
-{#                <div class="form-group mt-4">#}
-{#                    {{ form_widget(form.send, {'label': "Upload this file", 'attr' : { 'class': 'btn btn-outline-dark' }}) }}#}
-{#                </div>#}
-{#                {{ form_rest(form) }}#}
-{#                {{ form_end(form) }}#}
-{#            </div>#}
-{#        </div>#}
 
 {% endblock %}
 
