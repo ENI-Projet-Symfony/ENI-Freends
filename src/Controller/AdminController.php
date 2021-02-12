@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Participant;
 use App\Form\FileUploadType;
 use App\Repository\CampusRepository;
+use App\Repository\LieuRepository;
 use App\Repository\ParticipantRepository;
 use App\Util\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
@@ -50,6 +51,7 @@ class AdminController extends AbstractController
         ]);
 
     }
+
 
     /**
      * @Route("/admin/gestion/utilisateur/nouveau", name="admin_gestion_utilisateur_nouveau")
@@ -116,5 +118,30 @@ class AdminController extends AbstractController
         return $this->render('admin/gestionutilisateur.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+
+    /**
+     * @Route("/admin/gestion/lieux/", name="admin_gestion_lieux")
+     */
+    public function listeLieux(LieuRepository $lieuRepository)
+    {
+        $allLieux = $lieuRepository->findAll();
+        return $this->render('admin/gestionlieux.html.twig', [
+            'lieux' => $allLieux
+        ]);
+
+    }
+
+    /**
+     * @Route("/admin/gestion/lieux/info/{id}", name="admin_gestion_lieux_infos")
+     */
+    public function infoLieux(int $id,LieuRepository $lieuRepository)
+    {
+        $lieu = $lieuRepository->find($id);
+        return $this->render('admin/infoLieu.html.twig', [
+            'lieu' => $lieu
+        ]);
+
     }
 }
