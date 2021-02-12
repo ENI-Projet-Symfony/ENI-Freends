@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Participant;
 use App\Form\FileUploadType;
 use App\Repository\CampusRepository;
+use App\Repository\ParticipantRepository;
 use App\Util\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
@@ -23,14 +24,37 @@ class AdminController extends AbstractController
      */
     public function backOffice(): Response
     {
-        return $this->render('admin/backOffice.html.twig', [
-        ]);
+        return $this->render('admin/homeBackOffice.html.twig', []);
     }
 
     /**
-     * @Route("/admin/gestionutilisateur", name="admin_gestion_utilisateur")
+     * @Route("/admin/gestion/utilisateur/", name="admin_gestion_utilisateur")
      */
-    public function gestionUtilisateur
+    public function ajouterUtilisateur(ParticipantRepository $participantRepository)
+    {
+        $allParticipant = $participantRepository->findAll();
+        return $this->render('admin/gestionutilisateur.html.twig', [
+            'allParticipant' => $allParticipant
+        ]);
+
+    }
+
+    /**
+     * @Route("/admin/gestion/utilisateur/info/{id}", name="admin_gestion_utilisateur_infos")
+     */
+    public function infoUtilisateur(int $id,ParticipantRepository $participantRepository)
+    {
+        $participant = $participantRepository->find($id);
+        return $this->render('admin/infoUtilisateur.html.twig', [
+            'Participant' => $participant
+        ]);
+
+    }
+
+    /**
+     * @Route("/admin/gestion/utilisateur/nouveau", name="admin_gestion_utilisateur_nouveau")
+     */
+    public function listUtilisateur
     (Request $request,FileUploader $fileUploader, String $uploadDirCsv,
      EntityManagerInterface $entityManager,
      CampusRepository $campusRepository,UserPasswordEncoderInterface $encoder): Response
