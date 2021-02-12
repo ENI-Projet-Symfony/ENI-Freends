@@ -136,8 +136,10 @@
             </tbody>
         </table>
 
-
-        <a class="btn btn-outline-warning" href="{{ path('sorties_add') }}">Créer une sortie</a>
+        {% if isMobile() %}
+        {% else %}
+            <a class="btn btn-outline-warning" href="{{ path('sorties_add') }}">Créer une sortie</a>
+        {% endif %}
 
 
     </section>

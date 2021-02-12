@@ -34,7 +34,7 @@
                         </li>
                     {% endif %}
 
-                    {% if isDesktop() %}
+                    {% if isMobile() %}
                         <li class="nav-item"><a class="nav-link" href="{{ path('sorties_list') }}">Sorties</a></li>
                     {% else %}
                         <li class="nav-item dropdown">
