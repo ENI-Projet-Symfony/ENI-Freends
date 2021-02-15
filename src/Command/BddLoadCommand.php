@@ -461,7 +461,7 @@ class BddLoadCommand extends Command
         $dateInsSortie1 = new \DateTime($dateIns1->format('Y-M-d H:i:s'));
 
         $sortie1 = new Sortie();
-        $sortie1->setNom("Test etat 2 vers 3")
+        $sortie1->setNom("Test etat 'Ouverte' vers 'Clôturée'")
             ->setDateHeureDebut($dateDebutSortie1)
             ->setDuree(30)
             ->setDateLimiteInscription($dateInsSortie1)
@@ -483,7 +483,7 @@ class BddLoadCommand extends Command
         $dateInssortie2 = new \DateTime($dsortie2->format('Y-M-d H:i:s'));
 
         $sortie2 = new Sortie();
-        $sortie2->setNom("Test etat 3 vers 4")
+        $sortie2->setNom("Test etat 'Clôturée' vers 'Activité en cours'")
             ->setDateHeureDebut($dateDebutsortie2)
             ->setDuree(240)
             ->setDateLimiteInscription($dateInssortie2)
@@ -505,7 +505,7 @@ class BddLoadCommand extends Command
         $dateInssortie3 = new \DateTime($dsortie3->format('Y-M-d H:i:s'));
 
         $sortie3 = new Sortie();
-        $sortie3->setNom("Test etat 4 vers 5")
+        $sortie3->setNom("Test etat 'Activité en cours' vers 'Passée'")
             ->setDateHeureDebut($dateDebutsortie3)
             ->setDuree(30)
             ->setDateLimiteInscription($dateInssortie3)
@@ -527,7 +527,7 @@ class BddLoadCommand extends Command
         $dateInssortie4 = new \DateTime($dsortie4->format('Y-M-d H:i:s'));
 
         $sortie4 = new Sortie();
-        $sortie4->setNom("Test etat 5 vers 7")
+        $sortie4->setNom("Test etat 'Passée' vers 'Archivée'")
             ->setDateHeureDebut($dateDebutsortie4)
             ->setDuree(30)
             ->setDateLimiteInscription($dateInssortie4)
