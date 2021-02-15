@@ -54,6 +54,7 @@ class UserInformationType extends AbstractType
                 'choice_label' => 'nom'
             ])
             ->add('photo', FileType::class, [
+                'required' =>false,
                 'mapped' => false,
                 'constraints' =>[
                     new Image([
