@@ -8,6 +8,7 @@ use App\Entity\Sortie;
 use App\Entity\Ville;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -84,11 +85,8 @@ class SortieType extends AbstractType
                 'choice_value' => 'id'
 
             ])
-            ->add('lieu',EntityType::class,[
+            ->add('lieu',ChoiceType::class,[
                 'label' => "Lieu",
-                'class' => Lieu::class,
-                'choice_label' => 'nom',
-                'choice_value' => 'id'
 
             ])
             ->add('rue',TextType::class,[

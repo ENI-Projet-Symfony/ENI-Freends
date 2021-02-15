@@ -18,18 +18,31 @@ class ApiController extends AbstractController
     public function getLieuInfo(Request $request,SerializerInterface $serializer,LieuRepository $lieuRepository) : Response
     {
 
+
+
         if($request->get('id')) {
 
             $lieu = $lieuRepository->findOneBy([
                 'id' => $request->get("id")
             ]);
 
-            $lieu = [
-                "longitude" => $lieu->getLongitude(),
-                "latitude" => $lieu->getLatitude(),
-                "rue" => $lieu->getRue(),
-                "cp" => $lieu->getVille()->getCodePostal(),
-            ];
+            if($lieu){
+                $lieu = [
+                    "longitude" => $lieu->getLongitude(),
+                    "latitude" => $lieu->getLatitude(),
+                    "rue" => $lieu->getRue(),
+                    "cp" => $lieu->getVille()->getCodePostal(),
+                ];
+            }else{
+                $lieu = [
+                    "longitude" => "Inconnu",
+                    "latitude" => "Inconnu",
+                    "rue" => "Inconnu",
+                    "cp" => "Inconnu",
+                ];
+            }
+
+
         }else {
             $lieu = [
                 "longitude" => "Inconnu",
@@ -56,15 +69,11 @@ class ApiController extends AbstractController
                 'ville' => $request->get("id")
             ]);
 
-            return $this->render('sorties/selectLieu.html.twig', [
-                "AllLieu" => $allLieu
-            ]);
-        }else {
-            $lieu = [];
+
         }
 
-        $json = $serializer->serialize($lieu, 'json',['groups' => "lieu"]);
-
-        return new JsonResponse($json, 200, [], true);
+        return $this->render('sorties/selectLieu.html.twig', [
+            "AllLieu" => $allLieu
+        ]);
     }
 }
