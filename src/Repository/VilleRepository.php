@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Ville;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +18,12 @@ class VilleRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Ville::class);
+    }
+    public function getVillesEtNbrLieux(){
+        $dql = 'SELECT v.id,v.nom,v.codePostal, COUNT(l.id) nbrLieux
+                FROM App\Entity\Ville v left JOIN v.lieus l
+                GROUP BY v.id';
+        return $this->getEntityManager()->createQuery($dql)->getResult();
     }
 
     // /**

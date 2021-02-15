@@ -31,8 +31,8 @@ class VilleController extends AbstractController
             $entityManager->persist($ville);
             $entityManager->flush();
         }
+        $villes = $villeRepository->getVillesEtNbrLieux();
 
-        $villes =  $villeRepository->findAll();
 
         return $this->render('villes/villes.html.twig', [
             'form_ajout' => $formAjout->createView(),
