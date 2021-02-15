@@ -62,7 +62,8 @@
 
 {%  block javascripts %}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-        <script>
+            <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
 
                 var lieu = $("#sortie_lieu");
                 var ville = $("#sortie_ville");
@@ -108,6 +109,7 @@
                }
 
                 $(document).ready(function(){
+                    $('#sortie_ville').select2();
                     dynChangeLieu();
                         lieu.change(function(e){
                             dynChangeLieuInfo();
