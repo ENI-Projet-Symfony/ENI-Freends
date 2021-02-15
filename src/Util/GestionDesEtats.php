@@ -2,10 +2,12 @@
 
 namespace App\Util;
 
+use App\Entity\Sortie;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpParser\Node\Expr\Array_;
 
 class GestionDesEtats
 {
@@ -30,7 +32,14 @@ class GestionDesEtats
         $etatPassee = $this->etatRepository->find(['id' => 5]);
         $etatArchive = $this->etatRepository->find(['id' => 7]);
 
-        dump($sortieOuvertes);
+
+        if($sortieOuvertes instanceof Sortie)
+        {
+            $tampon = $sortieOuvertes;
+            $sortieOuvertes = [];
+            $sortieOuvertes [] = $tampon;
+        }
+
 
         foreach ($sortieOuvertes as $sortie)
         {
@@ -61,8 +70,6 @@ class GestionDesEtats
             }
 
         }
-
-        dump($sortieOuvertes);
 
         return $sortieOuvertes;
 

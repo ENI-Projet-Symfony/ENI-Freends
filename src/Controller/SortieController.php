@@ -236,9 +236,12 @@ class SortieController extends AbstractController
      */
     public function details(int $id, SortieRepository $sortieRepository, GestionDesEtats $gestionDesEtats): Response
     {
-        $gestionDesEtats->verificationEtats();
+
         //aller chercher dans la BDD la sortie dont l'id est dans l'URL
         $sortie = $sortieRepository->find($id);
+        $sorties = $gestionDesEtats->verificationEtats($sortie);
+
+        $sortie = $sorties[0];
 
         // Si cette sortie n'existe pas en BDD
         if (!$sortie){
