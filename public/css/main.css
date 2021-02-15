@@ -68,6 +68,14 @@ textarea#sortie_infosSortie {
     resize: none;
     height: 103px;
 }
+.input-disabled{
+    border-style: none;
+    background: none !important;
+
+}
+.btn-modif-ville{
+    display: none;
+}
 .typewriter h1 {
     font-size: 3em;
     color: #FFFFFF;
