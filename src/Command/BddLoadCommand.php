@@ -6,7 +6,9 @@ use App\Entity\Campus;
 use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Participant;
+use App\Entity\Sortie;
 use App\Entity\Ville;
+use App\Repository\LieuRepository;
 use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -29,16 +31,19 @@ class BddLoadCommand extends Command
     protected $serializer;
     protected $httpClient;
     protected $villeRepository;
+    protected $lieuRepository;
 
     public function __construct(string $name = null,EntityManagerInterface $entityManager, UserPasswordEncoderInterface $encoder,
                                 SerializerInterface $serializer, HttpClientInterface $httpClient,
-                                VilleRepository $villeRepository)
+                                VilleRepository $villeRepository,LieuRepository $lieuRepository)
     {
         $this->entityManager = $entityManager;
         $this->encoder = $encoder;
         $this->serializer =$serializer;
         $this->httpClient = $httpClient;
         $this->villeRepository = $villeRepository;
+        $this->lieuRepository = $lieuRepository;
+
 
         parent::__construct($name);
     }
@@ -149,41 +154,41 @@ class BddLoadCommand extends Command
             ->setCampus($campus3);
         $manager->persist($participantSuperAdmin);
 
-        $participantSuperAdmin = new Participant();
-        $participantSuperAdmin->setPseudo("Amiden")
+        $amidenSuperAdmin = new Participant();
+        $amidenSuperAdmin->setPseudo("Amiden")
             ->setNom("Puaud")
             ->setPrenom("Damien")
             ->setTelephone("0689626729")
             ->setMail("damien.puaud22020@campus-eni.fr")
-            ->setPassword($this->encoder->encodePassword($participantSuperAdmin,"amidenadmin"))
+            ->setPassword($this->encoder->encodePassword($amidenSuperAdmin,"amidenadmin"))
             ->setRoles(["ROLE_SUPER_ADMIN"])
             ->setActif(true)
             ->setCampus($campus2);
-        $manager->persist($participantSuperAdmin);
+        $manager->persist($amidenSuperAdmin);
 
-        $participantSuperAdmin = new Participant();
-        $participantSuperAdmin->setPseudo("Boris")
+        $borisSuperAdmin = new Participant();
+        $borisSuperAdmin->setPseudo("Boris")
             ->setNom("Oger")
             ->setPrenom("Boris")
             ->setTelephone("0323456789")
             ->setMail("boris.oger2020@campus-eni.fr")
-            ->setPassword($this->encoder->encodePassword($participantSuperAdmin,"pa\$\$word"))
+            ->setPassword($this->encoder->encodePassword($borisSuperAdmin,"pa\$\$word"))
             ->setRoles(["ROLE_SUPER_ADMIN"])
             ->setActif(true)
             ->setCampus($campus2);
-        $manager->persist($participantSuperAdmin);
+        $manager->persist($borisSuperAdmin);
 
-        $participantSuperAdmin = new Participant();
-        $participantSuperAdmin->setPseudo("Arko")
+        $arkoSuperAdmin = new Participant();
+        $arkoSuperAdmin->setPseudo("Arko")
             ->setNom("Leclere")
             ->setPrenom("François")
             ->setTelephone("0323456790")
             ->setMail("francois.leclere2020@campus-eni.fr")
-            ->setPassword($this->encoder->encodePassword($participantSuperAdmin,"arkoadmin"))
+            ->setPassword($this->encoder->encodePassword($arkoSuperAdmin,"arkoadmin"))
             ->setRoles(["ROLE_SUPER_ADMIN"])
             ->setActif(true)
             ->setCampus($campus2);
-        $manager->persist($participantSuperAdmin);
+        $manager->persist($arkoSuperAdmin);
 
         $manager->flush();
 
@@ -257,6 +262,106 @@ class BddLoadCommand extends Command
         }
 
         $manager->flush();
+
+        //Sortie test de passage de l'état 2 vers l'etat 3
+        $dateDebut1 = new \DateTime();
+        $dateDebut1->add(new \DateInterval('P0Y0M7DT0H0M0S'));
+        $dateDebutSortie1 = new \DateTime($dateDebut1->format('Y-M-d H:i:s'));
+        $dateIns1 = new \DateTime();
+        $dateIns1->sub(new \DateInterval('P0Y0M1DT0H0M0S'));
+        $dateInsSortie1 = new \DateTime($dateIns1->format('Y-M-d H:i:s'));
+
+        $sortie1 = new Sortie();
+        $sortie1->setNom("Test etat 2 vers 3")
+            ->setDateHeureDebut($dateDebutSortie1)
+            ->setDuree(30)
+            ->setDateLimiteInscription($dateInsSortie1)
+            ->setNbInscriptionsMax(20)
+            ->setInfosSortie("Blablabla test")
+            ->setEtat($etat2)
+            ->setOrganisateur($amidenSuperAdmin)
+            ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
+            ->setCampus($campus2);
+        $manager->persist($sortie1);
+
+        //Sortie test de passage de l'état 3 vers l'etat 4
+        $datsortie2 = new \DateTime();
+        $datsortie2->sub(new \DateInterval('P0Y0M0DT1H0M0S'));
+        $dateDebutsortie2 = new \DateTime($datsortie2->format('Y-M-d H:i:s'));
+        $dsortie2 = new \DateTime();
+        $dsortie2->sub(new \DateInterval('P0Y0M1DT0H0M0S'));
+        $dateInssortie2 = new \DateTime($dsortie2->format('Y-M-d H:i:s'));
+
+        $sortie2 = new Sortie();
+        $sortie2->setNom("Test etat 3 vers 4")
+            ->setDateHeureDebut($dateDebutsortie2)
+            ->setDuree(240)
+            ->setDateLimiteInscription($dateInssortie2)
+            ->setNbInscriptionsMax(20)
+            ->setInfosSortie("Blablabla test")
+            ->setEtat($etat3)
+            ->setOrganisateur($amidenSuperAdmin)
+            ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
+            ->setCampus($campus2);
+        $manager->persist($sortie2);
+
+        //Sortie test de passage de l'état 4 vers l'etat 5
+        $datsortie3 = new \DateTime();
+        $datsortie3->sub(new \DateInterval('P0Y0M0DT4H0M0S'));
+        $dateDebutsortie3 = new \DateTime($datsortie3->format('Y-M-d H:i:s'));
+        $dsortie3 = new \DateTime();
+        $dsortie3->sub(new \DateInterval('P0Y0M1DT0H0M0S'));
+        $dateInssortie3 = new \DateTime($dsortie3->format('Y-M-d H:i:s'));
+
+        $sortie3 = new Sortie();
+        $sortie3->setNom("Test etat 4 vers 5")
+            ->setDateHeureDebut($dateDebutsortie3)
+            ->setDuree(30)
+            ->setDateLimiteInscription($dateInssortie3)
+            ->setNbInscriptionsMax(20)
+            ->setInfosSortie("Blablabla test")
+            ->setEtat($etat4)
+            ->setOrganisateur($amidenSuperAdmin)
+            ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
+            ->setCampus($campus2);
+        $manager->persist($sortie3);
+
+        //Sortie test de passage de l'état 5 vers l'etat 7
+        $datsortie4 = new \DateTime();
+        $datsortie4->sub(new \DateInterval('P0Y1M1DT0H0M0S'));
+        $dateDebutsortie4 = new \DateTime($datsortie4->format('Y-M-d H:i:s'));
+        $dsortie4 = new \DateTime();
+        $dsortie4->sub(new \DateInterval('P0Y1M2DT0H0M0S'));
+        $dateInssortie4 = new \DateTime($dsortie4->format('Y-M-d H:i:s'));
+
+        $sortie4 = new Sortie();
+        $sortie4->setNom("Test etat 5 vers 7")
+            ->setDateHeureDebut($dateDebutsortie4)
+            ->setDuree(30)
+            ->setDateLimiteInscription($dateInssortie4)
+            ->setNbInscriptionsMax(20)
+            ->setInfosSortie("Blablabla test")
+            ->setEtat($etat5)
+            ->setOrganisateur($amidenSuperAdmin)
+            ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
+            ->setCampus($campus2);
+        $manager->persist($sortie4);
+
+        $manager->flush();
+        $connection->executeQuery("DROP EVENT IF EXISTS `Gestion_Etat`");
+        $connection->executeQuery("CREATE DEFINER=`root`@`localhost` EVENT `Gestion_Etat` ON SCHEDULE EVERY 1 DAY STARTS '2021-02-15 00:30:00' ENDS '2028-02-15 00:35:00' ON COMPLETION NOT PRESERVE ENABLE DO BEGIN
+                                    UPDATE sortie as s SET s.etat_id = 3 
+                                    WHERE s.date_limite_inscription <= NOW();
+                                    
+                                    UPDATE sortie as s SET s.etat_id = 4 
+                                    WHERE s.date_heure_debut <= NOW();
+                                    
+                                    UPDATE sortie as s SET s.etat_id = 5 
+                                    WHERE DATE_ADD(s.date_heure_debut, INTERVAL s.duree MINUTE) <= NOW();
+                                    
+                                    UPDATE sortie as s SET s.etat_id = 7 
+                                    WHERE DATE_ADD(DATE_ADD(s.date_heure_debut, INTERVAL s.duree MINUTE), INTERVAL '31' DAY) <= NOW();
+                                    END");
 
         $io->success('La base de donnée à été initialisée !');
 

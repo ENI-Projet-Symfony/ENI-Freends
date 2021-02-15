@@ -194,8 +194,6 @@ class SortieController extends AbstractController
         //récupère les données soumises dans la requête
         $filterForm->handleRequest($request);
 
-        $gestionDesEtats->verificationEtats();
-
         //les données du form sont là (s'il a été soumis)
         if($filterForm->isSubmitted()) {
             $campus = $filterForm['campus']->getData();
@@ -218,8 +216,12 @@ class SortieController extends AbstractController
             $participantId = $this->getUser()->getId();
 
             $sorties = $sortieRepository->filtrerSorties($campus, $nom, $participantId, $dateDebut, $dateFin, $sortiesOrganisees, $sortiesInscrit, $sortiesNonInscrit, $sortiesPassees);
+
+            $sorties = $gestionDesEtats->verificationEtats($sorties);
+
         } else {
             $sorties = $sortieRepository->filtrerSortieParEtat([7]);
+            $sorties = $gestionDesEtats->verificationEtats($sorties);
         }
 
         return $this->render('sorties/list.html.twig', [
