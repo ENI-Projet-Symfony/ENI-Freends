@@ -123,14 +123,20 @@
     "laminas/laminas-zendframework-bridge": {
         "version": "1.1.1"
     },
-    "league/csv": {
-        "version": "9.6.2"
-    },
     "league/color-extractor": {
         "version": "0.3.2"
     },
+    "league/csv": {
+        "version": "9.6.2"
+    },
+    "matomo/device-detector": {
+        "version": "4.1.0"
+    },
     "monolog/monolog": {
         "version": "2.2.0"
+    },
+    "mustangostang/spyc": {
+        "version": "0.6.3"
     },
     "nikic/php-parser": {
         "version": "v4.10.4"

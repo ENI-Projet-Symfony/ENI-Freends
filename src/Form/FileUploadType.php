@@ -37,7 +37,6 @@ class FileUploadType extends AbstractType
                         'mimeTypesMessage' => "This document isn't valid.",
                     ])
                 ],
-            ])
-            ->add('send', SubmitType::class);
+            ]);
     }
 }

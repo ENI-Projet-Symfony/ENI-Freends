@@ -10,6 +10,7 @@ use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use App\Util\GestionDesEtats;
 use claviska\SimpleImage;
+use DeviceDetector\DeviceDetector;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -27,6 +28,18 @@ class SortieController extends AbstractController
                              ParticipantRepository $participantRepository,
                              EtatRepository $etatRepository, string $uploadDirImg): Response
     {
+        // https://github.com/matomo-org/device-detector
+        // composer require matomo/device-detector
+        // Detection du support. Si mobile : redirige
+        $userAgent = $_SERVER['HTTP_USER_AGENT'];
+        $dd = new DeviceDetector($userAgent);
+        $dd->parse();
+
+        if ($dd->isMobile())
+        {
+            return $this->redirectToRoute('sorties_list');
+        }
+
         $sortie = new Sortie();
 
         $form = $this->createForm(SortieType::class,$sortie);

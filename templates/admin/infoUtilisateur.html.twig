@@ -1,0 +1,266 @@
+{% extends 'layouts/Concept/Standard.html.twig' %}
+
+{% block Content %}
+    <div class="influence-profile">
+        <div class="container-fluid dashboard-content ">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h3 class="mb-2">Utilisateur {{ Participant.id }} | {{ Participant.pseudo}} </h3>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Gestion</a></li>
+                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Utilisateur</a></li>
+                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Info</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">{{ Participant.pseudo}}</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end pageheader -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- content -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <!-- ============================================================== -->
+                <!-- profile -->
+                <!-- ============================================================== -->
+                <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12 col-12">
+                    <!-- ============================================================== -->
+                    <!-- card profile -->
+                    <!-- ============================================================== -->
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="user-avatar text-center d-block">
+                                <img src="{{ asset('img/'~Participant.nomFichierPhoto) }}" alt="User Avatar" class="rounded-circle user-avatar-xxl">
+                            </div>
+                            <div class="text-center">
+                                <h2 class="font-24 mb-0">{{ Participant.nom~" "~Participant.prenom }}</h2>
+                                <p>Pseudo : {{ Participant.username }}</p>
+                            </div>
+                        </div>
+                        <div class="card-body border-top">
+                            <h3 class="font-16">Contact Information</h3>
+                            <div class="">
+                                <ul class="list-unstyled mb-0">
+                                    <li class="mb-0"><i class="fa fa-university mr-2" aria-hidden="true"></i>{{ Participant.campus.nom }}</li>
+                                    <li class="mb-2"><i class="fas fa-fw fa-envelope mr-2"></i>{{ Participant.mail }}</li>
+                                    <li class="mb-0"><i class="fas fa-fw fa-phone mr-2"></i>{{ Participant.telephone }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body border-top">
+                            <h3 class="font-16">Participation</h3>
+                            <h1 class="mb-0">{{ Participant.sortiesParticpees|length }}</h1>
+                            <hr>
+                            <h3 class="font-16">Organisation</h3>
+                            <h1 class="mb-0">{{ Participant.sortiesOrganisees|length }}</h1>
+                        </div>
+                        <div class="card-body border-top">
+                            <h3 class="font-16">Role(s)</h3>
+                            <div>
+                                {% for role in Participant.roles %}
+                                    <a href="#" class="badge badge-light mr-1">{{ role }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ============================================================== -->
+                    <!-- end card profile -->
+                    <!-- ============================================================== -->
+                </div>
+                <!-- ============================================================== -->
+                <!-- end profile -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- campaign data -->
+                <!-- ============================================================== -->
+                <div class="col-xl-9 col-lg-9 col-md-7 col-sm-12 col-12">
+                    <!-- ============================================================== -->
+                    <!-- campaign tab one -->
+                    <!-- ============================================================== -->
+                    <div class="influence-profile-content pills-regular">
+                        <ul class="nav nav-pills mb-3 nav-justified" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="pills-campaign-tab" data-toggle="pill" href="#pills-campaign" role="tab" aria-controls="pills-campaign" aria-selected="true">Organisées</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="pills-packages-tab" data-toggle="pill" href="#pills-packages" role="tab" aria-controls="pills-packages" aria-selected="false">Participés</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-campaign" role="tabpanel" aria-labelledby="pills-campaign-tab">
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="section-block">
+                                            <h3 class="section-title">Statistique</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h1 class="mb-1">{{ Participant.sortiesOrganisees|length }}</h1>
+                                                <p>Nombre de sortie</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="section-block">
+                                    <h3 class="section-title">Liste des Sortie</h3>
+                                </div>
+                                {% for sortie in Participant.sortiesOrganisees %}
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="media influencer-profile-data d-flex align-items-center p-2">
+                                                    <div class="mr-4">
+                                                        <img src="{{ asset('img/'~sortie.urlPhoto) }}" alt="User Avatar" class="user-avatar-lg">
+                                                    </div>
+                                                    <div class="media-body ">
+                                                        <div class="influencer-profile-data">
+                                                            <h3 class="m-b-10">sortie.nom</h3>
+                                                            <p>
+                                                                        <span class="m-r-20 d-inline-block">Date
+                                                                            <span class="m-l-10 text-primary">{{ sortie.dateHeureDebut|date("d/m/Y") }}</span>
+                                                                        </span>
+                                                                <span class="m-r-20 d-inline-block"> Date Limite d'inscription
+                                                                            <span class="m-l-10 text-secondary">{{ sortie.dateLimiteInscription|date("d/m/Y") }}</span>
+                                                                        </span>
+                                                                <span class="m-r-20 d-inline-block">Durée <span class="m-l-10  text-info">{{ sortie.duree }}</span>
+                                                                        </span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="border-top card-footer p-0">
+
+                                        <div class="campaign-metrics d-xl-inline-block">
+                                            <h4 class="mb-0">{{ sortie.id }}</h4>
+                                            <p>Id</p>
+                                        </div>
+                                        <div class="campaign-metrics d-xl-inline-block">
+                                            <h4 class="mb-0">{{ sortie.participants|length }}</h4>
+                                            <p>Participants</p>
+                                        </div>
+                                        <div class="campaign-metrics d-xl-inline-block">
+                                            <h4 class="mb-0">{{ sortie.campus.nom }}</h4>
+                                            <p>Campus</p>
+                                        </div>
+                                        <div class="campaign-metrics d-xl-inline-block">
+                                            <h4 class="mb-0">{{ sortie.lieu.nom }}</h4>
+                                            <p>Lieu</p>
+                                        </div>
+                                        <div class="campaign-metrics d-xl-inline-block">
+                                            {% if sortie.etat.id != 2 %}
+                                                <h4 class="mb-0 text-success">Oui</h4>
+                                            {% else %}
+                                                <h4 class="mb-0 text-danger">Non</h4>
+                                            {% endif %}
+                                            <p>Public</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="tab-pane fade" id="pills-packages" role="tabpanel" aria-labelledby="pills-packages-tab">
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="section-block">
+                                            <h3 class="section-title">Statistique</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h1 class="mb-1">{{ Participant.sortiesParticpees|length }}</h1>
+                                                <p>Nombre de sortie</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="section-block">
+                                    <h3 class="section-title">Liste des Sortie</h3>
+                                </div>
+                                {% for sortie in Participant.sortiesParticpees %}
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="media influencer-profile-data d-flex align-items-center p-2">
+                                                        <div class="mr-4">
+                                                            <img src="{{ asset('img/'~sortie.urlPhoto) }}" alt="User Avatar" class="user-avatar-lg">
+                                                        </div>
+                                                        <div class="media-body ">
+                                                            <div class="influencer-profile-data">
+                                                                <h3 class="m-b-10">sortie.nom</h3>
+                                                                <p>
+                                                                        <span class="m-r-20 d-inline-block">Date
+                                                                            <span class="m-l-10 text-primary">{{ sortie.dateHeureDebut|date("d/m/Y") }}</span>
+                                                                        </span>
+                                                                    <span class="m-r-20 d-inline-block"> Date Limite d'inscription
+                                                                            <span class="m-l-10 text-secondary">{{ sortie.dateLimiteInscription|date("d/m/Y") }}</span>
+                                                                        </span>
+                                                                    <span class="m-r-20 d-inline-block">Durée <span class="m-l-10  text-info">{{ sortie.duree }}</span>
+                                                                        </span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="border-top card-footer p-0">
+
+                                            <div class="campaign-metrics d-xl-inline-block">
+                                                <h4 class="mb-0">{{ sortie.id }}</h4>
+                                                <p>Id</p>
+                                            </div>
+                                            <div class="campaign-metrics d-xl-inline-block">
+                                                <h4 class="mb-0">{{ sortie.participants|length }}</h4>
+                                                <p>Participants</p>
+                                            </div>
+                                            <div class="campaign-metrics d-xl-inline-block">
+                                                <h4 class="mb-0">{{ sortie.campus.nom }}</h4>
+                                                <p>Campus</p>
+                                            </div>
+                                            <div class="campaign-metrics d-xl-inline-block">
+                                                <h4 class="mb-0">{{ sortie.lieu.nom }}</h4>
+                                                <p>Lieu</p>
+                                            </div>
+                                            <div class="campaign-metrics d-xl-inline-block">
+                                                {% if sortie.etat.id != 2 %}
+                                                    <h4 class="mb-0 text-success">Oui</h4>
+                                                {% else %}
+                                                    <h4 class="mb-0 text-danger">Non</h4>
+                                                {% endif %}
+                                                <p>Public</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ============================================================== -->
+                    <!-- end campaign tab one -->
+                    <!-- ============================================================== -->
+                </div>
+                <!-- ============================================================== -->
+                <!-- end campaign data -->
+                <!-- ============================================================== -->
+            </div>
+        </div>
+    </div>
+{% endblock %}

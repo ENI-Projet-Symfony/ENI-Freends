@@ -2,6 +2,55 @@
 
 {% block title %}Home Page{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        body {
+            background-color: #1E1C26;
+        }
+        #svgContainer {
+            max-width: 100%;
+            max-height: 100%;
+            background-color: #1E1C26;
+            position: relative;
+            z-index: -1;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+        }
+        #svgContainer svg {
+            width:100%;
+            max-width: 100%;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <p>Lorem ipsum</p>
+    <div class="row">
+        <div class="col-6">
+            <div class="typewriter">
+                <h1>Sortez de votre canapé !</h1>
+            </div>
+        </div>
+        <div class="col-6">
+            <a href="{{ path('sorties_list') }}">
+                <div id="svgContainer"></div>
+            </a>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://labs.nearpod.com/bodymovin/demo/markus/halloween/lt.min.js"></script>
+    <script>
+        var svgContainer = document.getElementById('svgContainer');
+        var animItem = bodymovin.loadAnimation({
+            wrapper: svgContainer,
+            animType: 'svg',
+            loop: true,
+            path: 'https://labs.nearpod.com/bodymovin/demo/markus/isometric/markus2.json'
+        });
+    </script>
 {% endblock %}
