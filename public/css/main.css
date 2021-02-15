@@ -69,12 +69,19 @@ textarea#sortie_infosSortie {
     height: 103px;
 }
 .input-disabled{
-    border-style: none;
+    border-style: hidden;
     background: none !important;
 
 }
 .btn-modif-ville{
     display: none;
+}
+.form-modif-ville{
+    margin-bottom: 0.8rem;
+
+}
+.form-modif-ville p {
+    margin-bottom: 0;
 }
 .typewriter h1 {
     font-size: 3em;
