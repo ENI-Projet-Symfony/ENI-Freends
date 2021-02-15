@@ -149,6 +149,42 @@ class BddLoadCommand extends Command
             ->setCampus($campus3);
         $manager->persist($participantSuperAdmin);
 
+        $participantSuperAdmin = new Participant();
+        $participantSuperAdmin->setPseudo("Amiden")
+            ->setNom("Puaud")
+            ->setPrenom("Damien")
+            ->setTelephone("0689626729")
+            ->setMail("damien.puaud22020@campus-eni.fr")
+            ->setPassword($this->encoder->encodePassword($participantSuperAdmin,"amidenadmin"))
+            ->setRoles(["ROLE_SUPER_ADMIN"])
+            ->setActif(true)
+            ->setCampus($campus2);
+        $manager->persist($participantSuperAdmin);
+
+        $participantSuperAdmin = new Participant();
+        $participantSuperAdmin->setPseudo("Boris")
+            ->setNom("Oger")
+            ->setPrenom("Boris")
+            ->setTelephone("0323456789")
+            ->setMail("boris.oger2020@campus-eni.fr")
+            ->setPassword($this->encoder->encodePassword($participantSuperAdmin,"pa\$\$word"))
+            ->setRoles(["ROLE_SUPER_ADMIN"])
+            ->setActif(true)
+            ->setCampus($campus2);
+        $manager->persist($participantSuperAdmin);
+
+        $participantSuperAdmin = new Participant();
+        $participantSuperAdmin->setPseudo("Arko")
+            ->setNom("Leclere")
+            ->setPrenom("François")
+            ->setTelephone("0323456790")
+            ->setMail("francois.leclere2020@campus-eni.fr")
+            ->setPassword($this->encoder->encodePassword($participantSuperAdmin,"arkoadmin"))
+            ->setRoles(["ROLE_SUPER_ADMIN"])
+            ->setActif(true)
+            ->setCampus($campus2);
+        $manager->persist($participantSuperAdmin);
+
         $manager->flush();
 
         //Mise en BDD des Ville du Poitou Charente
