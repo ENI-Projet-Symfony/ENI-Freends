@@ -19,11 +19,27 @@ class VilleRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Ville::class);
     }
-    public function getVillesEtNbrLieux(){
+    public function getVillesEtNbrLieux($page = 1){
+        $maxResults = 15;
+        $firstResult = ($page - 1 ) * $maxResults;
         $dql = 'SELECT v.id,v.nom,v.codePostal, COUNT(l.id) nbrLieux
                 FROM App\Entity\Ville v left JOIN v.lieus l
                 GROUP BY v.id';
-        return $this->getEntityManager()->createQuery($dql)->getResult();
+        $dqlCount = 'SELECT COUNT(v.id) FROM App\Entity\Ville v';
+        $em = $this->getEntityManager();
+        //récupération des résultats
+        $results= $em->createQuery($dql)->setMaxResults($maxResults)->setFirstResult($firstResult)->getResult();
+
+        $totalResultsCount = $em->createQuery($dqlCount)->getResult();
+
+
+        $data = [
+            "numberOfResultsPerPage" => $maxResults,
+            "totalResultsCount" => $totalResultsCount,
+            "currentPage" => $page,
+            "results" => $results
+        ];
+        return $data;
     }
 
     // /**

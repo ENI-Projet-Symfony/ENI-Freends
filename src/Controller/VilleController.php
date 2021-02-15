@@ -18,9 +18,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class VilleController extends AbstractController
 {
     /**
-     * @Route("/villes", name="villes")
+     * @Route("/villes/{page}", name="villes")
      */
-    public function gestionVilles(Request $request, VilleRepository $villeRepository, EntityManagerInterface $entityManager): Response
+    public function gestionVilles(Request $request, VilleRepository $villeRepository, EntityManagerInterface $entityManager, int $page = 1): Response
     {
         $ville = New Ville();
 
@@ -31,12 +31,15 @@ class VilleController extends AbstractController
             $entityManager->persist($ville);
             $entityManager->flush();
         }
-        $villes = $villeRepository->getVillesEtNbrLieux();
+        $data = $villeRepository->getVillesEtNbrLieux($page);
 
 
         return $this->render('villes/villes.html.twig', [
             'form_ajout' => $formAjout->createView(),
-            'villes'=> $villes,
+            'villes'=> $data['results'],
+            'totalResultsCount' => $data['totalResultsCount'],
+            'numberOfResultsPerPage'=>$data['numberOfResultsPerPage'],
+            'page'=> $page,
             'controller_name' => 'VilleController',
         ]);
     }

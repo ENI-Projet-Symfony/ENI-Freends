@@ -2,24 +2,34 @@
 
 {% block body %}
     <h1>Villes</h1>
-
     <section>
+        <h2>Ajouter une ville</h2>
         <div class="row">
-            <div class="col-3">Villes</div>
-            <div class="col-3">Code postal</div>
-            <div class="col-6">Actions</div>
+
+            {{ form_start(form_ajout, {attr: {'novalidate': 'novalidate'}}) }}
+            {{ form_widget(form_ajout) }}
+            <div class="col text-center">
+                <button type="submit" class="mt-4 btn btn-outline-dark">Ajouter</button>
+            </div>
+            {{ form_end(form_ajout) }}
+        </div>
+    </section>
+    <section>
+        <div class="row text-center">
+            <div class="col-5"><h3>Villes</h3></div>
+            <div class="col-4"><h3>Code postal</h3></div>
+            <div class="col-3"><h3>Actions</h3></div>
             {% for ville in villes %}
-            <div class="col-9">
+            <div class="col-10">
             <form class="form-horizontal form-modif-ville"  action="{{ path('modifier_ville',{'id': ville.id}) }}">
                 <div class="input-group">
-
                     <input class="form-control input-modif-ville input-disabled" type="text" name="nom" value="{{ ville.nom }}" disabled>
                     <input class="form-control input-modif-ville input-disabled" type="text" name="codePostal" value="{{ ville.codePostal }}" disabled>
                     <p class="btn btn-secondary trigger-modify" >Modifier</p>
                     <button class="btn btn-secondary btn-modif-ville">Confirmer</button>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-2 text-end">
                 <a id="validate" href="#SuppressionVille{{ ville.id }}" data-toggle="modal" data-target="#SuppressionVille{{ ville.id }}" class="btn btn-secondary">Supprimer</a>
                 <!-- Modal -->
                 <div class="modal fade" id="SuppressionVille{{ ville.id }}" tabindex="-1" role="dialog" aria-labelledby="Suppression_Label{{ ville.id }}" aria-hidden="true">
@@ -53,14 +63,24 @@
 
     </section>
     <section>
-        <h2>Ajouter une ville</h2>
-    <div>
-        {{ form_start(form_ajout, {attr: {'novalidate': 'novalidate'}}) }}
-        {{ form_widget(form_ajout) }}
-        <div class="col text-center">
-            <button type="submit" class="mt-4 btn btn-outline-dark">Ajouter</button>
+    <div class="pagination-infos row">
+
+
+        {# doit-on afficher le lien vers la page précédente ? oui si on est sur la page 2 ou plus ! #}
+        {% set showPrevPageLink = page > 1 %}
+        <div class="col-4">
+        {% if showPrevPageLink %}
+            <a class="btn btn-dark" href="{{ path('villes', {'page': page-1}) }}">Prev page</a>
+        {% endif %}
         </div>
-        {{ form_end(form_ajout) }}
+        <div class="col-4 text-center">Page #{{ page }}</div>
+        {# et celui de la page suivante ? si le numéro du dernier résultat affiché est plus petit que le nb total ! #}
+        {% set showNextPageLink = (numberOfResultsPerPage * page) < totalResultsCount %}
+        <div class="col-4 text-end">
+        {% if showNextPageLink %}
+            <a class="btn btn-dark" href="{{ path('villes', {'page': page+1}) }}">Next page</a>
+        {% endif %}
+        </div>
     </div>
     </section>
 
