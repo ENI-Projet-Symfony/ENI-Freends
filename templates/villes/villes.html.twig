@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Villes</h1>
+
+    <section>
+        <div class="row">
+            <div class="col-3">Villes</div>
+            <div class="col-3">Code postal</div>
+            <div class="col-6">Actions</div>
+            {% for ville in villes %}
+            <div class="col-9">
+            <form class="form-horizontal form-modif-ville"  action="{{ path('modifier_ville',{'id': ville.id}) }}">
+                <div class="input-group">
+
+                    <input class="form-control input-modif-ville input-disabled" type="text" name="nom" value="{{ ville.nom }}" disabled>
+                    <input class="form-control input-modif-ville input-disabled" type="text" name="codePostal" value="{{ ville.codePostal }}" disabled>
+                    <p class="btn btn-secondary trigger-modify" >Modifier</p>
+                    <button class="btn btn-secondary btn-modif-ville">Confirmer</button>
+                </div>
+            </div>
+            <div class="col-3">
+                <a id="validate" href="#SuppressionVille{{ ville.id }}" data-toggle="modal" data-target="#SuppressionVille{{ ville.id }}" class="btn btn-secondary">Supprimer</a>
+                <!-- Modal -->
+                <div class="modal fade" id="SuppressionVille{{ ville.id }}" tabindex="-1" role="dialog" aria-labelledby="Suppression_Label{{ ville.id }}" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="Suppression_Label{{ ville.id }}">Confirmer la suppression</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="get" action="{{ path('supprimer_ville',{'id': ville.id}) }}">
+                                <div class="modal-body">
+                                    Êtes vous sure de vouloir <span class="text-danger">supprimer</span> cette ville ?<br>
+                                    "{{ ville.nom }}"<br><br>
+                                    Cette action supprimera aussi tous les lieux qui lui sont associés. (Actuellement {{  ville.lieus.count }} associé{{ ville.lieus.count > 1 ? 's' : ''}} )
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                    <button type="submit" class="btn btn-danger">Confirmer</button>
+                                </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+            {% endfor %}
+        </div>
+
+    </section>
+    <section>
+        <h2>Ajouter une ville</h2>
+    <div>
+        {{ form_start(form_ajout, {attr: {'novalidate': 'novalidate'}}) }}
+        {{ form_widget(form_ajout) }}
+        <div class="col text-center">
+            <button type="submit" class="mt-4 btn btn-outline-dark">Ajouter</button>
+        </div>
+        {{ form_end(form_ajout) }}
+    </div>
+    </section>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+    function resetForms(){
+        let allInputs = $(".input-modif-ville");
+        allInputs.addClass("input-disabled");
+        allInputs.attr("disabled", true);
+        $(".btn-modif-ville").css('display','none');
+        $(".trigger-modify").show();
+    }
+    //activation du formulaire avec le bouton modifier
+    jQuery(document).ready(function () {
+        $(".trigger-modify").on("click", function (e) {
+            //réinitialise l'affichage de tous les champs
+            resetForms();
+            //active le champ sélectionné
+            var $this = $(this);
+            var inputs =$this.closest("form").find("input");
+            inputs.removeClass("input-disabled");
+            inputs.removeAttr("disabled");
+            $this.hide();
+            $this.next().css('display','block')
+        });
+        //traitement des données du formulaire
+        $(".form-modif-ville").on("submit",function (e){
+            e.preventDefault();
+            let data ={};
+            $(this).serializeArray().forEach((object)=>{
+                data[object.name] = object.value;
+            });
+            resetForms();
+            $.ajax({
+
+                type: 'GET',
+                url: $(this).attr("action"),
+                dataType : 'json',
+                contentType: 'application/json',
+                data:{data : data},
+                success: function(data) {
+
+                    alert("La ville à bien été modifiée");
+                    e.stopPropagation();
+                },
+                error: function (xhr, desc, err)
+                {
+                    alert("error");
+                }
+            })
+            return false;
+
+        })
+
+    });
+
+    </script>
+
+{% endblock %}

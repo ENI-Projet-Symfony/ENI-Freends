@@ -68,3 +68,11 @@ textarea#sortie_infosSortie {
     resize: none;
     height: 103px;
 }
+.input-disabled{
+    border-style: none;
+    background: none !important;
+
+}
+.btn-modif-ville{
+    display: none;
+}
