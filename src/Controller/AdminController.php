@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Participant;
 use App\Form\FileUploadType;
 use App\Repository\CampusRepository;
+use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
@@ -231,5 +232,32 @@ class AdminController extends AbstractController
 
         // Redirige sur la page de list de sorties
         return $this->redirectToRoute('admin_gestion_utilisateur');
+    }
+
+    /**
+     * @Route("/admin/gestion/sorties/", name="admin_gestion_sorties")
+     */
+    public function listeSorties(SortieRepository $sortieRepository)
+    {
+        $allSorties = $sortieRepository->findAll();
+        return $this->render('admin/gestionsorties.html.twig', [
+            'sorties' => $allSorties
+        ]);
+    }
+
+    /**
+     * @Route("/admin/gestion/sorties/annuler/{id}", name="admin_annuler_sortie")
+     */
+    public function annulerSortie(int $id, EntityManagerInterface $entityManager,
+                                  EtatRepository $etatRepository,SortieRepository $sortieRepository,
+                                  Request $request)
+    {
+        $sortie = $sortieRepository->findOneBy(["id"=>$id]);
+        $sortie->setEtat($etatRepository->findOneBy(['id' => 6]));
+        $sortie->setAnnulationMotifs($request->get("motif"));
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('admin_gestion_sorties');
     }
 }
