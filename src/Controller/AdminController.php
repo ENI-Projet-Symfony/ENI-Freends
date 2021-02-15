@@ -4,15 +4,20 @@ namespace App\Controller;
 
 use App\Entity\Participant;
 use App\Form\FileUploadType;
+use App\Form\UserInformationType;
 use App\Repository\CampusRepository;
+use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use App\Util\FileUploader;
+use claviska\SimpleImage;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use mysql_xdevapi\Exception;
+use PHPTokenGenerator\TokenGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -60,15 +65,24 @@ class AdminController extends AbstractController
     public function ajouterUtilisateur
     (Request $request,FileUploader $fileUploader, String $uploadDirCsv,
      EntityManagerInterface $entityManager,
-     CampusRepository $campusRepository,UserPasswordEncoderInterface $encoder): Response
+     CampusRepository $campusRepository,UserPasswordEncoderInterface $encoder,
+     string $uploadDirImg): Response
     {
-        $form = $this->createForm(FileUploadType::class);
-        $form->handleRequest($request);
+        $participant = new Participant();
+
+        $formCSV = $this->createForm(FileUploadType::class);
+        $formManual = $this->createForm(UserInformationType::class,$participant);
+
+        $formCSV->handleRequest($request);
+        $formManual->handleRequest($request);
+
+
+
         $this->encoder = $encoder;
 
-        if ($form->isSubmitted() && $form->isValid())
+        if ($formCSV->isSubmitted() && $formCSV->isValid())
         {
-            $file = $form['upload_file']->getData();
+            $file = $formCSV['upload_file']->getData();
             if ($file)
             {
                 $file_name = $fileUploader->upload($file);
@@ -121,8 +135,41 @@ class AdminController extends AbstractController
                 }
             }
         }
+        else if ( $formManual->isSubmitted() && $formManual->isValid()){
+            if($formManual->get('password')->getData())
+            {
+                $participant->setPassword($encoder->encodePassword($participant, $formManual->get('password')->getData()));
+            }
+            /** @var UploadedFile $photo */
+            $photo = $formManual->get('photo')->getData();
+
+            if($photo){
+
+                $generator = new TokenGenerator();
+                $nomFichier = $generator->generate() . "." . $photo->guessExtension();
+                $photoFinale = new SimpleImage();
+                $photoFinale
+                    ->fromFile($photo)
+                    ->autoOrient()
+                    ->bestFit(200,200)
+                    ->toFile($uploadDirImg . $nomFichier);
+                if($participant->getNomFichierPhoto()) {
+                    try {
+                        unlink($uploadDirImg . $participant->getNomFichierPhoto());
+                    } catch (\ErrorException $ex) {
+                        // catch vide, au cas où un nom de fichier est présent en base mais l'image n'est pas sur le serveur
+                    }
+                }
+                $participant->setNomFichierPhoto($nomFichier);
+            }
+            $participant->setActif(true);
+            $entityManager->persist($participant);
+            $entityManager->flush();
+            $this->addFlash('succes','Vos données on été ajoutées en base');
+        }
         return $this->render('admin/ajoututilisateur.html.twig', [
-            'form' => $form->createView(),
+            'formCSV' => $formCSV->createView(),
+            'formManual' => $formManual->createView(),
         ]);
     }
 
@@ -231,5 +278,32 @@ class AdminController extends AbstractController
 
         // Redirige sur la page de list de sorties
         return $this->redirectToRoute('admin_gestion_utilisateur');
+    }
+
+    /**
+     * @Route("/admin/gestion/sorties/", name="admin_gestion_sorties")
+     */
+    public function listeSorties(SortieRepository $sortieRepository)
+    {
+        $allSorties = $sortieRepository->findAll();
+        return $this->render('admin/gestionsorties.html.twig', [
+            'sorties' => $allSorties
+        ]);
+    }
+
+    /**
+     * @Route("/admin/gestion/sorties/annuler/{id}", name="admin_annuler_sortie")
+     */
+    public function annulerSortie(int $id, EntityManagerInterface $entityManager,
+                                  EtatRepository $etatRepository,SortieRepository $sortieRepository,
+                                  Request $request)
+    {
+        $sortie = $sortieRepository->findOneBy(["id"=>$id]);
+        $sortie->setEtat($etatRepository->findOneBy(['id' => 6]));
+        $sortie->setAnnulationMotifs($request->get("motif"));
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('admin_gestion_sorties');
     }
 }
