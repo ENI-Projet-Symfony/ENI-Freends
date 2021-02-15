@@ -326,8 +326,8 @@ class SortieController extends AbstractController
      * @Route("/sorties/{id}/publication", name="sorties_publish", methods={"GET"})
      */
     public function publishSortie(int $id, EntityManagerInterface $entityManager,
-                                   SortieRepository $sortieRepository,
-                                   EtatRepository $etatRepository): Response
+                                  SortieRepository $sortieRepository,
+                                  EtatRepository $etatRepository): Response
     {
 
         $sortie = $sortieRepository->findOneBy(['id'=>$id]);
@@ -348,7 +348,7 @@ class SortieController extends AbstractController
      */
     public function annulerSortie(int $id, EntityManagerInterface $entityManager,
                                   EtatRepository $etatRepository,SortieRepository $sortieRepository,
-                                    Request $request)
+                                  Request $request)
     {
         $sortie = $sortieRepository->findOneBy(["id"=>$id]);
         $sortie->setEtat($etatRepository->findOneBy(['id' => 6]));

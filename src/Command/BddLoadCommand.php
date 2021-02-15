@@ -190,6 +190,18 @@ class BddLoadCommand extends Command
             ->setCampus($campus2);
         $manager->persist($arkoSuperAdmin);
 
+        $florianSuperAdmin = new Participant();
+        $florianSuperAdmin->setPseudo("Murazakiiro")
+            ->setNom("SINAMA")
+            ->setPrenom("Florian")
+            ->setTelephone("0123456789")
+            ->setMail("florian.sinama2020@campus-eni.fr")
+            ->setPassword($this->encoder->encodePassword($florianSuperAdmin,"florianadmin"))
+            ->setRoles(["ROLE_SUPER_ADMIN"])
+            ->setActif(true)
+            ->setCampus($campus2);
+        $manager->persist($florianSuperAdmin);
+
         $manager->flush();
 
         //Mise en BDD des Ville du Poitou Charente
@@ -262,6 +274,175 @@ class BddLoadCommand extends Command
         }
 
         $manager->flush();
+
+        //Jeu Sortie 1 BDD
+        $dateDebutTest1 = new \DateTime();
+        $dateDebutTest1->add(new \DateInterval('P0Y0M14DT0H0M0S'));
+        $dateDebutSortieTest1 = new \DateTime($dateDebutTest1->format('Y-M-d H:i:s'));
+        $dateInsTest1 = new \DateTime();
+        $dateInsTest1->add(new \DateInterval('P0Y0M13DT0H0M0S'));
+        $dateInsSortieTest1 = new \DateTime($dateInsTest1->format('Y-M-d H:i:s'));
+
+        $sortieTest1 = new Sortie();
+        $sortieTest1->setNom("Observation des Artichauds Jupitériens")
+            ->setDateHeureDebut($dateDebutSortieTest1)
+            ->setDuree(240)
+            ->setDateLimiteInscription($dateInsSortieTest1)
+            ->setNbInscriptionsMax(18)
+            ->setInfosSortie("Ce weekend est la saison de reproduction des artichauds de Jupiter : un événement observable seulement tous les 452 ans. Je vous invite à prendre vos lunettes astronomique pour observer ça ensemble")
+            ->setEtat($etat2)
+            ->setOrganisateur($amidenSuperAdmin)
+            ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
+            ->setCampus($campus2);
+        $manager->persist($sortieTest1);
+
+        //Jeu Sortie 2 BDD
+        $dateDebutTest2 = new \DateTime();
+        $dateDebutTest2->add(new \DateInterval('P0Y0M10DT0H0M0S'));
+        $dateDebutSortieTest2 = new \DateTime($dateDebutTest2->format('Y-M-d H:i:s'));
+        $dateInsTest2 = new \DateTime();
+        $dateInsTest2->add(new \DateInterval('P0Y0M9DT0H0M0S'));
+        $dateInsSortieTest2 = new \DateTime($dateInsTest2->format('Y-M-d H:i:s'));
+
+        $sortieTest2 = new Sortie();
+        $sortieTest2->setNom("Combat de coqs au Vietnam")
+            ->setDateHeureDebut($dateDebutSortieTest2)
+            ->setDuree(10080)
+            ->setDateLimiteInscription($dateInsSortieTest2)
+            ->setNbInscriptionsMax(12)
+            ->setInfosSortie("Je vous invite à participer à un voyage au Vietnam pour aller parier illégalement sur un combat de coq. Favori : Poullay O'Curry")
+            ->setEtat($etat2)
+            ->setOrganisateur($arkoSuperAdmin)
+            ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
+            ->setCampus($campus2);
+        $manager->persist($sortieTest2);
+
+        //Jeu Sortie 3 BDD
+        $dateDebutTest3 = new \DateTime();
+        $dateDebutTest3->add(new \DateInterval('P0Y0M9DT0H0M0S'));
+        $dateDebutSortieTest3 = new \DateTime($dateDebutTest3->format('Y-M-d H:i:s'));
+        $dateInsTest3 = new \DateTime();
+        $dateInsTest3->add(new \DateInterval('P0Y0M8DT0H0M0S'));
+        $dateInsSortieTest3 = new \DateTime($dateInsTest3->format('Y-M-d H:i:s'));
+
+        $sortieTest3 = new Sortie();
+        $sortieTest3->setNom("Jouer à la marelle sur les falaises d'Etretat")
+            ->setDateHeureDebut($dateDebutSortieTest3)
+            ->setDuree(120)
+            ->setDateLimiteInscription($dateInsSortieTest3)
+            ->setNbInscriptionsMax(20)
+            ->setInfosSortie("Je vous propose une activité ludique qui vous fera retourner en enfance : jouer à la marelle. Petite difficulté supplémentaire : nous jouerons les yeux bandés au bord des falaises d'Etretat. Je suis en train de négocier un partenariat de sponsor avec Red Bull")
+            ->setEtat($etat2)
+            ->setOrganisateur($borisSuperAdmin)
+            ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
+            ->setCampus($campus2);
+        $manager->persist($sortieTest3);
+
+        //Jeu Sortie 4 BDD
+        $dateDebutTest4 = new \DateTime();
+        $dateDebutTest4->add(new \DateInterval('P0Y0M8DT0H0M0S'));
+        $dateDebutSortieTest4 = new \DateTime($dateDebutTest4->format('Y-M-d H:i:s'));
+        $dateInsTest4 = new \DateTime();
+        $dateInsTest4->add(new \DateInterval('P0Y0M7DT0H0M0S'));
+        $dateInsSortieTest4 = new \DateTime($dateInsTest4->format('Y-M-d H:i:s'));
+
+        $sortieTest4 = new Sortie();
+        $sortieTest4->setNom("Partie de Quidditch moldu")
+            ->setDateHeureDebut($dateDebutSortieTest4)
+            ->setDuree(180)
+            ->setDateLimiteInscription($dateInsSortieTest4)
+            ->setNbInscriptionsMax(14)
+            ->setInfosSortie("Également connu sous le nom de \"quidditch au sol\", le quidditch moldu (\"muggle quidditch\" en anglais) est issu de la saga littéraire Harry Potter. Il oppose deux équipes de sept joueurs dotés de balais.")
+            ->setEtat($etat2)
+            ->setOrganisateur($florianSuperAdmin)
+            ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
+            ->setCampus($campus2);
+        $manager->persist($sortieTest4);
+
+        //Jeu Sortie 5 BDD
+        $dateDebutTest5 = new \DateTime();
+        $dateDebutTest5->add(new \DateInterval('P0Y0M4DT0H0M0S'));
+        $dateDebutSortieTest5 = new \DateTime($dateDebutTest5->format('Y-M-d H:i:s'));
+        $dateInsTest5 = new \DateTime();
+        $dateInsTest5->add(new \DateInterval('P0Y0M3DT0H0M0S'));
+        $dateInsSortieTest5 = new \DateTime($dateInsTest5->format('Y-M-d H:i:s'));
+
+        $sortieTest5 = new Sortie();
+        $sortieTest5->setNom("Dompter des mouches")
+            ->setDateHeureDebut($dateDebutSortieTest5)
+            ->setDuree(90)
+            ->setDateLimiteInscription($dateInsSortieTest5)
+            ->setNbInscriptionsMax(6)
+            ->setInfosSortie("Petit atelier pour apprendre à dompter des mouches pour leur faire faire des enchaînements de cirque comme passer dans des anneaux de feu ou des acrobaties au trapèze")
+            ->setEtat($etat2)
+            ->setOrganisateur($amidenSuperAdmin)
+            ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
+            ->setCampus($campus2);
+        $manager->persist($sortieTest5);
+
+        //Jeu Sortie 6 BDD
+        $dateDebutTest6 = new \DateTime();
+        $dateDebutTest6->add(new \DateInterval('P0Y0M2DT0H0M0S'));
+        $dateDebutSortieTest6 = new \DateTime($dateDebutTest6->format('Y-M-d H:i:s'));
+        $dateInsTest6 = new \DateTime();
+        $dateInsTest6->add(new \DateInterval('P0Y0M1DT0H0M0S'));
+        $dateInsSortieTest6 = new \DateTime($dateInsTest6->format('Y-M-d H:i:s'));
+
+        $sortieTest6 = new Sortie();
+        $sortieTest6->setNom("Marathon Joséphine Ange Gardien")
+            ->setDateHeureDebut($dateDebutSortieTest6)
+            ->setDuree(20160)
+            ->setDateLimiteInscription($dateInsSortieTest6)
+            ->setNbInscriptionsMax(80)
+            ->setInfosSortie("On organise un binge watching de Joséphine!! 20 saisons en une fois ! Prévoyez 2 semaines, des pop corn et une sonde urinaire. A bientôt !")
+            ->setEtat($etat2)
+            ->setOrganisateur($arkoSuperAdmin)
+            ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
+            ->setCampus($campus2);
+        $manager->persist($sortieTest6);
+
+        //Jeu Sortie 7 BDD
+        $dateDebutTest7 = new \DateTime();
+        $dateDebutTest7->add(new \DateInterval('P0Y0M2DT0H0M0S'));
+        $dateDebutSortieTest7 = new \DateTime($dateDebutTest7->format('Y-M-d H:i:s'));
+        $dateInsTest7 = new \DateTime();
+        $dateInsTest7->add(new \DateInterval('P0Y0M1DT0H0M0S'));
+        $dateInsSortieTest7 = new \DateTime($dateInsTest7->format('Y-M-d H:i:s'));
+
+        $sortieTest7 = new Sortie();
+        $sortieTest7->setNom("La Bible en pratique : Transformer l'eau en vin")
+            ->setDateHeureDebut($dateDebutSortieTest7)
+            ->setDuree(130)
+            ->setDateLimiteInscription($dateInsSortieTest7)
+            ->setNbInscriptionsMax(32)
+            ->setInfosSortie("Je vous propose de mettre en pratique mon passage préféré de la Bible : transformer de l'eau en vin. Merci baby Jesus! (Évangile selon Jean, 2,1-11)")
+            ->setEtat($etat2)
+            ->setOrganisateur($borisSuperAdmin)
+            ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
+            ->setCampus($campus2);
+        $manager->persist($sortieTest7);
+
+        //Jeu Sortie 8 BDD
+        $dateDebutTest8 = new \DateTime();
+        $dateDebutTest8->add(new \DateInterval('P0Y0M5DT0H0M0S'));
+        $dateDebutSortieTest8 = new \DateTime($dateDebutTest8->format('Y-M-d H:i:s'));
+        $dateInsTest8 = new \DateTime();
+        $dateInsTest8->add(new \DateInterval('P0Y0M3DT0H0M0S'));
+        $dateInsSortieTest8 = new \DateTime($dateInsTest8->format('Y-M-d H:i:s'));
+
+        $sortieTest8 = new Sortie();
+        $sortieTest8->setNom("Death Star en Babybel")
+            ->setDateHeureDebut($dateDebutSortieTest8)
+            ->setDuree(2880)
+            ->setDateLimiteInscription($dateInsSortieTest8)
+            ->setNbInscriptionsMax(14)
+            ->setInfosSortie("Ce weekend nous allons construire l'Étoile de la mort grandeur nature en cire de coques rouges de Babybel! Venez avec toute votre famille")
+            ->setEtat($etat2)
+            ->setOrganisateur($florianSuperAdmin)
+            ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
+            ->setCampus($campus2);
+        $manager->persist($sortieTest8);
+
 
         //Sortie test de passage de l'état 2 vers l'etat 3
         $dateDebut1 = new \DateTime();
