@@ -292,6 +292,7 @@ class BddLoadCommand extends Command
             ->setInfosSortie("Ce weekend est la saison de reproduction des artichauds de Jupiter : un événement observable seulement tous les 452 ans. Je vous invite à prendre vos lunettes astronomique pour observer ça ensemble")
             ->setEtat($etat2)
             ->setOrganisateur($amidenSuperAdmin)
+            ->addParticipant($amidenSuperAdmin)
             ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
             ->setCampus($campus2);
         $manager->persist($sortieTest1);
@@ -313,6 +314,7 @@ class BddLoadCommand extends Command
             ->setInfosSortie("Je vous invite à participer à un voyage au Vietnam pour aller parier illégalement sur un combat de coq. Favori : Poullay O'Curry")
             ->setEtat($etat2)
             ->setOrganisateur($arkoSuperAdmin)
+            ->addParticipant($arkoSuperAdmin)
             ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
             ->setCampus($campus2);
         $manager->persist($sortieTest2);
@@ -334,6 +336,7 @@ class BddLoadCommand extends Command
             ->setInfosSortie("Je vous propose une activité ludique qui vous fera retourner en enfance : jouer à la marelle. Petite difficulté supplémentaire : nous jouerons les yeux bandés au bord des falaises d'Etretat. Je suis en train de négocier un partenariat de sponsor avec Red Bull")
             ->setEtat($etat2)
             ->setOrganisateur($borisSuperAdmin)
+            ->addParticipant($borisSuperAdmin)
             ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
             ->setCampus($campus2);
         $manager->persist($sortieTest3);
@@ -355,6 +358,7 @@ class BddLoadCommand extends Command
             ->setInfosSortie("Également connu sous le nom de \"quidditch au sol\", le quidditch moldu (\"muggle quidditch\" en anglais) est issu de la saga littéraire Harry Potter. Il oppose deux équipes de sept joueurs dotés de balais.")
             ->setEtat($etat2)
             ->setOrganisateur($florianSuperAdmin)
+            ->addParticipant($florianSuperAdmin)
             ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
             ->setCampus($campus2);
         $manager->persist($sortieTest4);
@@ -376,6 +380,7 @@ class BddLoadCommand extends Command
             ->setInfosSortie("Petit atelier pour apprendre à dompter des mouches pour leur faire faire des enchaînements de cirque comme passer dans des anneaux de feu ou des acrobaties au trapèze")
             ->setEtat($etat2)
             ->setOrganisateur($amidenSuperAdmin)
+            ->addParticipant($amidenSuperAdmin)
             ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
             ->setCampus($campus2);
         $manager->persist($sortieTest5);
@@ -397,6 +402,7 @@ class BddLoadCommand extends Command
             ->setInfosSortie("On organise un binge watching de Joséphine!! 20 saisons en une fois ! Prévoyez 2 semaines, des pop corn et une sonde urinaire. A bientôt !")
             ->setEtat($etat2)
             ->setOrganisateur($arkoSuperAdmin)
+            ->addParticipant($arkoSuperAdmin)
             ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
             ->setCampus($campus2);
         $manager->persist($sortieTest6);
@@ -418,6 +424,7 @@ class BddLoadCommand extends Command
             ->setInfosSortie("Je vous propose de mettre en pratique mon passage préféré de la Bible : transformer de l'eau en vin. Merci baby Jesus! (Évangile selon Jean, 2,1-11)")
             ->setEtat($etat2)
             ->setOrganisateur($borisSuperAdmin)
+            ->addParticipant($borisSuperAdmin)
             ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
             ->setCampus($campus2);
         $manager->persist($sortieTest7);
@@ -439,6 +446,7 @@ class BddLoadCommand extends Command
             ->setInfosSortie("Ce weekend nous allons construire l'Étoile de la mort grandeur nature en cire de coques rouges de Babybel! Venez avec toute votre famille")
             ->setEtat($etat2)
             ->setOrganisateur($florianSuperAdmin)
+            ->addParticipant($florianSuperAdmin)
             ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
             ->setCampus($campus2);
         $manager->persist($sortieTest8);
@@ -461,6 +469,7 @@ class BddLoadCommand extends Command
             ->setInfosSortie("Blablabla test")
             ->setEtat($etat2)
             ->setOrganisateur($amidenSuperAdmin)
+            ->addParticipant($amidenSuperAdmin)
             ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
             ->setCampus($campus2);
         $manager->persist($sortie1);
@@ -482,6 +491,7 @@ class BddLoadCommand extends Command
             ->setInfosSortie("Blablabla test")
             ->setEtat($etat3)
             ->setOrganisateur($amidenSuperAdmin)
+            ->addParticipant($amidenSuperAdmin)
             ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
             ->setCampus($campus2);
         $manager->persist($sortie2);
@@ -503,6 +513,7 @@ class BddLoadCommand extends Command
             ->setInfosSortie("Blablabla test")
             ->setEtat($etat4)
             ->setOrganisateur($amidenSuperAdmin)
+            ->addParticipant($amidenSuperAdmin)
             ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
             ->setCampus($campus2);
         $manager->persist($sortie3);
@@ -524,6 +535,7 @@ class BddLoadCommand extends Command
             ->setInfosSortie("Blablabla test")
             ->setEtat($etat5)
             ->setOrganisateur($amidenSuperAdmin)
+            ->addParticipant($amidenSuperAdmin)
             ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
             ->setCampus($campus2);
         $manager->persist($sortie4);
