@@ -2,12 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Lieu;
 use App\Entity\Sortie;
+use App\Entity\Ville;
+use App\Form\LieuType;
 use App\Form\SortieFiltreFormType;
 use App\Form\SortieType;
+use App\Form\VilleFormType;
 use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
+use App\Repository\VilleRepository;
 use App\Util\GestionDesEtats;
 use claviska\SimpleImage;
 use DeviceDetector\DeviceDetector;
@@ -26,7 +31,7 @@ class SortieController extends AbstractController
      */
     public function nouveaux(Request $request,EntityManagerInterface $entityManager,
                              ParticipantRepository $participantRepository,
-                             EtatRepository $etatRepository, string $uploadDirImg): Response
+                             EtatRepository $etatRepository, VilleRepository $villeRepository, string $uploadDirImg): Response
     {
         // https://github.com/matomo-org/device-detector
         // composer require matomo/device-detector
@@ -100,8 +105,22 @@ class SortieController extends AbstractController
             $entityManager->flush();
         }
 
+        // Ajouter un lieu
+        $lieu = new Lieu();
+        $ville = new Ville();
+
+        $formAddLieu = $this->createForm(LieuType::class, $lieu);
+        $formAddLieu->handleRequest($request);
+
+        if($formAddLieu->isSubmitted() && $formAddLieu->isValid()){
+            $lieu = $formAddLieu->getData();
+            $entityManager->persist($lieu);
+            $entityManager->flush();
+        }
+
         return $this->render('sorties/editer_sortie.html.twig', [
-            "formulaire" => $form->createView()
+            "formulaire" => $form->createView(),
+            "form_add_lieu" => $formAddLieu->createView()
         ]);
     }
 
@@ -357,6 +376,28 @@ class SortieController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('sorties_list');
+    }
+
+    /**
+     * @Route("/sorties/ajouter_lieu", name="sorties_ajouter_lieu")
+     */
+    public function sortieAjouterLieu(EntityManagerInterface $entityManager,
+                                  EtatRepository $etatRepository,SortieRepository $sortieRepository,
+                                  Request $request)
+    {
+        $lieu = new Lieu();
+
+        $formAddLieu = $this->createForm(LieuType::class, $lieu);
+        $formAddLieu->handleRequest($request);
+
+        if($formAddLieu->isSubmitted() && $formAddLieu->isValid()){
+            $formAddLieu->persist($lieu);
+            $entityManager->flush();
+        }
+
+        return $this->render('sorties/editer_sortie.html.twig', [
+            "form_add_lieu" => $formAddLieu->createView()
+        ]);
     }
 
 }
