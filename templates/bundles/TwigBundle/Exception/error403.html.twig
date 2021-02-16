@@ -1,7 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseErrors.html.twig' %}
 
 {% block title %}Hello Error 403 page!{% endblock %}
 
-{% block body %}
-    <h1>Hello Error 403 page!</h1>
-{% endblock %}
+{% block errorType %}403 - Forbidden{% endblock %}
+{% block errorMessage %}Vous n'avez pas le droit d'aller par ici{% endblock %}

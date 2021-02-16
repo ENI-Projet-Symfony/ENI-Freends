@@ -98,3 +98,32 @@ textarea#sortie_infosSortie {
     from { width: 0 }
     to { width: 100% }
 }
+#lieu_ville .select2-container {
+    width: 100%!important;
+}
+.add-lieu {
+    position: relative;
+    float: right;
+    right: -30px;
+    top: -32px;
+    font-size: 1.2em;
+}
+.add-lieu a{
+    color: #3adb76;
+    transition: all 0.3s ease-in-out;
+}
+.add-lieu a:hover {
+    color: #00ab6c;
+}
+.select2-container {
+    width: 100%!important;
+}
+.select2-container .select2-selection--single {
+    height: 38px;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 38px;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    top: 70%;
+}

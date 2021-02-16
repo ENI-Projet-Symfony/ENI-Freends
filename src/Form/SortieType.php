@@ -83,7 +83,6 @@ class SortieType extends AbstractType
                 'class' => Ville::class,
                 'choice_label' => 'nom',
                 'choice_value' => 'id'
-
             ])
             ->add('lieu',EntityType::class,[
                 'label' => "Lieu",
@@ -95,19 +94,16 @@ class SortieType extends AbstractType
                 'mapped' => false,
                 'label' => "Rue",
                 'disabled' => true,
-
             ])
             ->add('cp',TextType::class,[
                 'mapped' => false,
                 'label' => "Code Postal",
                 'disabled' => true,
-
             ])
             ->add('latitude',TextType::class,[
                 'mapped' => false,
                 'label' => "Latitude",
                 'disabled' => true,
-
             ])->add('longitude',TextType::class,[
                 'mapped' => false,
                 'label' => "Longitude",

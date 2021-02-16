@@ -40,7 +40,7 @@
             <div class="col-4">
                 {{ form_row(formulaire.campus) }}
                 {{ form_row(formulaire.ville) }}
-                {{ form_row(formulaire.lieu) }}
+                {{ form_row(formulaire.lieu) }} <div class="add-lieu text-success"><a id="ok" href="#AddLieu" data-toggle="modal" data-target="#AddLieu" class="card-link"><i class="fa fa-plus-circle"></i></a></div>
                 {{ form_row(formulaire.rue) }}
                 {{ form_row(formulaire.cp) }}
                 {{ form_row(formulaire.latitude) }}
@@ -57,66 +57,88 @@
         {{ form_end(formulaire) }}
     </section>
 
+    <!-- Modal -->
+    <div class="modal fade" id="AddLieu" tabindex="-1" role="dialog" aria-labelledby="Annulation_Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="Annulation_Label">Ajouter un lieu</h5>
+                        <i class="fa fa-times" class="close" data-dismiss="modal" aria-label="Close"></i>
+
+                </div>
+                {{ form_start(form_add_lieu, {attr: {'novalidate': 'novalidate'}}) }}
+                <form method="get" action="{{ path('sorties_ajouter_lieu') }}">
+                    <div class="modal-body">
+                        {{ form_widget(form_add_lieu) }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Ajouter le lieu</button>
+                    </div>
+                </form>
+                {{ form_end(form_add_lieu) }}
+            </div>
+        </div>
+    </div>
+
 
 {% endblock %}
 
 {%  block javascripts %}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
+        var lieu = $("#sortie_lieu");
+        var ville = $("#sortie_ville");
 
-                var lieu = $("#sortie_lieu");
-                var ville = $("#sortie_ville");
-
-                async function dynChangeLieuInfo(){
-
-                   var lieu_Id = lieu.val();
-                        await $.ajax({
-                                type: 'GET',
-                                url: '{{ path('sorties_get_lieu_info') }}',
-                                data: {id: lieu_Id},
-                                success: function (data){
-                                    if(data !== "") {
-                                        $("#sortie_latitude").val(data["latitude"]);
-                                        $("#sortie_longitude").val(data["longitude"]);
-                                        $("#sortie_cp").val(data["cp"]);
-                                        $("#sortie_rue").val(data["rue"]);
-                                    }else{
-                                        console.log("data est vide")
-                                    }
-                                }
-                        })
+        async function dynChangeLieuInfo(){
+            var lieu_Id = lieu.val();
+            await $.ajax({
+                type: 'GET',
+                url: '{{ path('sorties_get_lieu_info') }}',
+                data: {id: lieu_Id},
+                success: function (data){
+                    if(data !== "") {
+                        $("#sortie_latitude").val(data["latitude"]);
+                        $("#sortie_longitude").val(data["longitude"]);
+                        $("#sortie_cp").val(data["cp"]);
+                        $("#sortie_rue").val(data["rue"]);
+                    }else{
+                        console.log("data est vide")
+                    }
                 }
+            })
+        }
 
-               async function dynChangeLieu() {
+       async function dynChangeLieu() {
+           var ville_Id = ville.val();
+           await $.ajax({
+               type: 'GET',
+               url: '{{ path('sorties_get_lieu') }}',
+               data: {id: ville_Id},
+               success: function (data){
+                   if(data !== "") {
+                       lieu.html(data);
 
-                   var ville_Id = ville.val();
-                   await $.ajax({
-                       type: 'GET',
-                       url: '{{ path('sorties_get_lieu') }}',
-                       data: {id: ville_Id},
-                       success: function (data){
-                           if(data !== "") {
-                               lieu.html(data);
 
-
-                           }else{
-                               console.log("data est vide")
-                           }
-                       }
-                   });
-                   dynChangeLieuInfo();
+                   }else{
+                       console.log("data est vide")
+                   }
                }
+           });
+           dynChangeLieuInfo();
+       }
 
-                $(document).ready(function(){
-                    $('#sortie_ville').select2();
-                    dynChangeLieu();
-                        lieu.change(function(e){
-                            dynChangeLieuInfo();
-                        });
-                        ville.change(async function(e){
-                            dynChangeLieu();
-                        });
-                });
-        </script>
+        $(document).ready(function(){
+            $('#sortie_ville').select2();
+            $('#lieu_ville').select2();
+            dynChangeLieu();
+            lieu.change(function(e){
+                dynChangeLieuInfo();
+            });
+            ville.change(async function(e){
+                dynChangeLieu();
+            });
+        });
+    </script>
 {% endblock %}
