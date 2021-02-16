@@ -45,7 +45,6 @@ class SortieController extends AbstractController
         $form = $this->createForm(SortieType::class,$sortie);
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()){
 
             // Récupérer l'image uploadée

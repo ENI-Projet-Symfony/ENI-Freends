@@ -85,9 +85,11 @@ class SortieType extends AbstractType
                 'choice_value' => 'id'
 
             ])
-            ->add('lieu',ChoiceType::class,[
+            ->add('lieu',EntityType::class,[
                 'label' => "Lieu",
-
+                'class' => Lieu::class,
+                'choice_label' => 'nom',
+                'choice_value' => 'id'
             ])
             ->add('rue',TextType::class,[
                 'mapped' => false,

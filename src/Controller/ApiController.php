@@ -19,7 +19,6 @@ class ApiController extends AbstractController
     {
 
 
-
         if($request->get('id')) {
 
             $lieu = $lieuRepository->findOneBy([
@@ -68,7 +67,6 @@ class ApiController extends AbstractController
             $allLieu = $lieuRepository->findBy([
                 'ville' => $request->get("id")
             ]);
-
 
         }
 
