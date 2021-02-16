@@ -26,7 +26,8 @@
                     <input class="form-control input-modif-ville input-disabled" type="text" name="nom" value="{{ ville.nom }}" disabled>
                     <input class="form-control input-modif-ville input-disabled" type="text" name="codePostal" value="{{ ville.codePostal }}" disabled>
                     <p class="btn btn-secondary trigger-modify" >Modifier</p>
-                    <button class="btn btn-secondary btn-modif-ville">Confirmer</button>
+                    <button class="btn btn-success btn-modif-ville">Confirmer</button>
+                    <button type="reset" class="btn btn-danger btn-modif-ville btn-modif-cancel">Annuler</button>
                 </div>
             </div>
             <div class="col-2 text-end">
@@ -99,13 +100,35 @@
         $(".trigger-modify").on("click", function (e) {
             //réinitialise l'affichage de tous les champs
             resetForms();
+            $(".trigger-modify").css('visibility', 'hidden');
             //active le champ sélectionné
             var $this = $(this);
             var inputs =$this.closest("form").find("input");
+            var btnAnnuler = $this.next().next();
+            let initialValues = [];
+            inputs.each(function() {
+                let key = $(this).attr('name');
+                let val = $(this).val();
+                initialValues[key] = val;
+
+            });
+
+            btnAnnuler.prop("onclick", null).off("click");
+            $(btnAnnuler).on("click", function () {
+                $(".trigger-modify").css('visibility', 'visible');
+                console.log(initialValues);
+                inputs.each(function() {
+                    $(this).attr('value',initialValues[$(this).attr('name')]) ;
+                });
+                $(this).prop("onclick", null).off("click");
+                resetForms();
+            });
+
             inputs.removeClass("input-disabled");
             inputs.removeAttr("disabled");
             $this.hide();
-            $this.next().css('display','block')
+            $this.next().css('display','block');
+            btnAnnuler.css('display','block')
         });
         //traitement des données du formulaire
         $(".form-modif-ville").on("submit",function (e){
@@ -115,6 +138,7 @@
                 data[object.name] = object.value;
             });
             resetForms();
+            $(".trigger-modify").css('visibility', 'visible');
             $.ajax({
 
                 type: 'GET',
@@ -132,8 +156,9 @@
                     alert("error");
                 }
             })
-            return false;
 
+
+            return false;
         })
 
     });
