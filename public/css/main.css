@@ -101,6 +101,9 @@ textarea#sortie_infosSortie {
 #lieu_ville .select2-container {
     width: 100%!important;
 }
+#groupe_Membres .select2-selection--multiple {
+    width: 100%!important;
+}
 .add-lieu {
     position: relative;
     float: right;
@@ -119,6 +122,9 @@ textarea#sortie_infosSortie {
     width: 100%!important;
 }
 .select2-container .select2-selection--single {
+    height: 38px;
+}
+.select2-container .select2-selection--multiple {
     height: 38px;
 }
 .select2-container--default .select2-selection--single .select2-selection__rendered {
