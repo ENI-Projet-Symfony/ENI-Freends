@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+    <h1>Créer un nouveau groupe</h1>
+
+
+    {{ form_start(groupe_form, {attr: {'novalidate': 'novalidate'}}) }}
+
+    {{ form_row(groupe_form.Nom) }}
+    {{ form_row(groupe_form.Membres) }}
+    <div class="row">
+        <div class="col-6 text-center">
+            <button type="submit" class="mt-4 btn btn-outline-dark">Enregistrer</button>
+        </div>
+        <div class="col-6 text-center">
+            <a href="{{ path('main_home') }}">
+                <button type="button" class="mt-4 btn btn-outline-dark">Annuler</button>
+            </a>
+        </div>
+    </div>
+    {{ form_end(groupe_form) }}
+
+
+{% endblock %}
+
+{%  block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        var lieu = $("#groupe_Membres");
+
+        $(document).ready(function(){
+            $('#groupe_Membres').select2();
+        });
+    </script>
+{% endblock %}
+
