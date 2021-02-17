@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Groupe;
 use App\Form\GroupeType;
+use App\Repository\GroupeRepository;
 use claviska\SimpleImage;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPTokenGenerator\TokenGenerator;
@@ -29,6 +30,7 @@ class GroupeController extends AbstractController
         {
             $proprio = $this->getUser();
             $groupe->setProprietaire($proprio);
+            $groupe->addMembre($proprio);
 
             $this->addFlash('success','La création du groupe a été effectué');
             $entityManager->persist($groupe);
@@ -38,5 +40,17 @@ class GroupeController extends AbstractController
         return $this->render('groupe/creergroupe.html.twig', [
             'groupe_form' => $groupeform->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/groupe/detail/{id}", name="groupe_detail")
+     */
+    public function detailGroupe(int $id, GroupeRepository $groupeRepository): Response
+    {
+        $groupe = $groupeRepository->find($id);
+        return $this->render('groupe/detailGroupe.html.twig', [
+            'groupe' => $groupe,
+            ]
+        );
     }
 }
