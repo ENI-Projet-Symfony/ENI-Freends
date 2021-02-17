@@ -2,7 +2,8 @@
 
 {% block title %}{{ parent() }} | Profil utilisateur  {% endblock %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/profilUtilisateur.css') }}"> {% endblock %}
+    <link rel="stylesheet" href="{{ asset('css/profilUtilisateur.css') }}">
+{% endblock %}
 {% block body %}
     {% if app.user %}
 
