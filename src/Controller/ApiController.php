@@ -21,9 +21,7 @@ class ApiController extends AbstractController
 
         if($request->get('id')) {
 
-            $lieu = $lieuRepository->findOneBy([
-                'id' => $request->get("id")
-            ]);
+            $lieu = $lieuRepository->find($request->get("id"));
 
             if($lieu){
                 $lieu = [
@@ -34,20 +32,20 @@ class ApiController extends AbstractController
                 ];
             }else{
                 $lieu = [
-                    "longitude" => "Inconnu",
-                    "latitude" => "Inconnu",
-                    "rue" => "Inconnu",
-                    "cp" => "Inconnu",
+                    "longitude" => "",
+                    "latitude" => "",
+                    "rue" => "",
+                    "cp" => "",
                 ];
             }
 
 
         }else {
             $lieu = [
-                "longitude" => "Inconnu",
-                "latitude" => "Inconnu",
-                "rue" => "Inconnu",
-                "cp" => "Inconnu",
+                "longitude" => "",
+                "latitude" => "",
+                "rue" => "",
+                "cp" => "",
             ];
         }
 

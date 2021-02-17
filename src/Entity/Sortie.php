@@ -28,6 +28,7 @@ class Sortie
     private $nom;
 
     /**
+     * @Assert\NotBlank(message="Une date est nécessaire")
      * @Assert\GreaterThan("now",message="La date de début de l'événement doit être antérieur à maintenant")
      * @ORM\Column(type="datetime")
      */
@@ -39,6 +40,7 @@ class Sortie
     private $duree;
 
     /**
+     * @Assert\NotNull(message="Une date limite d'inscription est nécessaire")
      * @ORM\Column(type="datetime")
      */
     private $dateLimiteInscription;
