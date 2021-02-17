@@ -51,12 +51,16 @@ class SortieType extends AbstractType
             ->add('dateHeureDebut',DateTimeType::class,[
                 'label' => "Date et heure de la sortie",
                 'widget' => 'single_text',
+                'empty_data' => '',
                 'attr' => ['class' => 'js-datepicker'],
+                'required' => true
             ])
             ->add('dateLimiteInscription',DateType::class,[
                 'label' => "Date limite d'inscription",
                 'widget' => 'single_text',
+                'empty_data' => null,
                 'attr' => ['class' => 'js-datepicker'],
+                'required' => true
             ])
             ->add('nbInscriptionsMax',IntegerType::class,[
                 'label' => "Nombre de places"
@@ -84,8 +88,11 @@ class SortieType extends AbstractType
                 'choice_label' => 'nom',
                 'choice_value' => 'id'
             ])
-            ->add('lieu',ChoiceType::class,[
+            ->add('lieu',EntityType::class,[
                 'label' => "Lieu",
+                'class' => Lieu::class,
+                'choice_label' => 'nom',
+                'choice_value' => 'id'
             ])
             ->add('rue',TextType::class,[
                 'mapped' => false,

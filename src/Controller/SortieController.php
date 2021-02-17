@@ -50,7 +50,6 @@ class SortieController extends AbstractController
         $form = $this->createForm(SortieType::class,$sortie);
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()){
 
             // Récupérer l'image uploadée
@@ -86,15 +85,11 @@ class SortieController extends AbstractController
             }
 
             if($request->get("submit_type")==="Publier"){
-                $sortie->setEtat($etatRepository->findOneBy([
-                    'id' => "2"
-                ]));
+                $sortie->setEtat($etatRepository->find(2));
                 $this->addFlash("success","Félicitations, votre sortie a bien été publiée");
 
             }else if ($request->get("submit_type")==="Créer") {
-                $sortie->setEtat($etatRepository->findOneBy([
-                    'id' => "1"
-                ]));
+                $sortie->setEtat($etatRepository->find(1));
                 $this->addFlash("success","Félicitations, votre sortie a bien été créée");
             }
             $sortie->addParticipant($this->getUser());
@@ -107,7 +102,6 @@ class SortieController extends AbstractController
 
         // Ajouter un lieu
         $lieu = new Lieu();
-        $ville = new Ville();
 
         $formAddLieu = $this->createForm(LieuType::class, $lieu);
         $formAddLieu->handleRequest($request);
@@ -180,13 +174,9 @@ class SortieController extends AbstractController
             }
 
             if($request->get("submit_type")==="Publier"){
-                $sortie->setEtat($etatRepository->findOneBy([
-                    'id' => "2"
-                ]));
+                $sortie->setEtat($etatRepository->find(2));
             }else if ($request->get("submit_type")==="Créer") {
-                $sortie->setEtat($etatRepository->findOneBy([
-                    'id' => "1"
-                ]));
+                $sortie->setEtat($etatRepository->find(1));
             }
             $sortie->addParticipant($this->getUser());
 
@@ -349,7 +339,7 @@ class SortieController extends AbstractController
                                   EtatRepository $etatRepository): Response
     {
 
-        $sortie = $sortieRepository->findOneBy(['id'=>$id]);
+        $sortie = $sortieRepository->find($id);
 
         $sortie->setEtat($etatRepository->findOneBy(["id"=>2]));
 
