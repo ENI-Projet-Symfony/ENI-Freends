@@ -1,42 +1,65 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ parent() }} | Profil utilisateur  {% endblock %}
-
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/profilUtilisateur.css') }}"> {% endblock %}
 {% block body %}
     {% if app.user %}
-    <h1 class="text-center">{{ participant.pseudo | capitalize }}</h1>
-    <div class="row">
-        <div class="col-2">
-            {% if (participant.nomFichierPhoto) %}
-                <img src="{{ asset('img/' ~ participant.nomFichierPhoto) }}" alt="impossible de charger l'image">
-            {% endif %}
-        </div>
-        <div class="col-10">
-            <div class="row ml-auto">
-                <div class="col-6 text-center">Prénom : </div>
-                <div class="col-6 text-center">{{ participant.prenom }}</div>
-                <div class="col-6 text-center">Nom : </div>
-                <div class="col-6 text-center">{{ participant.nom }}</div>
-                {% if participant.telephone %}
-                    <div class="col-6 text-center">Téléphone : </div>
-                    <div class="col-6 text-center">{{ participant.telephone }}</div>
-                {% endif %}
-                <div class="col-6 text-center">Email : </div>
-                <div class="col-6 text-center">{{ participant.mail }}</div>
-                <div class="col-6 text-center">Campus : </div>
-                <div class="col-6 text-center">{{ participant.campus.nom }}</div>
+
+
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-8">
+                    <div class="card user-card">
+                        <div class="card-header">
+                            <h5>Profil de {{ participant.pseudo }}</h5>
+                        </div>
+                        <div class="card-block">
+                            <div class="user-image">
+                                {% if (participant.nomFichierPhoto) %}
+                                    <img src="{{ asset('img/' ~ participant.nomFichierPhoto) }}" class="img-radius" alt="User-Profile-Image">
+                                {% else %}
+                                <img src="{{ asset('img/profil/Portrait_Placeholder.png') }}" class="img-radius" alt="User-Profile-Image">
+                                {% endif %}
+                            </div>
+                            <h6 class="f-w-600 m-t-25 m-b-10">{{ participant.prenom }} {{ participant.nom }}</h6>
+                            <p class="text-muted">{{ participant.actif? "Actif" : "Inactif" }} | Sorties organisées: {{ participant.sortiesOrganisees.count}} | A participé à {{ participant.sortiesParticpees.count}} sortie{{ participant.sortiesParticpees.count > 1 ? "s" : "" }}</p>
+                            <hr>
+
+                            <div class="bg-c-blue counter-block m-t-10 p-20">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <i class="fa fa-phone"></i>
+                                        <p>{{ participant.telephone? participant.telephone :  "Non renseigné" }}</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <i class="fa fa-at"></i>
+                                        <p>{{ participant.mail }}</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <i class="fa fa-university"></i>
+                                        <p>{{ participant.campus.nom }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+                            {% if id_participant == app.user.id %}
+                            <div class="row justify-content-center user-modification">
+                                <div class="col-auto"><a href="{{ path('participant_modification_profil') }}">
+                                        <button type="button" class="mt-4 btn btn-outline-dark"><i class="fa fa-user"></i> Modifier mon profil</button>
+                                    </a>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    {% endif %}
-    {% if id_participant == app.user.id %}
-    <div class="row">
-        <div class="col-12 text-center">
-            <a href="{{ path('participant_modification_profil') }}">
-                <button type="button" class="mt-4 btn btn-outline-dark"> Modifier mon profil</button>
-            </a>
-        </div>
-    </div>
+
+
+
     {% endif %}
 {% endblock %}
 
