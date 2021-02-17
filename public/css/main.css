@@ -127,3 +127,6 @@ textarea#sortie_infosSortie {
 .select2-container--default .select2-selection--single .select2-selection__arrow b {
     top: 70%;
 }
+.influence-finder button.btn {
+    width: auto!important;
+}
