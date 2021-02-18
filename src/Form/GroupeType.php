@@ -4,10 +4,10 @@ namespace App\Form;
 
 use App\Entity\Groupe;
 use App\Entity\Participant;
-use Doctrine\DBAL\Types\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\ChoiceList;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,7 +16,9 @@ class GroupeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('Nom')
+            ->add('Nom', TextType :: class, [
+                    'required' => true
+            ])
             ->add('Membres', EntityType::class,[
                 'class' => Participant::class,
                 'choice_label' => function(Participant $participant){
@@ -34,6 +36,7 @@ class GroupeType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Groupe::class,
+            'validation_groups' => ['Default', 'GroupeType']
         ]);
     }
 }
