@@ -79,7 +79,7 @@ class SortieFiltreFormType extends AbstractType
             // Bouton de validation
             ->add('submit', SubmitType::class, [
                 'label' => 'Rechercher',
-                'attr' => ['class' => 'btn btn-warning btn-lg mt-3'],
+                'attr' => ['class' => 'site-btn sb-gradient mt-2'],
             ])
 
             //les form de recherche sont en GET !

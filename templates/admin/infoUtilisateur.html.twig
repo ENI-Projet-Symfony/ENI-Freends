@@ -127,7 +127,7 @@
                                                     </div>
                                                     <div class="media-body ">
                                                         <div class="influencer-profile-data">
-                                                            <h3 class="m-b-10">sortie.nom</h3>
+                                                            <h3 class="m-b-10">{{ sortie.nom }}</h3>
                                                             <p>
                                                                         <span class="m-r-20 d-inline-block">Date
                                                                             <span class="m-l-10 text-primary">{{ sortie.dateHeureDebut|date("d/m/Y") }}</span>
@@ -168,7 +168,7 @@
                                             {% else %}
                                                 <h4 class="mb-0 text-danger">Non</h4>
                                             {% endif %}
-                                            <p>Public</p>
+                                            <p>Sortie Publiée</p>
                                         </div>
                                     </div>
                                 </div>
