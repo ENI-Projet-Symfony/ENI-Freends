@@ -2,7 +2,8 @@
 
 {% block title %}{{ parent() }} | Profil utilisateur  {% endblock %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/profilUtilisateur.css') }}"> {% endblock %}
+    <link rel="stylesheet" href="{{ asset('css/profilUtilisateur.css') }}">
+{% endblock %}
 {% block body %}
     {% if app.user %}
 
@@ -45,6 +46,19 @@
 
                             <hr>
                             {% if id_participant == app.user.id %}
+                                {% if participant.myGroupes.count >0 %}
+                                    <h6>Mes groupes</h6>
+                                    <div class="row">
+                                    {% for groupe in participant.myGroupes %}
+                                        <div class="col-auto"><a href="{{ path('groupe_detail', {'id' :  groupe.id})}}">
+                                                <button type="button" class="mt-4 btn btn-outline-dark"></i> {{ groupe.nom }}</button>
+                                            </a>
+                                        </div>
+
+                                    {% endfor %}
+                                    </div>
+                                    <hr>
+                                {% endif %}
                             <div class="row justify-content-center user-modification">
                                 <div class="col-auto"><a href="{{ path('participant_modification_profil') }}">
                                         <button type="button" class="mt-4 btn btn-outline-dark"><i class="fa fa-user"></i> Modifier mon profil</button>

@@ -36,7 +36,7 @@ class Sortie
 
     /**
      * @Assert\NotNull(message="Le champ ne peut être vide et doit être un entier")
-     * @Assert\Regex(pattern="/[a-zA-Z]+/g",message="La valeur {{ value }} n'est pas un nombre Entier")
+     * @Assert\Regex(pattern="/[a-zA-Z]/",message="La valeur {{ value }} n'est pas un nombre Entier ou n'est pas positif")
      * @Assert\Positive(message="La veleur saisie doit être positive.")
      * @Assert\Type(type="integer",message="La valeur {{ value }} n'est pas un nombre Entier")
      * @ORM\Column(type="integer", nullable=true)
@@ -51,7 +51,7 @@ class Sortie
 
     /**
      * @Assert\NotNull(message="Le champ ne peut être vide et doit être un entier")
-     * @Assert\Regex(pattern="/[a-zA-Z]+/g",message="La valeur {{ value }} n'est pas un nombre Entier")
+     * @Assert\Regex(pattern="/[a-zA-Z]/",message="La valeur {{ value }} n'est pas un nombre Entier ou n'est pas positif")
      * @Assert\Positive(message="Il doit y avoir aux minimum 1 participant.")
      * @Assert\Type(type="integer",message="La valeur {{ value }} n'est pas un nombre Entier")
      * @ORM\Column(type="integer")
