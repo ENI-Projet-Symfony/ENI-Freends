@@ -21,12 +21,6 @@
                             {% else %}
                                 <img src="{{ asset('img/profil/Portrait_Placeholder.png') }}">
                             {% endif %}
-                            <div class="td-social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-linkedin"></i></a>
-                            </div>
                         </div>
                         <div class="td-right">
                             <h3 class="custom-text">{{ participant.prenom }} {{ participant.nom|upper }}</h3>
@@ -38,27 +32,22 @@
                             </ul>
                             {% if id_participant == app.user.id %}
                                 <a href="{{ path('participant_modification_profil') }}" class="site-btn sb-gradient"><i class="fa fa-user"></i> Modifier mon profil</a>
-                                {% if participant.myGroupes.count >0 %}
-                                    <h6>Mes groupes</h6>
-                                    <div class="row">
-                                    {% for groupe in participant.myGroupes %}
-                                        <div class="col-auto"><a href="{{ path('groupe_detail', {'id' :  groupe.id})}}">
-                                                <button type="button" class="mt-4 btn btn-outline-dark"></i> {{ groupe.nom }}</button>
-                                            </a>
-                                        </div>
-
-                                    {% endfor %}
-                                    </div>
-                                    <hr>
-                                {% endif %}
-                            <div class="row justify-content-center user-modification">
-                                <div class="col-auto"><a href="{{ path('participant_modification_profil') }}">
-                                        <button type="button" class="mt-4 btn btn-outline-dark"><i class="fa fa-user"></i> Modifier mon profil</button>
-                                    </a>
-                                </div>
-                            </div>
                             {% endif %}
                         </div>
+
+                        {% if participant.myGroupes.count >0 %}
+                            <h6>Mes groupes</h6>
+                            <div class="row">
+                                {% for groupe in participant.myGroupes %}
+                                    <div class="col-auto"><a href="{{ path('groupe_detail', {'id' :  groupe.id})}}">
+                                            <button type="button" class="mt-4 btn btn-outline-dark"></i> {{ groupe.nom }}</button>
+                                        </a>
+                                    </div>
+
+                                {% endfor %}
+                            </div>
+                            <hr>
+                        {% endif %}
                     </div>
                 </div>
             </div>
