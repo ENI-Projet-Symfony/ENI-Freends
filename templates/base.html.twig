@@ -17,11 +17,6 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
-
-
-    <link rel="stylesheet" href="css/nice-select.css"/>
-    <link rel="stylesheet" href="css/magnific-popup.css"/>
-    <link rel="stylesheet" href="css/animate.css"/>
     {% block stylesheets %}{% endblock %}
 
 </head>
@@ -33,18 +28,18 @@
     <header class="header-section">
         <div class="header-top">
             <div class="row m-0">
-                {% if is_granted("ROLE_ADMIN") %}
                 <div class="col-md-6 d-none d-md-block p-0">
+                    {% if is_granted("ROLE_ADMIN") %}
                     <div class="header-info">
                         <i class="fa fa-user-shield"></i>
                         <p><a href="{{ path('admin_backoffice') }}">Back Office</a></p>
                     </div>
+                    {% endif %}
                     <!--<div class="header-info">
                         <i class="material-icons">phone</i>
                         <p>(965) 436 3274</p>
                     </div>-->
                 </div>
-                {% endif %}
                 <div class="col-md-6 text-end p-0">
                     <div class="header-info d-none d-md-inline-flex">
                         <i class="fa fa-user"></i>
