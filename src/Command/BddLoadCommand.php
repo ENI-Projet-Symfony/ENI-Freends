@@ -67,6 +67,8 @@ class BddLoadCommand extends Command
         $connection->executeQuery("TRUNCATE TABLE campus");
         $connection->executeQuery("TRUNCATE TABLE participant");
         $connection->executeQuery("TRUNCATE TABLE participant_sortie");
+        $connection->executeQuery("TRUNCATE TABLE groupe");
+        $connection->executeQuery("TRUNCATE TABLE groupe_participant");
         $connection->executeQuery("SET FOREIGN_KEY_CHECKS = 1");
 
         //Mise en BDD des états possible d'une sorties
@@ -294,7 +296,7 @@ class BddLoadCommand extends Command
             ->setOrganisateur($amidenSuperAdmin)
             ->addParticipant($amidenSuperAdmin)
             ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
-            ->setCampus($campus2);
+            ->setCampus($campus1);
         $manager->persist($sortieTest1);
 
         //Jeu Sortie 2 BDD
@@ -316,7 +318,7 @@ class BddLoadCommand extends Command
             ->setOrganisateur($arkoSuperAdmin)
             ->addParticipant($arkoSuperAdmin)
             ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
-            ->setCampus($campus2);
+            ->setCampus($campus1);
         $manager->persist($sortieTest2);
 
         //Jeu Sortie 3 BDD
@@ -338,7 +340,7 @@ class BddLoadCommand extends Command
             ->setOrganisateur($borisSuperAdmin)
             ->addParticipant($borisSuperAdmin)
             ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
-            ->setCampus($campus2);
+            ->setCampus($campus1);
         $manager->persist($sortieTest3);
 
         //Jeu Sortie 4 BDD
@@ -360,7 +362,7 @@ class BddLoadCommand extends Command
             ->setOrganisateur($florianSuperAdmin)
             ->addParticipant($florianSuperAdmin)
             ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
-            ->setCampus($campus2);
+            ->setCampus($campus1);
         $manager->persist($sortieTest4);
 
         //Jeu Sortie 5 BDD
@@ -382,7 +384,7 @@ class BddLoadCommand extends Command
             ->setOrganisateur($amidenSuperAdmin)
             ->addParticipant($amidenSuperAdmin)
             ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
-            ->setCampus($campus2);
+            ->setCampus($campus1);
         $manager->persist($sortieTest5);
 
         //Jeu Sortie 6 BDD
@@ -404,7 +406,7 @@ class BddLoadCommand extends Command
             ->setOrganisateur($arkoSuperAdmin)
             ->addParticipant($arkoSuperAdmin)
             ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
-            ->setCampus($campus2);
+            ->setCampus($campus1);
         $manager->persist($sortieTest6);
 
         //Jeu Sortie 7 BDD
@@ -426,7 +428,7 @@ class BddLoadCommand extends Command
             ->setOrganisateur($borisSuperAdmin)
             ->addParticipant($borisSuperAdmin)
             ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
-            ->setCampus($campus2);
+            ->setCampus($campus1);
         $manager->persist($sortieTest7);
 
         //Jeu Sortie 8 BDD
@@ -448,7 +450,7 @@ class BddLoadCommand extends Command
             ->setOrganisateur($florianSuperAdmin)
             ->addParticipant($florianSuperAdmin)
             ->setLieu($this->lieuRepository->findOneBy(['id'=>rand(1,10)]))
-            ->setCampus($campus2);
+            ->setCampus($campus1);
         $manager->persist($sortieTest8);
 
 
