@@ -29,12 +29,16 @@ class Sortie
 
     /**
      * @Assert\NotBlank(message="Une date est nécessaire")
-     * @Assert\GreaterThan("now",message="La date de début de l'événement doit être antérieur à maintenant")
+     * @Assert\GreaterThan("now",message="La date de début de l'événement doit être postérieur à maintenant")
      * @ORM\Column(type="datetime")
      */
     private $dateHeureDebut;
 
     /**
+     * @Assert\NotNull(message="Le champ ne peut être vide et doit être un entier")
+     * @Assert\Regex(pattern="/[a-zA-Z]+/g",message="La valeur {{ value }} n'est pas un nombre Entier")
+     * @Assert\Positive(message="La veleur saisie doit être positive.")
+     * @Assert\Type(type="integer",message="La valeur {{ value }} n'est pas un nombre Entier")
      * @ORM\Column(type="integer", nullable=true)
      */
     private $duree;
@@ -46,6 +50,10 @@ class Sortie
     private $dateLimiteInscription;
 
     /**
+     * @Assert\NotNull(message="Le champ ne peut être vide et doit être un entier")
+     * @Assert\Regex(pattern="/[a-zA-Z]+/g",message="La valeur {{ value }} n'est pas un nombre Entier")
+     * @Assert\Positive(message="Il doit y avoir aux minimum 1 participant.")
+     * @Assert\Type(type="integer",message="La valeur {{ value }} n'est pas un nombre Entier")
      * @ORM\Column(type="integer")
      */
     private $nbInscriptionsMax;
@@ -283,7 +291,7 @@ class Sortie
         if ($this->getDateLimiteInscription()>$this->getDateHeureDebut())
         {
             $context->buildViolation(
-                "La date limite d'inscription doit être postérieur à la date l'événement",
+                "La date limite d'inscription doit être antérieur à la date l'événement",
             )
                 ->atPath("dateLimiteInscription")
                 ->addViolation()
