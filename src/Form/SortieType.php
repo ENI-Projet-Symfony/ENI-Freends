@@ -61,14 +61,19 @@ class SortieType extends AbstractType
                 'empty_data' => null,
                 'attr' => ['class' => 'js-datepicker'],
                 'required' => true
+
             ])
             ->add('nbInscriptionsMax',IntegerType::class,[
-                'label' => "Nombre de places"
+                'label' => "Nombre de places",
+                'attr' => [
+                    'min' => 1
+                ]
             ])
             ->add('duree',IntegerType::class,[
                 'label' => "Durée (minute)",
                 'attr' => [
-                    'type' => 'number'
+                    'type' => 'number',
+                    'min' => 1,
                 ]
             ])
             ->add('infosSortie',TextareaType::class,[
