@@ -51,6 +51,10 @@
                         </div>
                         <div class="col-lg-6 pt-4 pb-5 ei-text">
                             <p>{{ sortie.infosSortie }}</p>
+                            {%  if (sortie.annulationMotifs) %}
+                                <h2 class="text-danger text-capitalize"><i class="fa fa-exclamation-triangle"></i> Sortie annulée</h2>
+                            <p class="text-danger">{{ sortie.annulationMotifs }}</p>
+                            {% endif %}
                         </div>
                     </div>
                     <!--<p>Update the trend of 12 yoga exercises to help you lose weight effectively at home, help strengthen your exercise ability. Besides impacting weight loss effects, it also helps to repel diseases, enhance the body's resistance. Have a toned body with just 8 steps of yoga every day, helping to lose weight quickly combined with a reasonable diet.</p>-->
