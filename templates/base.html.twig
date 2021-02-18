@@ -76,9 +76,7 @@
                     <li><a href="{{ path('groupe_add') }}">Groupe</a></li>
                     {% endif %}
 
-                    {% if is_granted("ROLE_ADMIN") %}
                     <li><a href="{{ path('villes', {'page': 1}) }}">Villes</a></li>
-                    {% endif %}
 
                     {% if isMobile() %}
                     <li><a href="{{ path('sorties_list') }}">Sorties</a></li>

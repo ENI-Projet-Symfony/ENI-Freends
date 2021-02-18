@@ -6,6 +6,7 @@ use App\Repository\GroupeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=GroupeRepository::class)
@@ -20,6 +21,7 @@ class Groupe
     private $id;
 
     /**
+     * @Assert\NotBlank(message="Veuillez renseigner un nom pour le groupe", groups={"GroupeType"})
      * @ORM\Column(type="string", length=100)
      */
     private $Nom;
