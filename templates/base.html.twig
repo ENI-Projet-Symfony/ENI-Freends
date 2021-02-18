@@ -71,7 +71,10 @@
                 <ul class="main-menu">
                     <li><a href="{{ path('main_home') }}">Accueil</a></li>
 
-                    <li><a href="{{ path('villes', {'page': 1}) }}">Villes</a></li>
+                    {% if isMobile() %}
+                    {% else %}
+                    <li><a href="{{ path('groupe_add') }}">Groupe</a></li>
+                    {% endif %}
 
                     {% if is_granted("ROLE_ADMIN") %}
                     <li><a href="{{ path('villes', {'page': 1}) }}">Villes</a></li>

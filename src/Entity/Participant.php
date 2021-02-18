@@ -6,9 +6,12 @@ use App\Repository\ParticipantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * @UniqueEntity(fields={"mail"},message="Cette adresse mail est déjà utilisée")
+ * @UniqueEntity(fields={"pseudo"},message="Ce pseudo est déjà utilisée")
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
  */
 class Participant implements UserInterface
@@ -52,7 +55,7 @@ class Participant implements UserInterface
     private $telephone;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, unique=true)
      */
     private $mail;
 

@@ -28,7 +28,7 @@ class Sortie
     private $nom;
 
     /**
-     * @Assert\NotBlank(message="Une date est nécessaire")
+     * @Assert\NotBlank(message="Une date est nécessaire", groups={"SortieType"})
      * @Assert\GreaterThan("now",message="La date de début de l'événement doit être postérieur à maintenant")
      * @ORM\Column(type="datetime")
      */
