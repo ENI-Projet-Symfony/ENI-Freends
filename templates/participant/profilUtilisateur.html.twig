@@ -36,8 +36,8 @@
                         </div>
 
                         {% if participant.myGroupes.count >0 %}
-                            <h6>Mes groupes</h6>
                             <div class="row">
+                                <h3>Mes groupes</h3>
                                 {% for groupe in participant.myGroupes %}
                                     <div class="col-auto"><a href="{{ path('groupe_detail', {'id' :  groupe.id})}}">
                                             <button type="button" class="mt-4 btn btn-outline-dark"></i> {{ groupe.nom }}</button>

@@ -39,7 +39,7 @@ class SortieFiltreFormType extends AbstractType
                 'required' => false,
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'label' => 'Entre'
+                'label' => 'Entre',
             ])
 
             ->add('dateHeureFin', DateTimeType::class, [
@@ -49,7 +49,7 @@ class SortieFiltreFormType extends AbstractType
                 'required' => false,
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'label' => 'et'
+                'label' => 'et',
             ])
             // Filtres
             ->add('sortiesOrganisees', CheckboxType::class, [
