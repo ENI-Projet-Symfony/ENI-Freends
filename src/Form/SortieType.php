@@ -53,7 +53,7 @@ class SortieType extends AbstractType
                 'widget' => 'single_text',
                 'empty_data' => '',
                 'attr' => ['class' => 'js-datepicker'],
-                'required' => true
+                'required' => true,
             ])
             ->add('dateLimiteInscription',DateType::class,[
                 'label' => "Date limite d'inscription",
@@ -125,6 +125,7 @@ class SortieType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Sortie::class,
+            'validation_groups' => ["SortieType"]
         ]);
     }
 }

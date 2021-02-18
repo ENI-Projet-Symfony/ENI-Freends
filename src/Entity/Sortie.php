@@ -29,7 +29,7 @@ class Sortie
 
     /**
      * @Assert\NotBlank(message="Une date est nécessaire", groups={"SortieType"})
-     * @Assert\GreaterThan("now",message="La date de début de l'événement doit être postérieur à maintenant")
+     * @Assert\GreaterThan("now",message="La date de début de l'événement doit être postérieur à maintenant",groups={"SortieType"})
      * @ORM\Column(type="datetime")
      */
     private $dateHeureDebut;
@@ -44,7 +44,7 @@ class Sortie
     private $duree;
 
     /**
-     * @Assert\NotNull(message="Une date limite d'inscription est nécessaire")
+     * @Assert\NotBlank(message="Une date limite d'inscription est nécessaire",groups={"SortieType"})
      * @ORM\Column(type="datetime")
      */
     private $dateLimiteInscription;
@@ -284,14 +284,14 @@ class Sortie
     }
 
     /**
-     * @Assert\Callback
+     * @Assert\Callback(groups={"SortieType"})
      */
     public function DateValidation(ExecutionContextInterface $context)
     {
-        if ($this->getDateLimiteInscription()>$this->getDateHeureDebut())
+        if ($this->getDateLimiteInscription() > $this->getDateHeureDebut())
         {
             $context->buildViolation(
-                "La date limite d'inscription doit être antérieur à la date l'événement",
+                "La date limite d'inscription doit être antérieur à la date l'événement"
             )
                 ->atPath("dateLimiteInscription")
                 ->addViolation()
