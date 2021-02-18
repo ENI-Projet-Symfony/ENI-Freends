@@ -124,7 +124,7 @@ class AdminController extends AbstractController
 
                         unlink($full_path);
 
-                        $this->addFlash('succes','Vos données on été ajoutées en base');
+                        $this->addFlash('success','Vos données on été ajoutées en base');
                     }
                     catch (\Exception $errorException)
                     {
@@ -136,6 +136,8 @@ class AdminController extends AbstractController
                     $this->addFlash('warning','Echec du téléchargement du fichier');
                 }
             }
+
+            return $this->redirectToRoute('admin_gestion_utilisateur_ajouter');
         }
         else if ( $formManual->isSubmitted() && $formManual->isValid()){
             if($formManual->get('password')->getData())
@@ -165,9 +167,12 @@ class AdminController extends AbstractController
                 $participant->setNomFichierPhoto($nomFichier);
             }
             $participant->setActif(true);
+            $participant->setRoles(array("ROLE_USER"));
             $entityManager->persist($participant);
             $entityManager->flush();
-            $this->addFlash('succes','Vos données on été ajoutées en base');
+            $this->addFlash('success','Vos données on été ajoutées en base');
+
+            return $this->redirectToRoute('admin_gestion_utilisateur_ajouter');
         }
         return $this->render('admin/ajoututilisateur.html.twig', [
             'formCSV' => $formCSV->createView(),
