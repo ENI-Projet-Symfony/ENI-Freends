@@ -196,7 +196,7 @@ class SortieController extends AbstractController
     /**
      * @Route("/sorties", name="sorties_list", methods={"GET"})
      */
-    public function index(SortieRepository $sortieRepository, Request $request, GestionDesEtats $gestionDesEtats): Response
+    public function sortieList(SortieRepository $sortieRepository, Request $request, GestionDesEtats $gestionDesEtats): Response
     {
         //Crée une instance du formulaire de recherche (il n'est pas associé à une entité)
         $filterForm = $this->createForm(SortieFiltreFormType::class);
