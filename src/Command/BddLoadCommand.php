@@ -163,7 +163,7 @@ class BddLoadCommand extends Command
             ->setPassword($this->encoder->encodePassword($amidenSuperAdmin,"amidenadmin"))
             ->setRoles(["ROLE_SUPER_ADMIN"])
             ->setActif(true)
-            ->setCampus($campus2);
+            ->setCampus($campus1);
         $manager->persist($amidenSuperAdmin);
 
         $borisSuperAdmin = new Participant();
@@ -175,7 +175,7 @@ class BddLoadCommand extends Command
             ->setPassword($this->encoder->encodePassword($borisSuperAdmin,"pa\$\$word"))
             ->setRoles(["ROLE_SUPER_ADMIN"])
             ->setActif(true)
-            ->setCampus($campus2);
+            ->setCampus($campus1);
         $manager->persist($borisSuperAdmin);
 
         $arkoSuperAdmin = new Participant();
@@ -187,7 +187,7 @@ class BddLoadCommand extends Command
             ->setPassword($this->encoder->encodePassword($arkoSuperAdmin,"arkoadmin"))
             ->setRoles(["ROLE_SUPER_ADMIN"])
             ->setActif(true)
-            ->setCampus($campus2);
+            ->setCampus($campus1);
         $manager->persist($arkoSuperAdmin);
 
         $florianSuperAdmin = new Participant();
@@ -199,7 +199,7 @@ class BddLoadCommand extends Command
             ->setPassword($this->encoder->encodePassword($florianSuperAdmin,"florianadmin"))
             ->setRoles(["ROLE_SUPER_ADMIN"])
             ->setActif(true)
-            ->setCampus($campus2);
+            ->setCampus($campus1);
         $manager->persist($florianSuperAdmin);
 
         $manager->flush();
@@ -555,6 +555,8 @@ class BddLoadCommand extends Command
                                     UPDATE sortie as s SET s.etat_id = 7 
                                     WHERE DATE_ADD(DATE_ADD(s.date_heure_debut, INTERVAL s.duree MINUTE), INTERVAL '31' DAY) <= NOW();
                                     END");
+
+        $connection->executeQuery("SET GLOBAL event_scheduler='ON'");
 
         $io->success('La base de donnée à été initialisée !');
 

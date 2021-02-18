@@ -18,10 +18,12 @@ use mysql_xdevapi\Exception;
 use PHPTokenGenerator\TokenGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class AdminController extends AbstractController
 {
@@ -215,6 +217,7 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('admin_gestion_utilisateur');
     }
 
+
     /**
      * @Route("/admin/gestion/utilisateur/{id}/desactiver", name="admin_desactiver_utilisateur", methods={"GET"})
      */
@@ -234,6 +237,109 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/admin/gestion/utilisateur/activer", name="admin_activer_utilisateur_multi", methods={"GET"})
+     */
+    public function activerAllUtilisateur(Request $request, ParticipantRepository $participantRepository, EntityManagerInterface $entityManager)
+    {
+        $data =$request->get('data');
+        $tabId = $data['liste_utilisateurs'];
+
+        foreach ($tabId as $d) {
+            // Récupère l'Id du participant et la sortie à laquelle on s'inscrit
+            $participant = $participantRepository->find($d);
+            $participant->setActif(true);
+
+            $entityManager->persist($participant);
+        }
+        $entityManager->flush();
+
+        // Ajoute un message de succès
+        $this->addFlash("success","Utilisateur activé avec succès");
+
+        return new JsonResponse([
+            "status" => "deleted"
+        ], 200);
+    }
+
+    /**
+     * @Route("/admin/gestion/utilisateur/desactiver", name="admin_desactiver_utilisateur_multi", methods={"GET"})
+     */
+    public function desactiverAllUtilisateur(Request $request, ParticipantRepository $participantRepository, EntityManagerInterface $entityManager)
+    {
+        $data =$request->get('data');
+        $tabId = $data['liste_utilisateurs'];
+
+        foreach ($tabId as $d) {
+            // Récupère l'Id du participant et la sortie à laquelle on s'inscrit
+            $participant = $participantRepository->find($d);
+            $participant->setActif(false);
+            $entityManager->persist($participant);
+        }
+        $entityManager->flush();
+
+        // Ajoute un message de succès
+        $this->addFlash("success","Utilisateur désactivé avec succès");
+
+        return new JsonResponse([
+            "status" => "deleted"
+        ], 200);
+    }
+
+    /**
+     * @Route("/admin/gestion/utilisateur/suppression_multi", name="admin_suppression_utilisateur_multi", methods={"GET"})
+     */
+    public function suppressionAllUtilisateurs(Request $request, ParticipantRepository $participantRepository, SortieRepository $sortieRepository, EntityManagerInterface $entityManager)
+    {
+        $data =$request->get('data');
+        $tabId = $data['liste_utilisateurs'];
+
+        foreach ($tabId as $d) {
+            // Récupère l'Id du participant et la sortie à laquelle on s'inscrit
+            $participant = $participantRepository->find($d);
+
+            // Si cette sortie n'existe pas en BDD
+            if (!$participant){
+                //alors on déclenche une 404
+                throw $this->createNotFoundException('Cet utilisateur n\'existe pas');
+            }
+
+            // Définir l'administrateur qui supprime un utilisateur en tant qu'organisteur des sorties existantes de cet utilisateur
+            // Récupère l'ID de l'administrateur
+            $adminId = $this->getUser();
+
+            // Récupère toutes les sorties organisées par l'utilisateur
+            $sorties = $sortieRepository->findBy([
+                'organisateur' => $d
+            ]);
+            // Défini l'administrateur en tant qu'organisateur de ces sorties
+            foreach ($sorties as $sortie)
+            {
+                $sortie->setOrganisateur($adminId);
+                $entityManager->persist($sortie);
+            }
+            $entityManager->flush();
+
+            // Supprime l'utilisateur de la BDD
+            // $qbuser = $participantRepository->createQueryBuilder('p');
+            // $qbuser->delete();
+            // $qbuser->where('p.id = :val_id');
+            // $qbuser->setParameter('val_id', $d);
+            // $query = $qbuser->getQuery();
+            // $result = $query->getResult();
+
+            $entityManager->remove($participant);
+            $entityManager->flush();
+        }
+
+        // Ajoute un message de succès
+        $this->addFlash("success","Utilisateur supprimé avec succès");
+
+        return new JsonResponse([
+            "status" => "deleted"
+        ], 200);
+    }
+
+    /**
      * @Route("/admin/gestion/utilisateur/{id}/suppression", name="admin_suppression_utilisateur", methods={"GET"})
      */
     public function suppressionUtilisateur(int $id, EntityManagerInterface $entityManager,
@@ -241,7 +347,9 @@ class AdminController extends AbstractController
                                    ParticipantRepository $participantRepository): Response
     {
         // Récupère l'Id du participant et la sortie à laquelle on s'inscrit
-        $participant = $participantRepository->find($id);
+        $participant = $participantRepository->findBy([
+            'id' => $id
+        ]);
 
         // Si cette sortie n'existe pas en BDD
         if (!$participant){
