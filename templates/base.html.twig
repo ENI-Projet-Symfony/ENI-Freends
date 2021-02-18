@@ -11,10 +11,12 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <!-- Main Stylesheets -->
-    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+
     <link rel="stylesheet" href="{{ asset('css/slicknav.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
 
 
     <link rel="stylesheet" href="css/nice-select.css"/>
@@ -63,9 +65,7 @@
                 <!--<div class="hb-switch" id="search-switch">
                     <img src="{{ asset('img/icons/search.png') }}" alt="">
                 </div>-->
-                <div class="hb-switch" id="infor-switch">
-                    <img src="{{ asset('img/icons/bars.png') }}" alt="">
-                </div>
+                
             </div>
             <div class="container">
                 <ul class="main-menu">
@@ -113,15 +113,15 @@
     {% block header %}
 {% endblock %}
 
-{% for label, messages in app.flashes %}
-    <div class="container">
+
+    {% for label, messages in app.flashes %}
         {% for message in messages %}
-            <div class="alert alert-{{ label }}">
-                {{ message }}
+            <div class="alert alert-{{ label }} alert-dismissible fade show animated fadeInDown notif-flash" role="alert">
+                <strong>{{ message }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         {% endfor %}
-    </div>
-{% endfor %}
+    {% endfor %}
 
 <div class="container pb-5 h100">
     {% block body %}{% endblock %}
