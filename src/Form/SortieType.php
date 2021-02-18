@@ -29,7 +29,7 @@ class SortieType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 'attr' => [
-                    'class' => "custom-file-input"
+                    'class' => "custom-file-input drop-zone__input"
                 ],
                 'constraints' => [
                     new Image([
