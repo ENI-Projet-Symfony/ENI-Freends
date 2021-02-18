@@ -1,10 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
+
+{% block title %}Reset password{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        body {
+            background-color: #406274;
+            color: #ffffff;
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
-    <div>
-        <a href="{{ path('app_reset_password', {token: resetToken.token}) }}">Appuyer sur ce lien pour changer votre mot de passe</a>
+    <div class="logoLogin">
+        <img src="{{ asset('img/logo-2.png') }}">
+    </div>
+    <div class="row">
+
+        <div class="col-6 mx-auto d-flex justify-content-center align-items-center h100">
+            <a href="{{ path('app_reset_password', {token: resetToken.token}) }}" class="site-btn sb-gradient">Appuyer sur ce lien pour changer votre mot de passe</a>
+        </div>
+        <div class="illustrationLogin">
+            <img src="{{ asset('img/mdp_bg.gif') }}">
+        </div>
+
     </div>
 {% endblock %}
 
