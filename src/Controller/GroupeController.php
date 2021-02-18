@@ -6,6 +6,7 @@ use App\Entity\Groupe;
 use App\Form\GroupeType;
 use App\Repository\GroupeRepository;
 use claviska\SimpleImage;
+use DeviceDetector\DeviceDetector;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPTokenGenerator\TokenGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,6 +22,15 @@ class GroupeController extends AbstractController
      */
     public function creerGroupe(EntityManagerInterface $entityManager, Request $request): Response
     {
+        $userAgent = $_SERVER['HTTP_USER_AGENT'];
+        $dd = new DeviceDetector($userAgent);
+        $dd->parse();
+
+        if ($dd->isMobile())
+        {
+            return $this->redirectToRoute('main_home');
+        }
+
         $groupe = new Groupe();
         $groupeform = $this->createForm(GroupeType::class,$groupe);
 

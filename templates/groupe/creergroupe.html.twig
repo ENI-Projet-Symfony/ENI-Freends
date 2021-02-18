@@ -2,26 +2,19 @@
 
 {% block title %}{% endblock %}
 
+{% block bannerTitle %}Créer un nouveau groupe{% endblock %}
+
 {% block body %}
-    <h1>Créer un nouveau groupe</h1>
+    <div class="event-filter-warp">
+        {{ form_start(groupe_form, {attr: {'novalidate': 'novalidate'}}) }}
 
-
-    {{ form_start(groupe_form, {attr: {'novalidate': 'novalidate'}}) }}
-
-    {{ form_row(groupe_form.Nom) }}
-    {{ form_row(groupe_form.Membres) }}
-    <div class="row">
-        <div class="col-6 text-center">
-            <button type="submit" class="mt-4 btn btn-outline-dark">Enregistrer</button>
+        {{ form_row(groupe_form.Nom) }}
+        {{ form_row(groupe_form.Membres) }}
+        <div class="row">
+            <button type="submit" class="mt-4 site-btn sb-gradient" style="width:200px">Enregistrer</button>
         </div>
-        <div class="col-6 text-center">
-            <a href="{{ path('main_home') }}">
-                <button type="button" class="mt-4 btn btn-outline-dark">Annuler</button>
-            </a>
-        </div>
+        {{ form_end(groupe_form) }}
     </div>
-    {{ form_end(groupe_form) }}
-
 
 {% endblock %}
 
