@@ -215,3 +215,9 @@ div.sticky {
 .page-top-section {
     height: 350px!important;
 }
+.notif-flash{
+    position: absolute;
+    z-index:1025;
+    top:70px;
+    right:30px;
+}

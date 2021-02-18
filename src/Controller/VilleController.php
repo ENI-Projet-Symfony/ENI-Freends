@@ -30,6 +30,8 @@ class VilleController extends AbstractController
         if($formAjout->isSubmitted() && $formAjout->isValid()){
             $entityManager->persist($ville);
             $entityManager->flush();
+            $this->addFlash('success','La ville à bien été ajoutée');
+            return $this->redirectToRoute("villes");
         }
         $data = $villeRepository->getVillesEtNbrLieux($page);
 
@@ -50,6 +52,7 @@ class VilleController extends AbstractController
     {
         $entityManager->remove($villeRepository->find($id));
         $entityManager->flush();
+        $this->addFlash('success','La ville à bien été supprimée');
         return $this->redirectToRoute('villes');
     }
 
