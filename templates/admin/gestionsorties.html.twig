@@ -64,7 +64,7 @@
                         <h5 class="card-header">Liste des Sorties</h5>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered first">
+                                <table class="table table-striped table-bordered first mb-3">
                                     <thead>
                                     <tr>
                                         <th>ID</th>
@@ -82,7 +82,9 @@
                                         <tr>
                                             <td>{{ sortie.id }}</td>
                                             <td>
-                                                <a href="{{ path('admin_gestion_utilisateur_infos', {id:sortie.id}) }}" class="text-primary">{{ sortie.nom|upper }}</a>
+
+                                                {{ sortie.nom|upper }}
+
                                             </td>
                                             <td>{{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</td>
                                             <td>{{ sortie.dateLimiteInscription|date('d/m/Y') }}</td>
@@ -93,7 +95,7 @@
                                             <td>{{ sortie.etat.libelle }}</td>
                                             <td><a href="{{ path('admin_gestion_utilisateur_infos',{id:sortie.organisateur.id}) }}">{{ sortie.organisateur.pseudo }}</a></td>
                                             <td>
-                                                <a href="{{ path('admin_gestion_utilisateur_infos',{id:sortie.organisateur.id}) }}" class="btn btn-xs btn-primary">Détails</a>
+
                                                 <a id="ok" href="#Annulation{{ sortie.id }}" data-toggle="modal" data-target="#Annulation{{ sortie.id }}" class="btn btn-xs btn-outline-danger">Annuler</a>
                                             </td>
 

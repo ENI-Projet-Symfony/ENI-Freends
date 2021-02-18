@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
-{% block title %}Nouvelle sortie{% endblock %}
+{% block title %}Creer une sortie {{ parent() }}{% endblock %}
+
+{% block bannerTitle %}Créer une sortie{% endblock %}
 
 {% block body %}
 
@@ -7,9 +9,7 @@
     <!-- composer require tattali/mobile-detect-bundle -->
     <!-- DOC: https://github.com/suncat2000/MobileDetectBundle/blob/master/Resources/doc/index.md -->
 
-    <h1>Créer une sortie</h1>
-
-    <section>
+    <section class="mt-5">
 
         {{ form_start(formulaire, {attr: {'novalidate': 'novalidate'}}) }}
         <div class="row">
