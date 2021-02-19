@@ -254,27 +254,91 @@ class BddLoadCommand extends Command
         }
         $manager->flush();
 
+        ini_set('memory_limit', '1024M');
+        $connection = $this->entityManager->getConnection();
 
-        //Mise en Bdd des lieu(Cinéma de france)
-        $cinemas = $this->httpClient->request(
-            'GET',
-            "https://data.iledefrance.fr/api/records/1.0/search/?dataset=les_salles_de_cinemas_en_ile-de-france&q=&facet=dep&facet=tranche_d_entrees&facet=ae&facet=multiplexe"
-        )->toArray();
+        $json = file_get_contents("public/jsonPOI/poi_1.jsonld");
+        $data = json_decode($json,true);
 
+        //dump($data["@graph"][0]);
 
-        foreach ($cinemas["records"] as $cinema){
-            $cine = new Lieu();
-            $cine->setNom($cinema["fields"]["nom"])
-                ->setLatitude($cinema["fields"]["geo"][0])
-                ->setLongitude($cinema["fields"]["geo"][1])
-                ->setRue($cinema["fields"]["adresse"])
-                ->setVille(
-                    $this->villeRepository->findOneBy(['id'=>rand(1,4462)])
-                );
+        foreach ($data["@graph"] as $poi)
+        {   $poi_to_add = new Lieu();
+
+            if(!empty($poi["rdfs:label"]["@value"]))
+            {
+                $poi_to_add->setNom($poi["rdfs:label"]["@value"]);
+            }
+
+            if(!empty($poi["isLocatedAt"]["schema:geo"]["schema:latitude"]["@value"]))
+            {
+                $poi_to_add ->setLatitude($poi["isLocatedAt"]["schema:geo"]["schema:latitude"]["@value"])
+                    ->setLongitude($poi["isLocatedAt"]["schema:geo"]["schema:longitude"]["@value"]);
+            }
+
+            if(!empty($poi["isLocatedAt"]["schema:address"]["schema:streetAddress"]))
+            {
+                if (is_array($poi["isLocatedAt"]["schema:address"]["schema:streetAddress"])){
+                    $rue = $poi["isLocatedAt"]["schema:address"]["schema:streetAddress"][0];
+                }
+                else
+                {
+                    $rue = $poi["isLocatedAt"]["schema:address"]["schema:streetAddress"];
+                }
+                $poi_to_add ->setRue($rue)
+                    ->setVille($this->villeRepository->findOneBy(["nom" => $poi["isLocatedAt"]["schema:address"]["schema:addressLocality"]]));
+            }
             ;
-            $manager->persist($cine);
+            if(!empty($poi["rdfs:label"]["@value"]))
+            {
+                if(!empty($poi["isLocatedAt"]["schema:address"]["schema:streetAddress"]))
+                {
+                    $manager->persist($poi_to_add);
+                }
+            }
         }
+        $manager->flush();
 
+        $json2 = file_get_contents("public/jsonPOI/poi_2.jsonld");
+        $data2 = json_decode($json2,true);
+
+        //dump($data["@graph"][0]);
+
+        foreach ($data2["@graph"] as $poi)
+        {   $poi_to_add = new Lieu();
+
+            if(!empty($poi["rdfs:label"]["@value"]))
+            {
+                $poi_to_add->setNom($poi["rdfs:label"]["@value"]);
+            }
+
+            if(!empty($poi["isLocatedAt"]["schema:geo"]["schema:latitude"]["@value"]))
+            {
+                $poi_to_add ->setLatitude($poi["isLocatedAt"]["schema:geo"]["schema:latitude"]["@value"])
+                    ->setLongitude($poi["isLocatedAt"]["schema:geo"]["schema:longitude"]["@value"]);
+            }
+
+            if(!empty($poi["isLocatedAt"]["schema:address"]["schema:streetAddress"]))
+            {
+                if (is_array($poi["isLocatedAt"]["schema:address"]["schema:streetAddress"])){
+                    $rue = $poi["isLocatedAt"]["schema:address"]["schema:streetAddress"][0];
+                }
+                else
+                {
+                    $rue = $poi["isLocatedAt"]["schema:address"]["schema:streetAddress"];
+                }
+                $poi_to_add ->setRue($rue)
+                    ->setVille($this->villeRepository->findOneBy(["nom" => $poi["isLocatedAt"]["schema:address"]["schema:addressLocality"]]));
+            }
+            ;
+            if(!empty($poi["rdfs:label"]["@value"]))
+            {
+                if(!empty($poi["isLocatedAt"]["schema:address"]["schema:streetAddress"]))
+                {
+                    $manager->persist($poi_to_add);
+                }
+            }
+        }
         $manager->flush();
 
         //Jeu Sortie 1 BDD
