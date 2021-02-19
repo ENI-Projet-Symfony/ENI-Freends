@@ -98,6 +98,9 @@ class SortieController extends AbstractController
             $sortie->setCampus($this->getUser()->getCampus());
             $entityManager->persist($sortie);
             $entityManager->flush();
+
+            return $this->redirectToRoute('sorties_add');
+
         }
 
         // Ajouter un lieu
