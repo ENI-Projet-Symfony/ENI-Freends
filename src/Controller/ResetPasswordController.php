@@ -50,10 +50,13 @@ class ResetPasswordController extends AbstractController
                 $mail = $form->get('mail')->getData();
 
                 $user = $participantRepository->findOneBy(['mail' => $mail]);
-                dump($user);
                 if($user)
                 {
                     return $this->processPasswordResetEmail($user);
+                }
+                else
+                {
+                    $this->addFlash('error','L\'adresse mail saisie n\'existe pas');
                 }
 
             }

@@ -6983,3 +6983,7 @@ Media Query
     align-items: center;
     justify-content: center;
 }
+
+.influence-finder button.btn {
+    width: auto;
+}
