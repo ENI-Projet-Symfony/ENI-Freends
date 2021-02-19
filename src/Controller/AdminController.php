@@ -34,7 +34,7 @@ class AdminController extends AbstractController
      */
     public function backOffice(): Response
     {
-        return $this->render('admin/homeBackOffice.html.twig', []);
+        return $this->redirectToRoute('admin_gestion_utilisateur');
     }
 
     /**
