@@ -34,6 +34,9 @@
 /web/bundles/
 /web/uploads/
 
+# To heavy files
+/public/jsonPOI/
+
 # PHPUnit
 /app/phpunit.xml
 /phpunit.xml
