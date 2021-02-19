@@ -1,5 +1,7 @@
 <select id="sortie_lieu" name="sortie[lieu]" class="form-control">
     {% for lieu in AllLieu %}
-    <option value={{ lieu.id }}>{{ lieu.nom }}</option>
+        <option value={{ lieu.id }}>{{ lieu.nom }}</option>
+        {% else %}
+            <option>Aucun lieu trouvé</option>
     {% endfor %}
 </select>

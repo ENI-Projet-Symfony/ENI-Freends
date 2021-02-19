@@ -1,0 +1,220 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des villes {{ parent() }}{% endblock %}
+
+{% block bannerTitle %}Liste des villes{% endblock %}
+
+{% block body %}
+    <div id="ajax-messages"></div>
+
+    <div class="container mb-5">
+        <div class="event-filter-warp">
+
+            <div class="row">
+                <div class="col-xl-3">
+                    <p style="font-size: 2em;margin-top:4px" class="custom-text">Ajouter une ville</p>
+                </div><!-- End .col-xl-3 -->
+                <div class="col-xl-9">
+
+                    <div class="row">
+                        {{ form_start(form_ajout, {attr: {'novalidate': 'novalidate', 'class': 'event-filter-form'}}) }}
+                            <div class="ef-item col-4" style="width:300px">
+                                {{ form_row(form_ajout.nom) }}
+                            </div>
+                            <div class="ef-item col-4">
+                                {{ form_row(form_ajout.codePostal) }}
+                            </div>
+                            <div class="ef-item col-4">
+                                <button type="submit" class="site-btn sb-gradient mt-2">Ajouter</button>
+                            </div>
+                        {{ form_end(form_ajout) }}
+                    </div><!-- End .row -->
+
+                </div><!-- End .col-xl-9 -->
+            </div><!-- End .row -->
+
+        </div><!-- End .event-filter-warp -->
+    </div><!-- End .container -->
+
+
+    <section class="mt-4">
+
+        <div class="row text-center">
+            {% if is_granted("ROLE_ADMIN") %}
+            <div class="col-5">
+                <h3>Villes</h3>
+            </div>
+            <div class="col-4">
+                <h3>Code postal</h3>
+            </div>
+            {% else %}
+            <div class="col-6">
+                <h3>Villes</h3>
+            </div>
+            <div class="col-6">
+                <h3>Code postal</h3>
+            </div>
+            {% endif %}
+            {% if is_granted("ROLE_ADMIN") %}
+            <div class="col-3">
+                <h3>Actions</h3>
+            </div>
+            {% endif %}
+            {% for ville in villes %}
+                {% if is_granted("ROLE_ADMIN") %}
+            <div class="col-10">
+                {% else %}
+                    <div class="col-12">
+                        {% endif %}
+                <form class="form-horizontal form-modif-ville"  action="{{ path('modifier_ville',{'id': ville.id}) }}">
+                    <div class="input-group">
+                        <input class="form-control input-modif-ville input-disabled" type="text" name="nom" value="{{ ville.nom }}" disabled>
+                        <input class="form-control input-modif-ville input-disabled" type="text" name="codePostal" value="{{ ville.codePostal }}" disabled>
+                        {% if is_granted("ROLE_ADMIN") %}
+                        <p class="btn btn-outline-primary trigger-modify" >Modifier</p>
+                        <button class="btn btn-success btn-modif-ville">Confirmer</button>
+                        <button type="reset" class="btn btn-danger btn-modif-ville btn-modif-cancel">Annuler</button>
+                        {% endif %}
+                    </div><!-- End .input-group -->
+                </form>
+            </div><!-- End .col-10 -->
+                {% if is_granted("ROLE_ADMIN") %}
+            <div class="col-2 text-end">
+                <a id="validate" href="#SuppressionVille{{ ville.id }}" data-toggle="modal" data-target="#SuppressionVille{{ ville.id }}" class="btn btn-outline-danger">Supprimer</a>
+
+                <!-- MODAL -->
+                <div class="modal fade" id="SuppressionVille{{ ville.id }}" tabindex="-1" role="dialog" aria-labelledby="Suppression_Label{{ ville.id }}" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="Suppression_Label{{ ville.id }}">Confirmer la suppression</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div><!-- End .modal-header -->
+                            <form method="get" action="{{ path('supprimer_ville',{'id': ville.id}) }}">
+                                <div class="modal-body">
+                                    Êtes vous sure de vouloir <span class="text-danger">supprimer</span> cette ville ?<br>
+                                    "{{ ville.nom }}"<br><br>
+                                    Cette action supprimera aussi tous les lieux qui lui sont associés. (Actuellement {{  ville.nbrLieux }} associé{{ ville.nbrLieux > 1 ? 's' : ''}} )
+                                </div><!-- End .modal-body -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                    <button type="submit" class="btn btn-danger">Confirmer</button>
+                                </div><!-- End .modal-footer -->
+                            </form>
+                        </div><!-- End .modal-content -->
+                    </div><!-- End .modal-dialog -->
+                </div>
+                <!-- End MODAL -->
+
+            </div><!-- End .col-2 -->
+                {% endif %}
+            {% endfor %}
+        </div><!-- End .row -->
+
+    </section>
+
+    <section>
+        <div class="pagination-infos row">
+
+
+            {# doit-on afficher le lien vers la page précédente ? oui si on est sur la page 2 ou plus ! #}
+            {% set showPrevPageLink = page > 1 %}
+            <div class="col-4">
+            {% if showPrevPageLink %}
+                <a class="btn btn-dark" href="{{ path('villes', {'page': page-1}) }}">Prev page</a>
+            {% endif %}
+            </div>
+            <div class="col-4 text-center">Page #{{ page }}</div>
+            {# et celui de la page suivante ? si le numéro du dernier résultat affiché est plus petit que le nb total ! #}
+            {% set showNextPageLink = (numberOfResultsPerPage * page) < totalResultsCount %}
+            <div class="col-4 text-end">
+            {% if showNextPageLink %}
+                <a class="btn btn-dark" href="{{ path('villes', {'page': page+1}) }}">Next page</a>
+            {% endif %}
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+    function resetForms(){
+        let allInputs = $(".input-modif-ville");
+        allInputs.addClass("input-disabled");
+        allInputs.attr("disabled", true);
+        $(".btn-modif-ville").css('display','none');
+        $(".trigger-modify").show();
+    }
+    //activation du formulaire avec le bouton modifier
+    jQuery(document).ready(function () {
+        $(".trigger-modify").on("click", function (e) {
+            //réinitialise l'affichage de tous les champs
+            resetForms();
+            $(".trigger-modify").css('visibility', 'hidden');
+            //active le champ sélectionné
+            var $this = $(this);
+            var inputs =$this.closest("form").find("input");
+            var btnAnnuler = $this.next().next();
+            let initialValues = [];
+            inputs.each(function() {
+                let key = $(this).attr('name');
+                let val = $(this).val();
+                initialValues[key] = val;
+
+            });
+
+            btnAnnuler.prop("onclick", null).off("click");
+            $(btnAnnuler).on("click", function () {
+                $(".trigger-modify").css('visibility', 'visible');
+                console.log(initialValues);
+                inputs.each(function() {
+                    $(this).attr('value',initialValues[$(this).attr('name')]) ;
+                });
+                $(this).prop("onclick", null).off("click");
+                resetForms();
+            });
+
+            inputs.removeClass("input-disabled");
+            inputs.removeAttr("disabled");
+            $this.hide();
+            $this.next().css('display','block');
+            btnAnnuler.css('display','block')
+        });
+        //traitement des données du formulaire
+        $(".form-modif-ville").on("submit",function (e){
+            e.preventDefault();
+            let data ={};
+            $(this).serializeArray().forEach((object)=>{
+                data[object.name] = object.value;
+            });
+            resetForms();
+            $(".trigger-modify").css('visibility', 'visible');
+            $.ajax({
+
+                type: 'GET',
+                url: $(this).attr("action"),
+                dataType : 'json',
+                contentType: 'application/json',
+                data:{data : data},
+                success: function(data) {
+                    $('#ajax-messages').html( '<div class="alert alert-success alert-dismissible fade show animated fadeInDown notif-flash" role="alert"> <strong>La ville à bien été modifiée</strong> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> </div>');
+
+                    e.stopPropagation();
+                },
+                error: function (xhr, desc, err)
+                {
+                    $('#ajax-messages').html( '<div class="alert alert-danger alert-dismissible fade show animated fadeInDown notif-flash" role="alert"> <strong>Une erreur est survenue lors de la modification de la ville</strong> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> </div>');
+                }
+            })
+
+
+            return false;
+        })
+
+    });
+
+    </script>
+
+{% endblock %}

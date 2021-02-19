@@ -28,22 +28,32 @@ class Sortie
     private $nom;
 
     /**
-     * @Assert\GreaterThan("now",message="La date de début de l'événement doit être antérieur à maintenant")
+     * @Assert\NotBlank(message="Une date est nécessaire", groups={"SortieType"})
+     * @Assert\GreaterThan("now",message="La date de début de l'événement doit être postérieur à maintenant",groups={"SortieType"})
      * @ORM\Column(type="datetime")
      */
     private $dateHeureDebut;
 
     /**
+     * @Assert\NotNull(message="Le champ ne peut être vide et doit être un entier")
+     * @Assert\Regex(pattern="/[0-9]/",message="La valeur {{ value }} n'est pas un nombre Entier ou n'est pas positif")
+     * @Assert\Positive(message="La veleur saisie doit être positive.")
+     * @Assert\Type(type="integer",message="La valeur {{ value }} n'est pas un nombre Entier")
      * @ORM\Column(type="integer", nullable=true)
      */
     private $duree;
 
     /**
+     * @Assert\NotBlank(message="Une date limite d'inscription est nécessaire",groups={"SortieType"})
      * @ORM\Column(type="datetime")
      */
     private $dateLimiteInscription;
 
     /**
+     * @Assert\NotNull(message="Le champ ne peut être vide et doit être un entier")
+     * @Assert\Regex(pattern="/[0-9]/",message="La valeur {{ value }} n'est pas un nombre Entier ou n'est pas positif")
+     * @Assert\Positive(message="Il doit y avoir aux minimum 1 participant.")
+     * @Assert\Type(type="integer",message="La valeur {{ value }} n'est pas un nombre Entier")
      * @ORM\Column(type="integer")
      */
     private $nbInscriptionsMax;
@@ -274,14 +284,14 @@ class Sortie
     }
 
     /**
-     * @Assert\Callback
+     * @Assert\Callback(groups={"SortieType"})
      */
     public function DateValidation(ExecutionContextInterface $context)
     {
-        if ($this->getDateLimiteInscription()>$this->getDateHeureDebut())
+        if ($this->getDateLimiteInscription() > $this->getDateHeureDebut())
         {
             $context->buildViolation(
-                "La date limite d'inscription doit être postérieur à la date l'événement",
+                "La date limite d'inscription doit être antérieur à la date l'événement"
             )
                 ->atPath("dateLimiteInscription")
                 ->addViolation()

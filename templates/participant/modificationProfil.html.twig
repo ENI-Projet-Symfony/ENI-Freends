@@ -2,22 +2,52 @@
 
 {% block title %}{{ parent() }} | Modifier profil {% endblock %}
 
+{% block bannerTitle %}Modifier mon profil {% endblock %}
+
 {% block body %}
 
-    {{ form_start(user_form, {attr: {'novalidate': 'novalidate'}}) }}
-
-    {{ form_widget(user_form) }}
-
-    <div class="row">
-        <div class="col-6 text-center">
-            <button type="submit" class="mt-4 btn btn-outline-dark">Enregistrer</button>
+    <!-- Trainers Section -->
+    <section class="trainer-details-section spad overflow-hidden">
+        <div class="container">
+            <div class="trainer-details">
+                <div class="trainer-info">
+                    {{ form_start(user_form, {attr: {'novalidate': 'novalidate'}}) }}
+                    <div class="row">
+                        <div class="col-4">
+                            {% if (app.user.nomFichierPhoto) %}
+                                <img src="{{ asset('img/' ~ app.user.nomFichierPhoto) }}" alt="impossible de charger l'image">
+                            {% else %}
+                                <img src="{{ asset('img/profil/Portrait_Placeholder.png') }}">
+                            {% endif %}
+                            {{ form_row(user_form.photo) }}
+                        </div>
+                        <div class="col-4">
+                            {{ form_row(user_form.pseudo) }}
+                            {{ form_row(user_form.prenom) }}
+                            {{ form_row(user_form.nom) }}
+                            {{ form_row(user_form.telephone) }}
+                            {{ form_row(user_form.mail) }}
+                        </div>
+                        <div class="col-4">
+                            {{ form_row(user_form.password) }}
+                            {{ form_row(user_form.campus) }}
+                            <div class="row">
+                                <div class="col-6 text-center">
+                                    <button type="submit" class="mt-4 btn btn-primary">Enregistrer</button>
+                                </div>
+                                <div class="col-6 text-center">
+                                    <a href="{{ path('participant_profil' , {id : app.user.id}) }}">
+                                        <button type="button" class="mt-4 btn btn-outline-danger">Annuler</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{ form_end(user_form) }}
+                </div>
+            </div>
         </div>
-        <div class="col-6 text-center">
-            <a href="{{ path('participant_profil' , {id : app.user.id}) }}">
-                <button type="button" class="mt-4 btn btn-outline-dark">Annuler</button>
-            </a>
-        </div>
-    </div>
-    {{ form_end(user_form) }}
+    </section>
+    <!-- Trainers Section end -->
 
 {% endblock %}

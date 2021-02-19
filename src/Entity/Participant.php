@@ -6,9 +6,12 @@ use App\Repository\ParticipantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * @UniqueEntity(fields={"mail"},message="Cette adresse mail est déjà utilisée")
+ * @UniqueEntity(fields={"pseudo"},message="Ce pseudo est déjà utilisée")
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
  */
 class Participant implements UserInterface
@@ -52,7 +55,7 @@ class Participant implements UserInterface
     private $telephone;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, unique=true)
      */
     private $mail;
 
@@ -77,10 +80,27 @@ class Participant implements UserInterface
      */
     private $campus;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $nomFichierPhoto;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Groupe::class, mappedBy="Membres")
+     */
+    private $groupes;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Groupe::class, mappedBy="Proprietaire")
+     */
+    private $myGroupes;
+
     public function __construct()
     {
         $this->sortiesOrganisees = new ArrayCollection();
         $this->sortiesParticpees = new ArrayCollection();
+        $this->groupes = new ArrayCollection();
+        $this->myGroupes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -286,6 +306,75 @@ class Participant implements UserInterface
     public function setCampus(?Campus $campus): self
     {
         $this->campus = $campus;
+
+        return $this;
+    }
+
+    public function getNomFichierPhoto(): ?string
+    {
+        return $this->nomFichierPhoto;
+    }
+
+    public function setNomFichierPhoto(?string $nomFichierPhoto): self
+    {
+        $this->nomFichierPhoto = $nomFichierPhoto;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Groupe[]
+     */
+    public function getGroupes(): Collection
+    {
+        return $this->groupes;
+    }
+
+    public function addGroupe(Groupe $groupe): self
+    {
+        if (!$this->groupes->contains($groupe)) {
+            $this->groupes[] = $groupe;
+            $groupe->addMembre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupe(Groupe $groupe): self
+    {
+        if ($this->groupes->removeElement($groupe)) {
+            $groupe->removeMembre($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Groupe[]
+     */
+    public function getMyGroupes(): Collection
+    {
+        return $this->myGroupes;
+    }
+
+    public function addMyGroupe(Groupe $myGroupe): self
+    {
+        if (!$this->myGroupes->contains($myGroupe)) {
+            $this->myGroupes[] = $myGroupe;
+            $myGroupe->setProprietaire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMyGroupe(Groupe $myGroupe): self
+    {
+        if ($this->myGroupes->removeElement($myGroupe)) {
+            // set the owning side to null (unless already changed)
+            if ($myGroupe->getProprietaire() === $this) {
+                $myGroupe->setProprietaire(null);
+            }
+        }
 
         return $this;
     }

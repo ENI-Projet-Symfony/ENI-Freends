@@ -2,36 +2,68 @@
 
 {% block title %}Log in!{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        body {
+            background-color: #C6D2DA;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-
-    {% if app.user %}
-        <div class="mb-3">
-            Vous êtes connecté en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">Déconnexion</a>
-        </div>
-    {% endif %}
-
-    <h1 class="h3 mb-3 font-weight-normal">Bienvenue sur Sortir.com, veuillez vous identifier</h1>
-    <label for="inputPseudo">Identifiant</label>
-    <input type="text" value="{{ last_username }}" name="pseudo_or_mail" id="inputPseudo" class="form-control" required autofocus>
-    <label for="inputPassword">Mot de passe</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" required>
-
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-        <div class="checkbox mt-2 mb-2">
-            <label>
-                <input type="checkbox" name="_remember_me"> Se souvenir de moi
-            </label>
-        </div>
-
-    <div class="text-center">
-        <button class="btn btn-outline-dark" type="submit">
-            Connexion
-        </button>
+    <div class="logoLogin">
+        <img src="{{ asset('img/logo-2.png') }}">
     </div>
+    <div class="row">
 
-</form>
+        <div class="col-6 mx-auto d-flex justify-content-center align-items-center h100">
+
+            <form method="post">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                {% if app.user %}
+                    <div class="mb-3">
+                        Vous êtes connecté en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">Déconnexion</a>
+                    </div>
+                {% endif %}
+
+                <h1 class="h3 mb-3 font-weight-normal pink">Bienvenue sur Sortir.com, veuillez vous identifier</h1>
+                <label for="inputPseudo">Identifiant</label>
+                <input type="text" value="{{ last_username }}" name="pseudo_or_mail" id="inputPseudo" class="form-control" required autofocus>
+                <label for="inputPassword">Mot de passe</label>
+                <input type="password" name="password" id="inputPassword" class="form-control" required>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <div class="checkbox mt-2 mb-2">
+                        <label>
+                            <input type="checkbox" name="_remember_me"> Se souvenir de moi
+                        </label>
+                    </div>
+                <div class="row mt-4">
+                    <div class="text-center col-12">
+                        <button class="site-btn sb-gradient" type="submit">
+                            Connexion
+                        </button>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="text-center col-12">
+                        <a href="{{ path('app_forgot_password_request') }}">
+                            <button class="btn btn-xs btn-outline-dark" type="button">
+                                Mot de passe oublié ?
+                            </button>
+                        </a>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+        <div class="illustrationLogin">
+            <img src="{{ asset('img/login_bg.gif') }}">
+        </div>
+
+    </div>
 {% endblock %}

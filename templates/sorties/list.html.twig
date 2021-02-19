@@ -1,44 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home Page{% endblock %}
+{% block title %}Tous les Sorties {{ parent() }}{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/datepicker.css') }}">
 {% endblock %}
 
+{% block bannerTitle %}Toutes les sorties{% endblock %}
+
 {% block body %}
-
-    <h1>Sorties</h1>
-
-    <section>
-        <h2>Filtrer les sorties</h2>
-        {{ form_start(searchForm, {attr: {'novalidate': 'novalidate'}}) }}
-        <form>
+    <div class="container">
+        <div class="event-filter-warp">
             <div class="row">
-                <div class="col-6">
-                    {{ form_row(searchForm.campus) }}
-                    {{ form_row(searchForm.nom) }}
+                {{ form_start(searchForm, {attr: {'novalidate': 'novalidate'}}) }}
+                <form>
                     <div class="row">
                         <div class="col-6">
-                            {{ form_row(searchForm.dateHeureDebut) }}
+                            {{ form_row(searchForm.campus) }}
+                            {{ form_row(searchForm.nom) }}
+                            <div class="row">
+                                <div class="col-6">
+                                    {{ form_row(searchForm.dateHeureDebut) }}
+                                </div>
+                                <div class="col-6">
+                                    {{ form_row(searchForm.dateHeureFin) }}
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-6">
-                            {{ form_row(searchForm.dateHeureFin) }}
+
+                        <div class="col-6 pt-4">
+                            {{ form_row(searchForm.sortiesOrganisees) }}
+                            {{ form_row(searchForm.sortiesInscrit) }}
+                            {{ form_row(searchForm.sortiesNonInscrit) }}
+                            {{ form_row(searchForm.sortiesPassees) }}
+                            {{ form_row(searchForm.submit) }}
                         </div>
                     </div>
-                </div>
-
-                <div class="col-6 pt-4">
-                    {{ form_row(searchForm.sortiesOrganisees) }}
-                    {{ form_row(searchForm.sortiesInscrit) }}
-                    {{ form_row(searchForm.sortiesNonInscrit) }}
-                    {{ form_row(searchForm.sortiesPassees) }}
-                    {{ form_row(searchForm.submit) }}
-                </div>
+                </form>
+                {{ form_end(searchForm) }}
             </div>
-        </form>
-        {{ form_end(searchForm) }}
-    </section>
+        </div>
+    </div>
+
 
     <section class="mt-5">
         <h2>Liste des sorties</h2>
@@ -49,7 +52,7 @@
                 <th scope="col">Nom de la sortie</th>
                 <th scope="col">Date de la sortie</th>
                 <th scope="col">Clôture</th>
-                <th scope="col">Inscrits / Places</th>
+                <th scope="col">Inscriptions</th>
                 <th scope="col">État</th>
                 <th scope="col">Inscrit</th>
                 <th scope="col">Organisateur</th>
@@ -136,8 +139,10 @@
             </tbody>
         </table>
 
-
-        <a class="btn btn-outline-warning" href="{{ path('sorties_add') }}">Créer une sortie</a>
+        {% if isMobile() %}
+        {% else %}
+            <a class="btn btn-outline-warning" href="{{ path('sorties_add') }}">Créer une sortie</a>
+        {% endif %}
 
 
     </section>

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block bannerTitle %}Créer un nouveau groupe{% endblock %}
+
+{% block body %}
+    <div class="event-filter-warp">
+        {{ form_start(groupe_form, {attr: {'novalidate': 'novalidate'}}) }}
+
+        {{ form_row(groupe_form.Nom) }}
+        {{ form_row(groupe_form.Membres) }}
+        <div class="row">
+            <button type="submit" class="mt-4 site-btn sb-gradient" style="width:200px">Enregistrer</button>
+        </div>
+        {{ form_end(groupe_form) }}
+    </div>
+
+{% endblock %}
+
+{%  block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        var lieu = $("#groupe_Membres");
+
+        $(document).ready(function(){
+            $('#groupe_Membres').select2();
+        });
+    </script>
+{% endblock %}
+

@@ -20,12 +20,12 @@ class Lieu
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=250)
      */
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=150, nullable=true)
      */
     private $rue;
 

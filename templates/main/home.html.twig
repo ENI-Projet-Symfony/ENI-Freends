@@ -1,7 +1,48 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home Page{% endblock %}
+{% block title %}Accueil {{ parent() }}{% endblock %}
+
+
+{% block header %}
+    <header id="homePageHeader" class="wave-container">
+        <div class="container d-flex align-items-center justify-content-center">
+            <div class="row">
+                <div class="col-6 d-flex align-items-center justify-content-center">
+                    <div class="typewriter">
+                        <h1>Sortez de votre canapé !</h1>
+                    </div>
+                </div>
+                <div class="col-6 pt-5">
+                    <a href="{{ path('sorties_list') }}">
+                        <div id="homeGifContainer mt-5 pt-5">
+                            <img src="{{ asset('img/home_bg.gif') }}">
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div style="margin-top:-2px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200">
+            <path fill="#1E1C26" fill-opacity="1" d="M0,32L40,48C80,64,160,96,240,117.3C320,139,400,149,480,133.3C560,117,640,75,720,96C800,117,880,203,960,197.3C1040,192,1120,96,1200,48C1280,0,1360,0,1400,0L1440,0L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"></path>
+        </svg>
+    </div>
+{% endblock %}
+
 
 {% block body %}
-    <p>Lorem ipsum</p>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://labs.nearpod.com/bodymovin/demo/markus/halloween/lt.min.js"></script>
+    <script>
+        var svgContainer = document.getElementById('svgContainer');
+        var animItem = bodymovin.loadAnimation({
+            wrapper: svgContainer,
+            animType: 'svg',
+            loop: true,
+            path: 'https://labs.nearpod.com/bodymovin/demo/markus/isometric/markus2.json'
+        });
+    </script>
 {% endblock %}

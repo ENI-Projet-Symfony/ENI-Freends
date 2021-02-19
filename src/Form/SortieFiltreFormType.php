@@ -39,7 +39,7 @@ class SortieFiltreFormType extends AbstractType
                 'required' => false,
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'label' => 'Entre'
+                'label' => 'Entre',
             ])
 
             ->add('dateHeureFin', DateTimeType::class, [
@@ -49,29 +49,29 @@ class SortieFiltreFormType extends AbstractType
                 'required' => false,
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'label' => 'et'
+                'label' => 'et',
             ])
             // Filtres
             ->add('sortiesOrganisees', CheckboxType::class, [
-                'label'    => 'Sorties dont je suis l\'organisateur.trice',
+                'label'    => 'sorties dont je suis l\'organisateur.trice',
                 'required' => false,
                 'empty_data' => null,
                 'mapped' => false
             ])
             ->add('sortiesInscrit', CheckboxType::class, [
-                'label'    => 'Sorties auxquelles je suis inscrit.e',
+                'label'    => 'sorties auxquelles je suis inscrit.e',
                 'required' => false,
                 'empty_data' => null,
                 'mapped' => false
             ])
             ->add('sortiesNonInscrit', CheckboxType::class, [
-                'label'    => 'Sorties auxquelles je ne suis pas inscrit.e',
+                'label'    => 'sorties auxquelles je ne suis pas inscrit.e',
                 'required' => false,
                 'empty_data' => null,
                 'mapped' => false
             ])
             ->add('sortiesPassees',CheckboxType::class,  [
-                'label'    => 'Sorties passées',
+                'label'    => 'sorties passées',
                 'required'      => false,
                 'empty_data' => null,
                 'mapped' => false
@@ -79,7 +79,7 @@ class SortieFiltreFormType extends AbstractType
             // Bouton de validation
             ->add('submit', SubmitType::class, [
                 'label' => 'Rechercher',
-                'attr' => ['class' => 'btn btn-warning btn-lg mt-3'],
+                'attr' => ['class' => 'site-btn sb-gradient mt-2'],
             ])
 
             //les form de recherche sont en GET !

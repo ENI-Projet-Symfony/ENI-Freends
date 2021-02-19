@@ -2,39 +2,60 @@
 
 {% block title %}{{ parent() }} | Profil utilisateur  {% endblock %}
 
+{% block bannerTitle %}Profil de {{ participant.pseudo }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/profilUtilisateur.css') }}">
+{% endblock %}
 {% block body %}
     {% if app.user %}
-    <h1 class="text-center">{{ participant.pseudo | capitalize }}</h1>
-    <div class="row">
-        <div class="col-2">
-            MA PHOTO
-        </div>
-        <div class="col-10">
-            <div class="row ml-auto">
-                <div class="col-6 text-center">Prénom : </div>
-                <div class="col-6 text-center">{{ participant.prenom }}</div>
-                <div class="col-6 text-center">Nom : </div>
-                <div class="col-6 text-center">{{ participant.nom }}</div>
-                {% if participant.telephone %}
-                    <div class="col-6 text-center">Téléphone : </div>
-                    <div class="col-6 text-center">{{ participant.telephone }}</div>
-                {% endif %}
-                <div class="col-6 text-center">Email : </div>
-                <div class="col-6 text-center">{{ participant.mail }}</div>
-                <div class="col-6 text-center">Campus : </div>
-                <div class="col-6 text-center">{{ participant.campus.nom }}</div>
+
+        <!-- Trainers Section -->
+        <section class="trainer-details-section spad overflow-hidden">
+            <div class="container">
+                <div class="trainer-details">
+                    <div class="trainer-info">
+                        <div class="td-left">
+                            {% if (participant.nomFichierPhoto) %}
+                                <img src="{{ asset('img/' ~ participant.nomFichierPhoto) }}">
+                            {% else %}
+                                <img src="{{ asset('img/profil/Portrait_Placeholder.png') }}">
+                            {% endif %}
+                        </div>
+                        <div class="td-right">
+                            <h3 class="custom-text">{{ participant.prenom }} {{ participant.nom|upper }}</h3>
+                            <h6>{{ participant.actif? "Actif" : "Inactif" }} | Sorties organisées: {{ participant.sortiesOrganisees.count}} | A participé à {{ participant.sortiesParticpees.count}} sortie{{ participant.sortiesParticpees.count > 1 ? "s" : "" }}</h6>
+                            <ul>
+                                <li><i class="fa fa-phone pink"></i> {{ participant.telephone? participant.telephone :  "Non renseigné" }}</li>
+                                <li><i class="fa fa-envelope pink"></i> {{ participant.mail }}</li>
+                                <li><i class="fa fa-university pink"></i> {{ participant.campus.nom }}</li>
+                            </ul>
+                            {% if id_participant == app.user.id %}
+                                <a href="{{ path('participant_modification_profil') }}" class="site-btn sb-gradient"><i class="fa fa-user"></i> Modifier mon profil</a>
+                            {% endif %}
+                        </div>
+
+                        {% if participant.myGroupes.count >0 %}
+                            <div class="row">
+                                <h3>Mes groupes</h3>
+                                {% for groupe in participant.myGroupes %}
+                                    <div class="col-auto"><a href="{{ path('groupe_detail', {'id' :  groupe.id})}}">
+                                            <button type="button" class="mt-4 btn btn-outline-dark"></i> {{ groupe.nom }}</button>
+                                        </a>
+                                    </div>
+
+                                {% endfor %}
+                            </div>
+                            <hr>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    {% endif %}
-    {% if id_participant == app.user.id %}
-    <div class="row">
-        <div class="col-12 text-center">
-            <a href="{{ path('participant_modification_profil') }}">
-                <button type="button" class="mt-4 btn btn-outline-dark"> Modifier mon profil</button>
-            </a>
-        </div>
-    </div>
+        </section>
+        <!-- Trainers Section end -->
+
+
+
     {% endif %}
 {% endblock %}
 

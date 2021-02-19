@@ -1,0 +1,148 @@
+{% extends 'base.html.twig' %}
+{% block title %}Creer une sortie {{ parent() }}{% endblock %}
+
+{% block bannerTitle %}Créer une sortie{% endblock %}
+
+{% block body %}
+
+    <!-- Bundle de détection de support -->
+    <!-- composer require tattali/mobile-detect-bundle -->
+    <!-- DOC: https://github.com/suncat2000/MobileDetectBundle/blob/master/Resources/doc/index.md -->
+
+    <section class="mt-5">
+
+        {{ form_start(formulaire, {attr: {'novalidate': 'novalidate'}}) }}
+        <div class="row">
+            <div class="col-4">
+                <p>Photo de sortie</p>
+
+                <div id="drop_zone" class="drop-zone dragdropfile d-flex align-items-center justify-content-center" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+                    <div class="drop-zone__prompt">
+                        <div>
+                            <svg class="boxicon" xmlns="http://www.w3.org/2000/svg" fill="#E61753" width="50" height="43" viewBox="0 0 50 43"><path d="M48.4 26.5c-.9 0-1.7.7-1.7 1.7v11.6h-43.3v-11.6c0-.9-.7-1.7-1.7-1.7s-1.7.7-1.7 1.7v13.2c0 .9.7 1.7 1.7 1.7h46.7c.9 0 1.7-.7 1.7-1.7v-13.2c0-1-.7-1.7-1.7-1.7zm-24.5 6.1c.3.3.8.5 1.2.5.4 0 .9-.2 1.2-.5l10-11.6c.7-.7.7-1.7 0-2.4s-1.7-.7-2.4 0l-7.1 8.3v-25.3c0-.9-.7-1.7-1.7-1.7s-1.7.7-1.7 1.7v25.3l-7.1-8.3c-.7-.7-1.7-.7-2.4 0s-.7 1.7 0 2.4l10 11.6z"/></svg>
+                        </div>
+                        <div>
+                            <p><strong>Cliquez pour choisir un fichier </strong> ou glissez-le ici</p>
+                        </div>
+                        <div>
+                            <p>{{ form_widget(formulaire.picture) }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                {{ form_row(formulaire.nom) }}
+                {{ form_row(formulaire.dateHeureDebut) }}
+                {{ form_row(formulaire.dateLimiteInscription) }}
+                {{ form_row(formulaire.nbInscriptionsMax) }}
+                {{ form_row(formulaire.duree) }}
+                {{ form_row(formulaire.infosSortie) }}
+            </div>
+            <div class="col-4">
+                {{ form_row(formulaire.campus) }}
+                {{ form_row(formulaire.ville) }}
+                {{ form_row(formulaire.lieu) }} <div class="add-lieu text-success"><a id="ok" href="#AddLieu" data-toggle="modal" data-target="#AddLieu" class="card-link"><i class="fa fa-plus-circle"></i></a></div>
+                {{ form_row(formulaire.rue) }}
+                {{ form_row(formulaire.cp) }}
+                {{ form_row(formulaire.latitude) }}
+                {{ form_row(formulaire.longitude) }}
+            </div>
+        </div>
+        <div class="row">
+            <ul class="Flow">
+                <li><button type="submit" class="btn btn-outline-primary" name="submit_type" value="Créer">Enregistrer</button></li>
+                <li><button type="submit" class="btn btn-outline-success" name="submit_type" value="Publier">Publier la sortie</button></li>
+                <li><a href="{{ path('main_home') }}"><button type="button" class="btn btn-outline-secondary">Annuler</button></a></li>
+            </ul>
+        </div>
+        {{ form_end(formulaire) }}
+    </section>
+
+    <!-- Modal -->
+    <div class="modal fade" id="AddLieu" tabindex="-1" role="dialog" aria-labelledby="Annulation_Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="Annulation_Label">Ajouter un lieu</h5>
+                        <i class="fa fa-times" class="close" data-dismiss="modal" aria-label="Close"></i>
+
+                </div>
+                {{ form_start(form_add_lieu, {attr: {'novalidate': 'novalidate'}}) }}
+                <form method="get" action="{{ path('sorties_ajouter_lieu') }}">
+                    <div class="modal-body">
+                        {{ form_widget(form_add_lieu) }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Ajouter le lieu</button>
+                    </div>
+                </form>
+                {{ form_end(form_add_lieu) }}
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/dragdrop.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        var lieu = $("#sortie_lieu");
+        var ville = $("#sortie_ville");
+
+        async function dynChangeLieuInfo(){
+            var lieu_Id = lieu.val();
+            await $.ajax({
+                type: 'GET',
+                url: '{{ path('sorties_get_lieu_info') }}',
+                data: {id: lieu_Id},
+                success: function (data){
+                    if(data !== "") {
+                        $("#sortie_latitude").val(data["latitude"]);
+                        $("#sortie_longitude").val(data["longitude"]);
+                        $("#sortie_cp").val(data["cp"]);
+                        $("#sortie_rue").val(data["rue"]);
+                    }else{
+                        console.log("data est vide")
+                    }
+                }
+            })
+        }
+
+       async function dynChangeLieu() {
+           var ville_Id = ville.val();
+           await $.ajax({
+               type: 'GET',
+               url: '{{ path('sorties_get_lieu') }}',
+               data: {id: ville_Id},
+               success: function (data){
+                   if(data !== "") {
+                       lieu.html(data);
+
+
+                   }else{
+                       console.log("data est vide")
+                   }
+               }
+           });
+           dynChangeLieuInfo();
+       }
+
+        $(document).ready(function(){
+            lieu.select2();
+            ville.select2();
+            dynChangeLieu();
+            lieu.change(function(e){
+                dynChangeLieuInfo();
+            });
+            ville.change(async function(e){
+                dynChangeLieu();
+            });
+        });
+
+
+    </script>
+{% endblock %}

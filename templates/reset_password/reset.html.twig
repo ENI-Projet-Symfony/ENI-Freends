@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Log in!{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        body {
+            background-color: #406274;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="logoLogin">
+        <a href="{{ path('main_home') }}">
+            <img src="{{ asset('img/logo-2.png') }}">
+        </a>
+    </div>
+    <div class="row">
+
+        <div class="col-6 mx-auto d-flex justify-content-center align-items-center h100">
+            {{ form_start(resetForm) }}
+            <h1 class="h3 mb-3 font-weight-normal pink">Reset your password</h1>
+            {{ form_row(resetForm.plainPassword) }}
+            <button class="site-btn sb-gradient mt-3">Reset password</button>
+            {{ form_end(resetForm) }}
+
+        </div>
+        <div class="illustrationLogin">
+            <img src="{{ asset('img/mdp_bg.gif') }}">
+        </div>
+
+    </div>
+{% endblock %}
+

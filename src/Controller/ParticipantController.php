@@ -5,8 +5,11 @@ namespace App\Controller;
 use App\Entity\Participant;
 use App\Form\UserInformationType;
 use App\Repository\ParticipantRepository;
+use claviska\SimpleImage;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPTokenGenerator\TokenGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,7 +35,7 @@ class ParticipantController extends AbstractController
     /**
      * @Route("/participant/modificationprofil", name="participant_modification_profil")
      */
-    public function modificationProfil(EntityManagerInterface $entityManager, Request $request,UserPasswordEncoderInterface $encoder): Response
+    public function modificationProfil(EntityManagerInterface $entityManager, Request $request,UserPasswordEncoderInterface $encoder, string $uploadDirImg): Response
     {
         //Recupere l'utilisateur connecter
         $participant = $this->getUser();
@@ -46,6 +49,28 @@ class ParticipantController extends AbstractController
             if($userform->get('password')->getData())
             {
                 $participant->setPassword($encoder->encodePassword($participant, $userform->get('password')->getData()));
+            }
+            /** @var UploadedFile $photo */
+            $photo = $userform->get('photo')->getData();
+
+            if($photo){
+
+                $generator = new TokenGenerator();
+                $nomFichier = $generator->generate() . "." . $photo->guessExtension();
+                $photoFinale = new SimpleImage();
+                $photoFinale
+                    ->fromFile($photo)
+                    ->autoOrient()
+                    ->bestFit(200,200)
+                    ->toFile($uploadDirImg . $nomFichier);
+            if($participant->getNomFichierPhoto()) {
+                try {
+                    unlink($uploadDirImg . $participant->getNomFichierPhoto());
+                } catch (\ErrorException $ex) {
+                    // catch vide, au cas où un nom de fichier est présent en base mais l'image n'est pas sur le serveur
+                }
+            }
+                $participant->setNomFichierPhoto($nomFichier);
             }
 
             $this->addFlash('success','Les modfications de vôtre profil ont bien été effectuées');

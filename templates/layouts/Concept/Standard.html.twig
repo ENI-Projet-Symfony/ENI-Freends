@@ -1,0 +1,41 @@
+{% include 'layouts/Concept/src/Head.html.twig' %}
+
+<body>
+<!-- ============================================================== -->
+<!-- main wrapper -->
+<!-- ============================================================== -->
+<div class="dashboard-main-wrapper">
+
+    <!-- ============================================================== -->
+    <!-- Nav Bar -->
+    <!-- ============================================================== -->
+    {% include "layouts/Concept/src/NavBar.html.twig" %}
+
+
+    <!-- ============================================================== -->
+    <!-- Left Side Bar -->
+    <!-- ============================================================== -->
+    {% include "layouts/Concept/src/LeftSideBar.html.twig" %}
+
+
+    <!-- ============================================================== -->
+    <!-- wrapper  -->
+    <!-- ============================================================== -->
+
+    <div class="dashboard-wrapper">
+        {% block Content %}
+        <div class="container-fluid dashboard-content">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <h3 class="text-center">Content goes here!</h3>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+        {% include 'layouts/Concept/src/Footers.html.twig' %}
+
+{% block JavaScripts %}{% endblock %}
+</body>
+
+</html>

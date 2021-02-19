@@ -1,3 +1,53 @@
+/*************************************
+*   LOGIN PAGE
+*************************************/
+.logoLogin {
+    position: absolute;
+    left: 100px;
+    top: 20px;
+    width: 150px;
+}
+.logoLogin img {
+    width: 100%;
+}
+.pink{
+    color: #E61753;
+}
+.illustrationLogin {
+    position: absolute;
+    right: 0;
+    bottom: 80px;
+    width: 450px;
+}
+/*************************************
+*   HOME PAGE
+*************************************/
+header#homePageHeader{
+    background-color: #1E1C26;
+    height: 500px;
+}
+#svgContainer {
+    max-width: 100%;
+    max-height: 400px;
+    background-color: #1E1C26;
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    bottom: 0;
+    margin: auto;
+}
+#svgContainer svg {
+    height:400px;
+}
+/*************************************
+*   GENERAL
+*************************************/
+.header-top a {
+    color: #E61753;
+    text-decoration: none
+}
 footer {
     color: #f2f2f2;
 }
@@ -9,7 +59,215 @@ footer {
     position: sticky;
     top: 0;
 }
-
+.mh100{
+    height: 100%;
+}
 .h100{
     min-height: calc(100vh - 112px);
+}
+.clear {
+    clear: both;
+}
+.Flow {
+    margin-top: 30px;
+    text-align: center;
+    list-style: none;
+
+}
+.Flow li {
+    display: inline;
+}
+.Flow li>button {
+    font-size: large;
+}
+
+.dragdropfile {
+    width: 100%;
+    height: calc(100% - 28px);
+    margin-top: -14px;
+    color: #87E3AD;
+    border-style: dashed;
+    border-color: #87E3AD;
+}
+.boxicon {
+    width: 100%;
+    height: 80px;
+    fill: #E61753;
+    display: block;
+    margin-bottom: 40px;
+}
+#filedrag
+{
+    display: none;
+    font-weight: bold;
+    text-align: center;
+    padding: 1em 0;
+    margin: 1em 0;
+    color: #555;
+    border: 2px dashed #555;
+    border-radius: 7px;
+    cursor: default;
+}
+
+#filedrag.hover
+{
+    color: #f00;
+    border-color: #f00;
+    border-style: solid;
+    box-shadow: inset 0 3px 4px #888;
+}
+textarea#sortie_infosSortie {
+    resize: none;
+    height: 103px;
+}
+.input-disabled{
+    border-style: hidden;
+    background: none !important;
+
+}
+.btn-modif-ville{
+    display: none;
+}
+.form-modif-ville{
+    margin-bottom: 0.8rem;
+
+}
+.form-modif-ville p {
+    margin-bottom: 0;
+}
+.typewriter h1 {
+    font-size: 3em;
+    color: #FFFFFF;
+    overflow: hidden; /* Ensures the content is not revealed until the animation */
+    white-space: nowrap; /* Keeps the content on a single line */
+    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+    animation:
+            typing 2.5s steps(40, end)
+}
+
+/* The typing effect */
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+#lieu_ville .select2-container {
+    width: 100%!important;
+}
+#groupe_Membres .select2-selection--multiple {
+    width: 100%!important;
+}
+.add-lieu {
+    position: relative;
+    float: right;
+    right: -30px;
+    top: -32px;
+    font-size: 1.2em;
+}
+.add-lieu a{
+    color: #3adb76;
+    transition: all 0.3s ease-in-out;
+}
+.add-lieu a:hover {
+    color: #00ab6c;
+}
+.select2-container {
+    width: 100%!important;
+}
+.select2-container .select2-selection--single {
+    height: 38px;
+}
+.select2-container .select2-selection--multiple {
+    height: 38px;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 38px;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    top: 70%;
+}
+.influence-finder button.btn {
+    width: auto!important;
+}
+input[type="text"], input[type="number"],
+input[type="datetime-local"], input[type="date"],
+input[type="search"], input[type="password"],
+input[type="email"], select {
+    width: 100%;
+    height: 49px;
+    padding-left: 29px;
+    padding-right: 40px;
+    border-radius: 50px!important;
+    border: 1px solid #e6e6e6;
+    background: #fafafa;
+    font-size: 14px;
+}
+div.sticky {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+}
+.main-menu a, .main-menu .sub-menu li a {
+    text-decoration: none;
+}
+.main-menu .sub-menu {
+    width: 220px!important;
+}
+.page-top-section {
+    height: 350px!important;
+}
+.notif-flash{
+    position: absolute;
+    z-index:1025;
+    top:70px;
+    right:30px;
+}
+
+.drop-zone {
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: "Quicksand", sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    cursor: pointer;
+    color: #cccccc;
+    border: 4px dashed #E61753;
+    border-radius: 10px;
+}
+
+.drop-zone--over {
+    border-style: solid;
+}
+
+.drop-zone--over > .boxicon {
+    margin-top: -20px;
+}
+
+.drop-zone__input {
+    display: none;
+}
+
+.drop-zone__thumb {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #cccccc;
+    background-size: cover;
+    position: relative;
+}
+
+.drop-zone__thumb::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 5px 0;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.75);
+    font-size: 14px;
+    text-align: center;
 }
