@@ -50,8 +50,11 @@ class VilleController extends AbstractController
      */
     public function supprimerVille(int $id, EntityManagerInterface $entityManager, VilleRepository $villeRepository): Response
     {
+        $connection = $entityManager->getConnection();
+        $connection->executeQuery("SET FOREIGN_KEY_CHECKS = 0");
         $entityManager->remove($villeRepository->find($id));
         $entityManager->flush();
+        $connection->executeQuery("SET FOREIGN_KEY_CHECKS = 1");
         $this->addFlash('success','La ville à bien été supprimée');
         return $this->redirectToRoute('villes');
     }
