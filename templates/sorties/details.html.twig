@@ -58,17 +58,6 @@
                         </div>
                     </div>
                     <!--<p>Update the trend of 12 yoga exercises to help you lose weight effectively at home, help strengthen your exercise ability. Besides impacting weight loss effects, it also helps to repel diseases, enhance the body's resistance. Have a toned body with just 8 steps of yoga every day, helping to lose weight quickly combined with a reasonable diet.</p>-->
-                    {% if(sortie.urlPhoto) %}
-                    <div class="row">
-                        <div class="event-preview mt-1">
-                            <img
-                                    src="{{ asset('img/' ~ sortie.urlPhoto) }}"
-                                    alt="..."
-                                    class="img-fluid"
-                            />
-                        </div>
-                    </div>
-                    {% endif %}
                 </div>
 
         </article>
@@ -120,6 +109,18 @@
                     {% endif %}
                 </div>
             </div>
+
+            {% if(sortie.urlPhoto) %}
+                <div class="row">
+                    <div class="event-preview mt-1">
+                        <img
+                                src="{{ asset('img/' ~ sortie.urlPhoto) }}"
+                                alt="..."
+                                class="img-fluid"
+                        />
+                    </div>
+                </div>
+            {% endif %}
 
         </aside>
 
